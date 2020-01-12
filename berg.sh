@@ -158,3 +158,4 @@ elif [ "$answ" = "mul" ]; then
     fi
 else
     echo "You chose nothing"
+fi

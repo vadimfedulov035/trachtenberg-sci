@@ -60,6 +60,7 @@ try:
     rpass = int(input("How many passes do you want before increasing difficulty? (num): "))
 except:
     print("You typed nothing or not a number!")
+
 answ.lower()
 endl.lower()
 
@@ -75,7 +76,10 @@ if answ == "mul":
             print(ml(num[0], num[1]))
             itera += 1
     elif endl == "no":
-        nitera = int(input("How many iterations do you want to pass?: "))
+        try:
+            nitera = int(input("How many iterations do you want to pass?: "))
+        except:
+            print("You typed nothing or not a number!")
         while True:
             if nitera == itera:
                 break
@@ -86,7 +90,7 @@ if answ == "mul":
             print(ml(num[0], num[1]))
             itera += 1
     else:
-        print("You mistyped or typed nothing!")
+        print("You typed nothing or not a valid answer!")
 elif answ == "div":
     num = [ 4, 2 ]
     if endl == "yes":
@@ -98,7 +102,10 @@ elif answ == "div":
             print(dl(num[0], num[1]))
             itera += 1
     elif endl == "no":
-        nitera = int(input("How many iterations do you want to pass?: "))
+        try:
+            nitera = int(input("How many iterations do you want to pass?: "))
+        except:
+            print("You typed nothing or not a number!")
         while True:
             if nitera == itera:
                 break
@@ -109,6 +116,6 @@ elif answ == "div":
             print(dl(num[0], num[1]))
             itera += 1
     else:
-        print("You mistyped or typed nothing")
+        print("You typed nothing or not a valid answer!")
 else:
-    print("You mistyped or typed nothing!")
+    print("You typed nothing or not a valid answer!")
