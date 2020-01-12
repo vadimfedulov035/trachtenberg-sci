@@ -1,7 +1,7 @@
 # Trachtenberg speed system of basic mathematics
 ## Script for testing and book itself
 
-![cover](https://github.com/vadimfedulov395/bergsh/raw/master/cover.png)
+![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.png)
 
 If you have read the original book you will be able to test your knowledge easily by just startings scripts.
 
