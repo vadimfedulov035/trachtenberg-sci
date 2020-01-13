@@ -5,14 +5,15 @@ ydf=1
 
 read -p 'Do you want a division test or multiplication? (mul/div): ' answ
 read -p 'Do you want to be in endless mathematical loop? (yes/no): ' endl
+read -p 'How many iterations do you want before increasing difficulty? (num): ' rpass
 
 whileml()
 {
 i=1
 while true; do
-    if [ `echo "$i % 10" | bc` = 1 ] && [ $i != 1 ]; then
+    if [ `echo "$i % ($rpass * 2)" | bc` = 1 ] && [ $i != 1 ]; then
         ydf=`echo "$ydf + 1" | bc`
-    elif [ `echo "$i % 5" | bc` = 1 ] && [ $i != 1 ]; then
+    elif [ `echo "$i % $rpass" | bc` = 1 ] && [ $i != 1 ]; then
         xdf=`echo "$xdf + 1" | bc`
     fi
     
@@ -43,12 +44,12 @@ whiledl()
 {
 i=1
 while true; do
-    if [ `echo "$i % 10" | bc` = 1 ] && [ $i != 1 ]; then
+    if [ `echo "$i % ($rpass * 2)" | bc` = 1 ] && [ $i != 1 ]; then
         ydf=`echo "$ydf + 1" | bc`
-    elif [ `echo "$i % 5" | bc` = 1 ] && [ $i != 1 ]; then
+    elif [ `echo "$i % $rpass" | bc` = 1 ] && [ $i != 1 ]; then
         xdf=`echo "$xdf + 1" | bc`
     fi
-    
+
     x0=`tr -cd 1-9 < /dev/urandom | head -c 1 | cut -d'%' -f 1`
     x1=`tr -cd 0-9 < /dev/urandom | head -c $(($xdf + 2)) | cut -d'%' -f 1`
     y0=`tr -cd 1-9 < /dev/urandom | head -c 1 | cut -d'%' -f 1`
@@ -76,11 +77,11 @@ done
 
 forml()
 {
-read -p 'How many times of 5 do you want to pass today?: ' diff
-for i in `seq $(echo "$diff * 5" | bc )`; do
-    if [ `echo "$i % 10" | bc` = 1 ] && [ $i != 1 ]; then
+read -p 'How many iterations do you want to pass?: ' nitera
+for i in `seq $(echo "$nitera")`; do
+    if [ `echo "$i % ($rpass * 2)" | bc` = 1 ] && [ $i != 1 ]; then
         ydf=`echo "$ydf + 1" | bc`
-    elif [ `echo "$i % 5" | bc` = 1 ] && [ $i != 1 ]; then
+    elif [ `echo "$i % $rpass" | bc` = 1 ] && [ $i != 1 ]; then
         xdf=`echo "$xdf + 1" | bc`
     fi
     
@@ -108,11 +109,11 @@ done
 
 fordl()
 {
-read -p 'How many times of 5 do you want to pass today?: ' diff
-for i in `seq $(echo "$diff * 5" | bc)`; do
-    if [ `echo "$i % 10" | bc` = 1 ] && [ $i != 1 ]; then
+read -p 'How many iterations do you want to pass?: ' nitera
+for i in `seq $(echo "$nitera")`; do
+    if [ `echo "$i % ($rpass * 2)" | bc` = 1 ] && [ $i != 1 ]; then
         ydf=`echo "$ydf + 1" | bc`
-    elif [ `echo "$i % 5" | bc` = 1 ] && [ $i != 1 ]; then
+    elif [ `echo "$i % $rpass" | bc` = 1 ] && [ $i != 1 ]; then
         xdf=`echo "$xdf + 1" | bc`
     fi
     

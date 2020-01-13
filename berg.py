@@ -57,9 +57,9 @@ def dl(dividend, divider):
 answ = input("Do you want a division test or multiplication? (mul/div): ")
 endl = input("Do you want to be in endless mathematical loop? (yes/no): ")
 try:
-    rpass = int(input("How many passes do you want before increasing difficulty? (num): "))
-except:
-    print("You typed nothing or not a number!")
+    rpass = int(input("How many iterations do you want before increasing difficulty? (num): "))
+except ValueError:
+    print("You typed not a number!")
 
 answ.lower()
 endl.lower()
@@ -78,8 +78,8 @@ if answ == "mul":
     elif endl == "no":
         try:
             nitera = int(input("How many iterations do you want to pass?: "))
-        except:
-            print("You typed nothing or not a number!")
+        except ValueError:
+            print("You typed not a number!")
         while True:
             if nitera == itera:
                 break
@@ -90,7 +90,7 @@ if answ == "mul":
             print(ml(num[0], num[1]))
             itera += 1
     else:
-        print("You typed nothing or not a valid answer!")
+        print("You typed neither yes, neither no!")
 elif answ == "div":
     num = [ 4, 2 ]
     if endl == "yes":
@@ -104,8 +104,8 @@ elif answ == "div":
     elif endl == "no":
         try:
             nitera = int(input("How many iterations do you want to pass?: "))
-        except:
-            print("You typed nothing or not a number!")
+        except ValueError:
+            print("You typed not a number!")
         while True:
             if nitera == itera:
                 break
@@ -116,6 +116,6 @@ elif answ == "div":
             print(dl(num[0], num[1]))
             itera += 1
     else:
-        print("You typed nothing or not a valid answer!")
+        print("You typed neither yes, neither no!")
 else:
-    print("You typed nothing or not a valid answer!")
+    print("You chose nothing!")
