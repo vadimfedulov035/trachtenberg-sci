@@ -25,7 +25,7 @@ def ml(multiplicand, multiplier):
         elif uc != c:
             return "No, right answer is {}".format(c)
     except ValueError:
-        print("You typed typed not a number!")
+        return "You typed typed not a number!"
 
 def dl(dividend, divider):
     x1, x2 = 1, 1
@@ -52,7 +52,7 @@ def dl(dividend, divider):
         elif uc1 != c1 or uc2 != c2:
             return "No, right answer is {} with residual of {}".format(c1, c2)
     except ValueError:
-        print("You typed not a number!")
+        return "You typed not a number!"
 
 answ = input("Do you want a division test or multiplication? (mul/div): ")
 endl = input("Do you want to be in endless mathematical loop? (yes/no): ")
