@@ -25,7 +25,7 @@ def ml(multiplicand, multiplier):
         elif uc != c:
             return "No, right answer is {}".format(c)
     except ValueError:
-        return "You typed typed not a number!"
+        return "You typed not a number!"
 
 def dl(dividend, divider):
     x1, x2 = 1, 1
