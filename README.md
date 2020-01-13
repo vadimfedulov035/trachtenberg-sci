@@ -1,5 +1,5 @@
 # Trachtenberg speed system of basic mathematics
-## Programs, script for testing and book itself
+## Programs, script, telegram bot (upcoming) for testing and book itself
 
 ![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.png)
 
