@@ -28,14 +28,25 @@ class Bot():
 
 
     def readmsg(self):
+        self.i = 0
         self.requp = self.url + "/getupdates"
         self.msgreq = requests.get(self.requp)
-        self.lmsg = self.msgreq.json().get('result')
-        self.readlm = str(self.lmsg).lower()
+        self.listmsg = self.msgreq.json().get('result')
+        for msg in self.listmsg:
+            self.found = re.search(r"\'date\':\s([0-9]{10})\,", str(msg)).group(1)
+            if self.i == 0:
+                self.neededit = self.i
+                self.date = self.found
+            elif self.i > 0:
+                if self.found > self.date:
+                    self.neededit = self.i
+            self.i += 1
+        self.readlm = str(self.listmsg[-1]).lower()
+        print(self.readlm)
 
 
     def sendmsg(self, msg):
-        self.chat_id = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm).group(1)
+        self.chat_id = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{10})", self.readlm).group(1)
         self.reqms = self.url + '/sendmessage?text={}&chat_id={}'.format(msg, self.chat_id)
         requests.get(self.reqms)
 
