@@ -14,6 +14,7 @@ class Bot():
 
 
     def __init__(self, tok):
+        self.timeout = 0.5
         self.count_msg = False
         self.choice_msg = False
         self.endl_msg = False
@@ -28,42 +29,28 @@ class Bot():
 
 
     def readmsg(self):
-        self.i = 0
         self.requp = self.url + "/getupdates"
         self.msgreq = requests.get(self.requp)
         self.listmsg = self.msgreq.json().get('result')
-        for msg in self.listmsg:
-            self.found = re.search(r"\'date\':\s([0-9]{10})\,", str(msg)).group(1)
-            if self.i == 0:
-                self.neededit = self.i
-                self.date = self.found
-            elif self.i > 0:
-                if self.found > self.date:
-                    self.neededit = self.i
-            self.i += 1
         self.readlm = str(self.listmsg[-1]).lower()
         print(self.readlm)
 
 
     def sendmsg(self, msg):
-        self.chat_id = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{10})", self.readlm).group(1)
+        self.chat_id = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm).group(1)
         self.reqms = self.url + '/sendmessage?text={}&chat_id={}'.format(msg, self.chat_id)
         requests.get(self.reqms)
 
 
-    def count(self):
+    def start(self):
         self.readmsg()
-        if self.repeat_count_msg is False:
-            self.sendmsg('Hello! Type /count to practice in counting!')
-            self.repeat_count_msg = True
-            print(self.readmsg)
-        if re.search(r'\/count', self.readlm):
+        if re.search(r'\/start', self.readlm):
             self.sendmsg("Started counting!")
             self.count_msg = True
             self.choice()
         if self.count_msg is False:
-            time.sleep(1)
-            self.count()
+            time.sleep(self.timeout)
+            self.start()
 
 
     def choice(self):
@@ -71,18 +58,18 @@ class Bot():
         if self.repeat_choice_msg is False:
             self.sendmsg("Do you want a division test or multiplication? (/mul or /div):")
             self.repeat_choice_msg = True
-        if re.search(r'\/mul', self.readlm) is not None:
+        if re.search(r'\/mul', self.readlm):
             self.sendmsg("Multiplication is chosen")
             self.choice_msg = True
             self.chosen = "mul"
             self.endl()
-        elif re.search(r'\/div', self.readlm) is not None:
+        elif re.search(r'\/div', self.readlm):
             self.sendmsg("Division is chosen")
             self.choice_msg = True
             self.chosen = "div"
             self.endl()
         if self.choice_msg is False:
-            time.sleep(1)
+            time.sleep(self.timeout)
             self.choice()
 
 
@@ -91,16 +78,16 @@ class Bot():
         if self.repeat_endl_msg is False:
             self.sendmsg("Do you want to be in endless mathematical loop? (/yes or /no)")
             self.repeat_endl_msg = True
-        if re.search(r'\/yes', self.readlm) is not None:
+        if re.search(r'\/yes', self.readlm):
             self.sendmsg('Loop mode is chosen')
             self.endl_msg = True
             self.numb2()
-        elif re.search(r'\/no', self.readlm) is not None:
+        elif re.search(r'\/no', self.readlm):
             self.sendmsg('Finite mode is chosen')
             self.endl_msg = True
             self.numb()
         if self.endl_msg is False:
-            time.sleep(1)
+            time.sleep(self.timeout)
             self.endl()
 
 
@@ -110,12 +97,12 @@ class Bot():
         if self.repeat_numb_msg is False:
             self.sendmsg('How many iterations do you want before increasing difficulty? (/d{num}):')
             self.repeat_numb_msg = True
-        if self.rpass is not None:
+        if self.rpass:
             self.sendmsg('Have chosen {} iterations mode'.format(self.rpass.group(1)))
             self.numb_msg = True
             self.numb2()
         if self.numb_msg is False:
-            time.sleep(1)
+            time.sleep(self.timeout)
             self.numb()
 
 
@@ -129,10 +116,10 @@ class Bot():
             self.sendmsg('You have chosen {} iterations total'.format(self.nitera.group(1)))
             self.numb2_msg = True
         if self.numb2_msg is False:
-            time.sleep(1)
+            time.sleep(self.timeout)
             self.numb2()
 
 
 
 pbot = Bot(token)
-pbot.count()
+pbot.start()
