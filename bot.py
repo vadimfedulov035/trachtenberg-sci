@@ -108,7 +108,7 @@ class Bot():
         self.readmsg()
         self.rpass = re.search(r'\/d([0-9]{1,6})', self.readlm)
         if self.repeat_numb_msg is False:
-            self.sendmsg('How many iterations do you want before increasing difficulty? (/d\{num\}):')
+            self.sendmsg('How many iterations do you want before increasing difficulty? (/d{num}):')
             self.repeat_numb_msg = True
         if self.rpass is not None:
             self.sendmsg('Have chosen {} iterations mode'.format(self.rpass.group(1)))
@@ -122,8 +122,8 @@ class Bot():
     def numb2(self):
         self.readmsg()
         self.nitera = re.search(r'\/t([0-9]{1,6})', self.readlm)
-        if self.numb2_msg is False and self.repeat_numb2_msg is False:
-            self.sendmsg('How many iterations do you want to pass? (/t\{num\})')
+        if self.repeat_numb2_msg is False:
+            self.sendmsg('How many iterations do you want to pass? (/t{num})')
             self.repeat_numb2_msg = True
         if self.nitera is not None:
             self.sendmsg('You have chosen {} iterations total'.format(self.nitera.group(1)))
