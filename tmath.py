@@ -1,4 +1,7 @@
+import time
+import re
 import random
+
 
 
 def ml(multiplicand, multiplier, mode="standalone", obj=None):
@@ -27,15 +30,23 @@ def ml(multiplicand, multiplier, mode="standalone", obj=None):
         except ValueError:
             return "You typed not a number!"
     elif mode == 'telegram':
-        obj.sendmsg("{x} * {y} = ?".format(x=a, y=b))
-        try:
-            uc = int(obj.readlm)
-            if uc == c:
-                return "You're God Damn right!"
-            elif uc != c:
-                return "No, right answer is {answ}".format(answ=c)
-        except:
-            obj.readmsg()
+        sended = False
+        obj.readmsg()
+        if sended == False:
+            obj.sendmsg("{} * {} = ".format(a, b))
+            sended = True
+        while True:
+            try:
+                uc = re.search(r'\/([0-9]{1,6})', obj.readlm)
+                uc = int(uc.group(1))
+                if uc == c:
+                    obj.sendmsg("You're God Damn right!")
+                    break
+                elif uc != c:
+                    obj.sendmsg("No, right answer is {}".format(c))
+                    break
+            except:
+                time.sleep(obj.timeout)
 
 
 def dl(dividend, divider, mode="standalone", obj=None):
@@ -62,17 +73,18 @@ def dl(dividend, divider, mode="standalone", obj=None):
             if uc1 == c1 and uc2 == c2:
                 return "You're God Damn right!"
             elif uc1 != c1 or uc2 != c2:
-                return "No, right answer is {answ} with residual of {resid}".format(answ=c1, resid=c2)
+                obj.sendmsg("{x} * {y} = ?".format(x=a, y=b))
+                return "No, right answer is {} with residual of {}".format(c1, c2)
         except ValueError:
             return "You typed not a number!"
     elif mode == 'telegram':
-        obj.sendmsg("{x} * {y} = ?".format(x=a, y=b))
+        obj.sendmsg("{} * {} = ?".format(a, b))
         try:
             uc1 = int(obj.readlm)
             uc2 = int(obj.readlm)
             if uc1 == c1 and uc2 == c2:
                 return "You're God Damn right!"
             elif uc1 != c1 or uc2 != c2:
-                return "No, right answer is {answ} with residual of {resid}".format(answ=c1, resid=c2)
+                return "No, right answer is {answ} with residual of {}".format(c1, c2)
         except:
             obj.readmsg()
