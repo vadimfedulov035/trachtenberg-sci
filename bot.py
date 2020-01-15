@@ -4,7 +4,6 @@ import requests
 import time
 
 
-
 with open('tok.conf', 'r') as config:
     token = config.read().split('|')[1]
     print(token)
@@ -14,7 +13,10 @@ class Bot():
 
 
     def __init__(self, tok):
-        self.timeout = 0.5
+        self.timeout = 1 
+        self.mnum = [ 2, 1 ]
+        self.dnum = [ 4, 2 ]
+        self.readlm = None
         self.count_msg = False
         self.choice_msg = False
         self.endl_msg = False
@@ -30,27 +32,40 @@ class Bot():
 
     def readmsg(self):
         self.requp = self.url + "/getupdates"
+        self.prevms = self.readlm
         self.msgreq = requests.get(self.requp)
         self.listmsg = self.msgreq.json().get('result')
         self.readlm = str(self.listmsg[-1]).lower()
-        print(self.readlm)
+        if self.readlm == self.prevms:
+            self.readlm = None
+        else:
+            print(self.readlm)
+        
 
 
-    def sendmsg(self, msg):
+    def sendmsg(self, messg):
         self.chat_id = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm).group(1)
-        self.reqms = self.url + '/sendmessage?text={}&chat_id={}'.format(msg, self.chat_id)
+        self.reqms = self.url + '/sendmessage?text={msg}&chat_id={cid}'.format(msg=messg, cid=self.chat_id)
         requests.get(self.reqms)
 
 
     def start(self):
         self.readmsg()
-        if re.search(r'\/start', self.readlm):
-            self.sendmsg("Started counting!")
-            self.count_msg = True
-            self.choice()
-        if self.count_msg is False:
-            time.sleep(self.timeout)
-            self.start()
+        try:
+            if re.search(r'\/start', self.readlm):
+                self.sendmsg("Started counting! Type /restart if you want to restart in same dialog!")
+                self.count_msg = True
+                self.choice()
+            if self.count_msg is False:
+                time.sleep(self.timeout)
+                self.start()
+        except:
+            print("Starting experimenting!...")
+
+
+    def restart(self):
+        self.__init__()
+        self.start()
 
 
     def choice(self):
@@ -68,6 +83,8 @@ class Bot():
             self.choice_msg = True
             self.chosen = "div"
             self.endl()
+        elif re.search('r\/restart', self.readlm):
+            self.restart()
         if self.choice_msg is False:
             time.sleep(self.timeout)
             self.choice()
@@ -81,11 +98,15 @@ class Bot():
         if re.search(r'\/yes', self.readlm):
             self.sendmsg('Loop mode is chosen')
             self.endl_msg = True
+            self.infinite = True
             self.numb2()
         elif re.search(r'\/no', self.readlm):
             self.sendmsg('Finite mode is chosen')
             self.endl_msg = True
+            self.infinite = False
             self.numb()
+        elif re.search('r\/restart', self.readlm):
+            self.restart()
         if self.endl_msg is False:
             time.sleep(self.timeout)
             self.endl()
@@ -98,9 +119,11 @@ class Bot():
             self.sendmsg('How many iterations do you want before increasing difficulty? (/d{num}):')
             self.repeat_numb_msg = True
         if self.rpass:
-            self.sendmsg('Have chosen {} iterations mode'.format(self.rpass.group(1)))
+            self.sendmsg('Have chosen {rpass} iterations mode'.format(rpass=self.rpass.group(1)))
             self.numb_msg = True
             self.numb2()
+        elif re.search('r\/restart', self.readlm):
+            self.restart()
         if self.numb_msg is False:
             time.sleep(self.timeout)
             self.numb()
@@ -113,12 +136,51 @@ class Bot():
             self.sendmsg('How many iterations do you want to pass? (/t{num})')
             self.repeat_numb2_msg = True
         if self.nitera is not None:
-            self.sendmsg('You have chosen {} iterations total'.format(self.nitera.group(1)))
+            self.sendmsg('You have chosen {nit} iterations total'.format(nit=self.nitera.group(1)))
             self.numb2_msg = True
+        elif re.search('r\/restart', self.readlm):
+            self.restart()
         if self.numb2_msg is False:
             time.sleep(self.timeout)
             self.numb2()
 
+
+    def count(self):
+        if self.chosen == 'mul':
+            if self.infinite:
+                if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
+                    self.num[0] += 1
+                elif self.itera % self.rpass == 1 and self.itera != 1:
+                    self.num[1] += 1
+                ml(num[0], num[1], mode=tg)
+                self.count()
+            else:
+                if self.nitera == self.itera:
+                    self.restart()
+                elif self.itera % (self.rpass * 2) == 2 and self.itera != 1:
+                    num[1] += 1
+                elif self.itera % rpass == 1 and self.itera != 1:
+                    num[0] += 1
+                ml(num[0], num[1], mode=tg)
+                self.count()
+        elif self.chosen == 'div':
+            if self.infinite:
+                if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
+                    self.num[0] += 1
+                elif self.itera % self.rpass == 1 and self.itera != 1:
+                    self.num[1] += 1
+                dl(num[0], num[1], mode=tg)
+                self.count()
+            else:
+                if self.nitera == self.itera:
+                    self.restart()
+                elif self.itera % (self.rpass * 2) == 2 and self.itera != 1:
+                    num[1] += 1
+                elif self.itera % rpass == 1 and self.itera != 1:
+                    num[0] += 1
+                dl(num[0], num[1], mode=tg)
+                self.count()
+        self.itera += 1
 
 
 pbot = Bot(token)

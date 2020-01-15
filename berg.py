@@ -2,7 +2,7 @@ import random
 
 
 
-def ml(multiplicand, multiplier):
+def ml(multiplicand, multiplier, mode="standalone", obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -18,14 +18,25 @@ def ml(multiplicand, multiplier):
     a = random.randint(x1, y1)
     b = random.randint(x2, y2)
     c = a * b
-    try:
-        uc = int(input("{} * {} = ".format(a, b)))
-        if uc == c:
-            return "You're God Damn right!"
-        elif uc != c:
-            return "No, right answer is {}".format(c)
-    except ValueError:
-        return "You typed not a number!"
+    if mode == 'standalone':
+        try:
+            uc = int(input("{x} * {y} = ".format(x=a, y=b)))
+            if uc == c:
+                return "You're God Damn right!"
+            elif uc != c:
+                return "No, right answer is {z}".format(z=c)
+        except ValueError:
+            return "You typed not a number!"
+    elif mode == 'telegram':
+        try:
+            uc = int(obj.readnew())
+            if uc == c:
+                return "You're God Damn right!"
+            elif uc != c:
+                return "No, right answer is {z}".format(z=c)
+        except ValueError:
+            return "You typed not a number"
+                
 
 def dl(dividend, divider):
     x1, x2 = 1, 1
@@ -66,13 +77,13 @@ endl.lower()
 
 itera = 1
 if answ == "mul":
-    num = [ 2, 2 ]
+    num = [ 2, 1 ]
     if endl == "yes":
         while True:
             if itera % (rpass * 2) == 1 and itera != 1:
-                num[1] += 1
-            elif itera % rpass == 1 and itera != 1:
                 num[0] += 1
+            elif itera % rpass == 1 and itera != 1:
+                num[1] += 1
             print(ml(num[0], num[1]))
             itera += 1
     elif endl == "no":
@@ -84,9 +95,9 @@ if answ == "mul":
             if nitera == itera:
                 break
             if itera % (rpass * 2) == 1 and itera != 1:
-                num[1] += 1
-            elif itera % rpass == 1 and itera != 1:
                 num[0] += 1
+            elif itera % rpass == 1 and itera != 1:
+                num[1] += 1
             print(ml(num[0], num[1]))
             itera += 1
     else:
