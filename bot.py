@@ -19,7 +19,11 @@ class Bot():
         self.timeout = 1 
         self.itera = 1
         self.c = [ ]
+        self.c1 = [ ]
+        self.c2 = [ ]
         self.uc = [ ]
+        self.uc1 = [ ]
+        self.uc2 = [ ]
         self.mnum = [ 2, 1 ]
         self.dnum = [ 4, 2 ]
         self.convert_rpass = False
@@ -63,6 +67,7 @@ class Bot():
 
     def restart(self):
         self.__init__(token)
+        self.readlm = '/start'
         self.start()
 
 
@@ -75,39 +80,17 @@ class Bot():
             self.sendmsg("Multiplication is chosen")
             self.choice_msg = True
             self.chosen = "mul"
-            self.endl()
+            self.numb()
         elif re.search(r"\'text\'\:\s\'\/div\'", self.readlm):
             self.sendmsg("Division is chosen")
             self.choice_msg = True
             self.chosen = "div"
-            self.endl()
+            self.numb()
         elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
             self.restart()
         if self.choice_msg is False:
             time.sleep(self.timeout)
             self.choice()
-
-
-    def endl(self):
-        self.readmsg()
-        if self.repeat_endl_msg is False:
-            self.sendmsg("Do you want to be in endless mathematical loop? (/yes or /no)")
-            self.repeat_endl_msg = True
-        if re.search(r"\'text\'\:\s\'\/yes\'", self.readlm):
-            self.sendmsg('Loop mode is chosen')
-            self.endl_msg = True
-            self.infinite = True
-            self.numb()
-        elif re.search(r"\'text\'\:\s\'\/no\'", self.readlm):
-            self.sendmsg('Finite mode is chosen')
-            self.endl_msg = True
-            self.infinite = False
-            self.numb()
-        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
-            self.restart()
-        if self.endl_msg is False:
-            time.sleep(self.timeout)
-            self.endl()
 
 
     def numb(self):
@@ -133,19 +116,22 @@ class Bot():
             if self.convert_rpass is False:
                 self.rpass = int(self.rpass.group(1))
                 self.convert_rpass = True
-                if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                    self.mnum[0] += 1
-                elif self.itera % self.rpass == 1 and self.itera != 1:
-                    self.mnum[1] += 1
-                tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
+            if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
+                self.mnum[0] += 1
+            elif self.itera % self.rpass == 1 and self.itera != 1:
+                self.mnum[1] += 1
+            tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
         elif self.chosen == 'div':
-            if self.infinite:
-                if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                    self.dnum[0] += 1
-                elif self.itera % self.rpass == 1 and self.itera != 1:
-                    self.dnum[1] += 1
-                tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
+            if self.convert_rpass is False:
+                self.rpass = int(self.rpass.group(1))
+                self.convert_rpass = True
+            if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
+                self.dnum[1] += 1
+            elif self.itera % self.rpass == 1 and self.itera != 1:
+                self.dnum[0] += 1
+            tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
         self.itera += 1
+        time.sleep(self.timeout)
         self.count()
 
 
