@@ -84,13 +84,27 @@ def dl(dividend, divider, mode="standalone", obj=None):
         except ValueError:
             return "You typed not a number!"
     elif mode == 'telegram':
-        obj.sendmsg("{} * {} = ?".format(a, b))
-        try:
-            uc1 = int(obj.readlm)
-            uc2 = int(obj.readlm)
-            if uc1 == c1 and uc2 == c2:
-                return "You're God Damn right!"
-            elif uc1 != c1 or uc2 != c2:
-                return "No, right answer is {answ} with residual of {}".format(c1, c2)
-        except:
+        if c1 in obj.c1:
+            dl(multiplicand, multiplier, mode=mode, obj=obj)
+        else:
+            obj.c1.append(c1)
+            obj.c2.append(c2)
+        obj.sendmsg("{} * {} = ".format(a, b))
+        while True:
+            time.sleep(obj.timeout)
             obj.readmsg()
+            try:
+                uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\'", obj.readlm)
+                uc = int(str(uc1.group(1)))
+            except:
+                continue
+            if uc in obj.uc:
+                continue
+            else:
+                obj.uc.append(uc)
+                if uc1 == c1 and uc2 == c2:
+                    obj.sendmsg("You're God Damn right!")
+                    break
+                elif uc1 != c1 or uc2 != c2: 
+                    obj.sendmsg("No, right answer is {}".format(c))
+                    break

@@ -18,7 +18,6 @@ class Bot():
     def __init__(self, tok):
         self.timeout = 1 
         self.itera = 1
-        self.nitera = None
         self.c = [ ]
         self.uc = [ ]
         self.mnum = [ 2, 1 ]
@@ -120,31 +119,12 @@ class Bot():
         if self.rpass:
             self.sendmsg('Have chosen {} iterations mode'.format(self.rpass.group(1)))
             self.numb_msg = True
-            if not self.infinite:
-                self.numb2()
-            else:
-                self.count()
+            self.count()
         elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
             self.restart()
         if self.numb_msg is False:
             time.sleep(self.timeout)
             self.numb()
-
-
-    def numb2(self):
-        self.readmsg()
-        self.rpass = re.search(r"\'text\'\:\s\'\/t([0-9]{1,6})\'", self.readlm)
-        if self.repeat_numb2_msg is False:
-            self.sendmsg('How many iterations do you want to pass? (/t[num])')
-            self.repeat_numb2_msg = True
-        if self.nitera is not None:
-            self.sendmsg('You have chosen {} iterations total'.format(self.nitera.group(1)))
-            self.numb2_msg = True
-        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
-            self.restart()
-        if self.numb2_msg is False:
-            time.sleep(self.timeout)
-            self.numb2()
 
 
     def count(self):
@@ -153,21 +133,9 @@ class Bot():
             if self.convert_rpass is False:
                 self.rpass = int(self.rpass.group(1))
                 self.convert_rpass = True
-            if self.infinite:
                 if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
                     self.mnum[0] += 1
                 elif self.itera % self.rpass == 1 and self.itera != 1:
-                    self.mnum[1] += 1
-                tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
-            else:
-                if self.convert_nitera is False:
-                    self.nitera = int(self.nitera.group(1))
-                    self.convert_nitera = True
-                if self.nitera == self.itera:
-                    self.restart()
-                elif self.itera % (self.rpass * 2) == 2 and self.itera != 1:
-                    self.mnum[0] += 1
-                elif self.itera % rpass == 1 and self.itera != 1:
                     self.mnum[1] += 1
                 tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
         elif self.chosen == 'div':
@@ -176,17 +144,6 @@ class Bot():
                     self.dnum[0] += 1
                 elif self.itera % self.rpass == 1 and self.itera != 1:
                     self.dnum[1] += 1
-                tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
-            else:
-                if self.convert_nitera is False:
-                    self.nitera = int(self.nitera.group(1))
-                    self.convert_nitera = True
-                if self.nitera == self.itera:
-                    self.restart()
-                elif self.itera % (self.rpass * 2) == 2 and self.itera != 1:
-                    self.dnum[1] += 1
-                elif self.itera % rpass == 1 and self.itera != 1:
-                    self.dnum[0] += 1
                 tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
         self.itera += 1
         self.count()
