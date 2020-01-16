@@ -40,6 +40,7 @@ class Bot():
         self.msgreq = requests.get(self.requp)
         self.listmsg = self.msgreq.json().get('result')
         self.readlm = str(self.listmsg[-1]).lower()
+        print(readlm)
 
 
     def sendmsg(self, messg):
@@ -168,15 +169,15 @@ class Bot():
                     self.mnum[1] += 1
                 elif self.itera % rpass == 1 and self.itera != 1:
                     self.mnum[0] += 1
-                tm.ml(self.mnum[0], self.num[1], mode='telegram', obj=self)
+                tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
                 self.count()
         elif self.chosen == 'div':
             if self.infinite:
                 if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
                     self.dnum[0] += 1
                 elif self.itera % self.rpass == 1 and self.itera != 1:
-                    self.num[1] += 1
-                tm.dl(self.num[0], self.num[1], mode='telegram', obj=self)
+                    self.dnum[1] += 1
+                tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
                 self.count()
             else:
                 if self.convert_nitera is False:
@@ -185,10 +186,10 @@ class Bot():
                 if self.nitera == self.itera:
                     self.restart()
                 elif self.itera % (self.rpass * 2) == 2 and self.itera != 1:
-                    self.num[1] += 1
+                    self.dnum[1] += 1
                 elif self.itera % rpass == 1 and self.itera != 1:
-                    self.num[0] += 1
-                tm.dl(self.num[0], self.num[1], mode='telegram', obj=self)
+                    self.dnum[0] += 1
+                tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
                 self.count()
         self.itera += 1
         self.count()
