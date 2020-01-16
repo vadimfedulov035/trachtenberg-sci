@@ -22,31 +22,37 @@ def ml(multiplicand, multiplier, mode="standalone", obj=None):
     c = a * b
     if mode == 'standalone':
         try:
-            uc = int(input("{x} * {y} = ".format(x=a, y=b)))
+            uc = int(input("{} * {} = ".format(a, b)))
             if uc == c:
                 return "You're God Damn right!"
             elif uc != c:
-                return "No, right answer is {z}".format(z=c)
+                return "No, right answer is {}".format(c)
         except ValueError:
             return "You typed not a number!"
     elif mode == 'telegram':
-        sended = False
-        obj.readmsg()
-        if sended == False:
-            obj.sendmsg("{} * {} = ".format(a, b))
-            sended = True
+        if c in obj.c:
+            ml(multiplicand, multiplier, mode=mode, obj=obj)
+        else:
+            obj.c.append(c)
+        obj.sendmsg("{} * {} = ".format(a, b))
         while True:
+            time.sleep(obj.timeout)
+            obj.readmsg()
             try:
-                uc = re.search(r'\/([0-9]{1,6})', obj.readlm)
-                uc = int(uc.group(1))
+                uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\'", obj.readlm)
+                uc = int(str(uc.group(1)))
+            except:
+                continue
+            if uc in obj.uc:
+                continue
+            else:
+                obj.uc.append(uc)
                 if uc == c:
                     obj.sendmsg("You're God Damn right!")
                     break
                 elif uc != c:
                     obj.sendmsg("No, right answer is {}".format(c))
                     break
-            except:
-                time.sleep(obj.timeout)
 
 
 def dl(dividend, divider, mode="standalone", obj=None):

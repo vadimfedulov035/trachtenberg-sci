@@ -17,7 +17,10 @@ class Bot():
 
     def __init__(self, tok):
         self.timeout = 1 
-        self.itera = 0
+        self.itera = 1
+        self.nitera = None
+        self.c = [ ]
+        self.uc = [ ]
         self.mnum = [ 2, 1 ]
         self.dnum = [ 4, 2 ]
         self.convert_rpass = False
@@ -40,12 +43,11 @@ class Bot():
         self.msgreq = requests.get(self.requp)
         self.listmsg = self.msgreq.json().get('result')
         self.readlm = str(self.listmsg[-1]).lower()
-        print(readlm)
 
 
-    def sendmsg(self, messg):
+    def sendmsg(self, msg):
         self.chat_id = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm).group(1)
-        self.reqms = self.url + '/sendmessage?text={msg}&chat_id={cid}'.format(msg=messg, cid=self.chat_id)
+        self.reqms = self.url + '/sendmessage?text={}&chat_id={}'.format(msg, self.chat_id)
         requests.get(self.reqms)
 
 
@@ -61,7 +63,7 @@ class Bot():
 
 
     def restart(self):
-        self.__init__()
+        self.__init__(token)
         self.start()
 
 
@@ -70,17 +72,17 @@ class Bot():
         if self.repeat_choice_msg is False:
             self.sendmsg("Do you want a division test or multiplication? (/mul or /div):")
             self.repeat_choice_msg = True
-        if re.search(r'\/mul', self.readlm):
+        if re.search(r"\'text\'\:\s\'\/mul\'", self.readlm):
             self.sendmsg("Multiplication is chosen")
             self.choice_msg = True
             self.chosen = "mul"
             self.endl()
-        elif re.search(r'\/div', self.readlm):
+        elif re.search(r"\'text\'\:\s\'\/div\'", self.readlm):
             self.sendmsg("Division is chosen")
             self.choice_msg = True
             self.chosen = "div"
             self.endl()
-        elif re.search('r\/restart', self.readlm):
+        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
             self.restart()
         if self.choice_msg is False:
             time.sleep(self.timeout)
@@ -92,17 +94,17 @@ class Bot():
         if self.repeat_endl_msg is False:
             self.sendmsg("Do you want to be in endless mathematical loop? (/yes or /no)")
             self.repeat_endl_msg = True
-        if re.search(r'\/yes', self.readlm):
+        if re.search(r"\'text\'\:\s\'\/yes\'", self.readlm):
             self.sendmsg('Loop mode is chosen')
             self.endl_msg = True
             self.infinite = True
             self.numb()
-        elif re.search(r'\/no', self.readlm):
+        elif re.search(r"\'text\'\:\s\'\/no\'", self.readlm):
             self.sendmsg('Finite mode is chosen')
             self.endl_msg = True
             self.infinite = False
             self.numb()
-        elif re.search('r\/restart', self.readlm):
+        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
             self.restart()
         if self.endl_msg is False:
             time.sleep(self.timeout)
@@ -111,18 +113,18 @@ class Bot():
 
     def numb(self):
         self.readmsg()
-        self.rpass = re.search(r'\/d([0-9]{1,6})', self.readlm)
+        self.rpass = re.search(r"\'text\'\:\s\'\/d([0-9]{1,6})\'", self.readlm)
         if self.repeat_numb_msg is False:
-            self.sendmsg('How many iterations do you want before increasing difficulty? (/d{num}):')
+            self.sendmsg('How many iterations do you want before increasing difficulty? (/d[num]):')
             self.repeat_numb_msg = True
         if self.rpass:
-            self.sendmsg('Have chosen {rpass} iterations mode'.format(rpass=self.rpass.group(1)))
+            self.sendmsg('Have chosen {} iterations mode'.format(self.rpass.group(1)))
             self.numb_msg = True
             if not self.infinite:
                 self.numb2()
             else:
                 self.count()
-        elif re.search('r\/restart', self.readlm):
+        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
             self.restart()
         if self.numb_msg is False:
             time.sleep(self.timeout)
@@ -131,14 +133,14 @@ class Bot():
 
     def numb2(self):
         self.readmsg()
-        self.nitera = re.search(r'\/t([0-9]{1,6})', self.readlm)
+        self.rpass = re.search(r"\'text\'\:\s\'\/t([0-9]{1,6})\'", self.readlm)
         if self.repeat_numb2_msg is False:
-            self.sendmsg('How many iterations do you want to pass? (/t{num})')
+            self.sendmsg('How many iterations do you want to pass? (/t[num])')
             self.repeat_numb2_msg = True
         if self.nitera is not None:
-            self.sendmsg('You have chosen {nit} iterations total'.format(nit=self.nitera.group(1)))
+            self.sendmsg('You have chosen {} iterations total'.format(self.nitera.group(1)))
             self.numb2_msg = True
-        elif re.search('r\/restart', self.readlm):
+        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
             self.restart()
         if self.numb2_msg is False:
             time.sleep(self.timeout)
@@ -146,8 +148,7 @@ class Bot():
 
 
     def count(self):
-        self.rpass = int(self.rpass.group(1))
-        self.nitera = int(self.nitera.group(1))
+        self.readmsg()
         if self.chosen == 'mul':
             if self.convert_rpass is False:
                 self.rpass = int(self.rpass.group(1))
@@ -157,8 +158,7 @@ class Bot():
                     self.mnum[0] += 1
                 elif self.itera % self.rpass == 1 and self.itera != 1:
                     self.mnum[1] += 1
-                ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
-                self.count()
+                tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
             else:
                 if self.convert_nitera is False:
                     self.nitera = int(self.nitera.group(1))
@@ -166,11 +166,10 @@ class Bot():
                 if self.nitera == self.itera:
                     self.restart()
                 elif self.itera % (self.rpass * 2) == 2 and self.itera != 1:
-                    self.mnum[1] += 1
-                elif self.itera % rpass == 1 and self.itera != 1:
                     self.mnum[0] += 1
+                elif self.itera % rpass == 1 and self.itera != 1:
+                    self.mnum[1] += 1
                 tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
-                self.count()
         elif self.chosen == 'div':
             if self.infinite:
                 if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
@@ -178,7 +177,6 @@ class Bot():
                 elif self.itera % self.rpass == 1 and self.itera != 1:
                     self.dnum[1] += 1
                 tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
-                self.count()
             else:
                 if self.convert_nitera is False:
                     self.nitera = int(self.nitera.group(1))
@@ -190,7 +188,6 @@ class Bot():
                 elif self.itera % rpass == 1 and self.itera != 1:
                     self.dnum[0] += 1
                 tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
-                self.count()
         self.itera += 1
         self.count()
 
