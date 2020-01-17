@@ -1,4 +1,6 @@
-from tmath import ml, dl
+import tsmath as sm
+
+
 
 answ = input("Do you want a division test or multiplication? (mul/div): ")
 try:
@@ -8,24 +10,38 @@ except ValueError:
 
 answ.lower()
 
+mnum = [ 2, 1 ]
+dnum = [ 4, 2 ]
 itera = 1
 if answ == "mul":
-    num = [ 2, 1 ]
     while True:
-        if itera % (rpass * 2) == 1 and itera != 1:
-            num[0] += 1
-        elif itera % rpass == 1 and itera != 1:
-            num[1] += 1
-        print(ml(num[0], num[1]))
+        if rpass ==1:
+            if itera != 1:
+                if itera % 2 == 1:
+                    mnum[0] += 1
+                else:
+                    mnum[1] += 1
+        else:
+            if itera % (rpass * 2) == 1 and itera != 1:
+                mnum[0] += 1
+            elif itera % rpass == 1 and itera != 1:
+                mnum[1] += 1
+        print(sm.ml(mnum[0], mnum[1]))
         itera += 1
 elif answ == "div":
-    num = [ 4, 2 ]
     while True:
-        if itera % (rpass * 2) == 1 and itera != 1:
-            num[1] += 1
-        elif itera % rpass == 1 and itera != 1:
-            num[0] += 1
-        print(dl(num[0], num[1]))
+        if rpass == 1:
+            if itera != 1:
+                if itera % 2 == 1:
+                    dnum[1] += 1
+                else:
+                    dnum[0] += 1
+        else:
+            if itera % (rpass * 2) == 1 and itera != 1:
+                dnum[1] += 1
+            elif itera % rpass == 1 and itera != 1:
+                dnum[0] += 1
+        print(sm.dl(dnum[0], dnum[1]))
         itera += 1
 else:
     print("You chose nothing!")

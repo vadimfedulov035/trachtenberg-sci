@@ -38,6 +38,8 @@ def ml(multiplicand, multiplier, mode="standalone", obj=None):
         while True:
             time.sleep(obj.timeout)
             obj.readmsg()
+            if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+                obj.restart()
             try:
                 uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\'", obj.readlm)
                 uc = int(str(uc.group(1)))
@@ -89,32 +91,22 @@ def dl(dividend, divider, mode="standalone", obj=None):
         else:
             obj.c1.append(c1)
             obj.c2.append(c2)
-        obj.sendmsg("{} // {} = ".format(a, b))
+        obj.sendmsg("{} // | % {} = ".format(a, b))
         while True:
             time.sleep(obj.timeout)
             obj.readmsg()
+            if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+                obj.restart()
             try:
-                uc1 = re.search(r"\'text\'\:\s\'([0-9]{1,10})\'", obj.readlm)
-                uc1 = int(str(uc1.group(1)))
+                uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+                uc1 = int(str(uc.group(1)))
+                uc2 = int(str(uc.group(2)))
             except:
                 continue
-            if uc1 in obj.uc1:
+            if uc1 in obj.uc1 or uc2 in obj.uc2:
                 continue
             else: 
                 obj.uc1.append(uc1)
-                break
-        obj.sendmsg("{} % {} = ".format(a, b))
-        while True:
-            time.sleep(obj.timeout)
-            obj.readmsg()
-            try:
-                uc2 = re.search(r"\'text\'\:\s\'([0-9]{1,10})\'", obj.readlm)
-                uc2 = int(str(uc2.group(1)))
-            except:
-                continue
-            if uc2 in obj.uc2:
-                continue
-            else:
                 obj.uc2.append(uc2)
                 if uc1 == c1 and uc2 == c2:
                     obj.sendmsg("You're God Damn right!")

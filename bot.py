@@ -4,12 +4,11 @@ import requests
 import time
 
 
-import tmath as tm
+import tsmath as tm
 
 
 with open('tok.conf', 'r') as config:
     token = config.read().split('|')[1]
-    print(token)
 
 
 class Bot():
@@ -38,6 +37,7 @@ class Bot():
         self.repeat_endl_msg = False
         self.repeat_numb_msg = False
         self.repeat_numb2_msg = False
+        self.restart_choice = False
         self.url = "https://api.telegram.org/bot{}".format(tok)
 
 
@@ -56,8 +56,10 @@ class Bot():
 
     def start(self):
         self.readmsg()
-        if re.search(r'\/start', self.readlm):
-            self.sendmsg("Started counting! Type /restart if you want to restart in same dialog!")
+        if re.search(r'\/start', self.readlm) or self.restart_choice is True:
+            self.sendmsg("Started setting up! Type /restart when set up is done, if you want to change your choice or start again! Don't delete dialog fully!")
+            if self.restart_choice is True:
+                self.restart_choice = False
             self.count_msg = True
             self.choice()
         if self.count_msg is False:
@@ -67,7 +69,7 @@ class Bot():
 
     def restart(self):
         self.__init__(token)
-        self.readlm = '/start'
+        self.restart_choice = True
         self.start()
 
 
@@ -78,16 +80,16 @@ class Bot():
             self.repeat_choice_msg = True
         if re.search(r"\'text\'\:\s\'\/mul\'", self.readlm):
             self.sendmsg("Multiplication is chosen")
+            self.sendmsg("When you want to answer type ([answer])")
             self.choice_msg = True
             self.chosen = "mul"
             self.numb()
         elif re.search(r"\'text\'\:\s\'\/div\'", self.readlm):
             self.sendmsg("Division is chosen")
+            self.sendmsg("When you want to answer type ([answer], [residual])")
             self.choice_msg = True
             self.chosen = "div"
             self.numb()
-        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
-            self.restart()
         if self.choice_msg is False:
             time.sleep(self.timeout)
             self.choice()
@@ -95,43 +97,53 @@ class Bot():
 
     def numb(self):
         self.readmsg()
-        self.rpass = re.search(r"\'text\'\:\s\'\/d([0-9]{1,6})\'", self.readlm)
+        self.rpass = re.search(r"\'text\'\:\s\'\/([0-9]{1,6})\'", self.readlm)
         if self.repeat_numb_msg is False:
-            self.sendmsg('How many iterations do you want before increasing difficulty? (/d[num]):')
+            self.sendmsg('How many iterations do you want before increasing difficulty? (/[num]):')
             self.repeat_numb_msg = True
         if self.rpass:
             self.sendmsg('Have chosen {} iterations mode'.format(self.rpass.group(1)))
             self.numb_msg = True
             self.count()
-        elif re.search(r"\'text\'\:\s\'\/restart\'", self.readlm):
-            self.restart()
         if self.numb_msg is False:
             time.sleep(self.timeout)
             self.numb()
 
 
     def count(self):
-        self.readmsg()
         if self.chosen == 'mul':
             if self.convert_rpass is False:
                 self.rpass = int(self.rpass.group(1))
                 self.convert_rpass = True
-            if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                self.mnum[0] += 1
-            elif self.itera % self.rpass == 1 and self.itera != 1:
-                self.mnum[1] += 1
+            if self.rpass == 1:
+                if self.itera != 1:
+                    if self.itera % 2 == 1:
+                        self.mnum[0] += 1
+                    else:
+                        self.mnum[1] += 1
+            else:
+                if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
+                    self.mnum[0] += 1
+                elif self.itera % self.rpass == 1 and self.itera != 1:
+                    self.mnum[1] += 1
             tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
         elif self.chosen == 'div':
             if self.convert_rpass is False:
                 self.rpass = int(self.rpass.group(1))
                 self.convert_rpass = True
-            if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                self.dnum[1] += 1
-            elif self.itera % self.rpass == 1 and self.itera != 1:
-                self.dnum[0] += 1
+            if self.rpass == 1:
+                if self.itera != 1:
+                    if self.itera % 2 == 1:
+                        self.dnum[1] += 1
+                    else:
+                        self.dnum[0] += 1
+            else:
+                if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
+                    self.dnum[1] += 1
+                elif self.itera % self.rpass == 1 and self.itera != 1:
+                    self.dnum[0] += 1
             tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
         self.itera += 1
-        time.sleep(self.timeout)
         self.count()
 
 
