@@ -1,4 +1,4 @@
-import tsmath as sm
+import tsmath as sm  # import math module for handling math operations
 
 
 
@@ -26,7 +26,7 @@ if answ == "mul":
                 mnum[0] += 1
             elif itera % rpass == 1 and itera != 1:
                 mnum[1] += 1
-        print(sm.ml(mnum[0], mnum[1]))
+        sm.ml(mnum[0], mnum[1])
         itera += 1
 elif answ == "div":
     while True:
@@ -41,7 +41,7 @@ elif answ == "div":
                 dnum[1] += 1
             elif itera % rpass == 1 and itera != 1:
                 dnum[0] += 1
-        print(sm.dl(dnum[0], dnum[1]))
+        sm.dl(dnum[0], dnum[1])
         itera += 1
 else:
     print("You chose nothing!")
