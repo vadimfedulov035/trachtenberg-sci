@@ -23,14 +23,14 @@ class Bot():
         # setting up timeout between iterations and iteration var
         self.timeout = 1
         self.itera = 1
-        # setting up all lists for equations right answers and user supplied
-        self.c = [ ]
-        self.c1 = [ ]
-        self.c2 = [ ]
-        self.uc = [ ]
-        self.uc1 = [ ]
-        self.uc2 = [ ]
-        # setting up starting difficulty variables
+        # setting up all sets for equations right answers and user supplied
+        self.c = set()
+        self.c1 = set()
+        self.c2 = set()
+        self.uc = set()
+        self.uc1 = set()
+        self.uc2 = set()
+        # setting up lists with starting difficulty variables
         self.mnum = [ 2, 1 ]
         self.dnum = [ 4, 2 ]
         # setting up check variables for sending messages
@@ -121,7 +121,7 @@ class Bot():
             if self.convert_rpass is False:  # convert pass var if not yet done
                 self.rpass = int(self.rpass.group(1))
                 self.convert_rpass = True
-            if self.rpass == 1:  # for pass var of 1 we choose other approach
+            if self.rpass == 1:  # for pass var of 1 we choose another approach
                 if self.itera != 1:
                     if self.itera % 2 == 1:
                         self.mnum[0] += 1
@@ -137,7 +137,7 @@ class Bot():
             if self.convert_rpass is False:  # convert pass var if not yet done
                 self.rpass = int(self.rpass.group(1))
                 self.convert_rpass = True
-            if self.rpass == 1:  # for pass var of 1 we choose other approach
+            if self.rpass == 1:  # for pass var of 1 we choose another approach
                 if self.itera != 1:
                     if self.itera % 2 == 1:
                         self.dnum[1] += 1

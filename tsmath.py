@@ -37,7 +37,7 @@ def ml(multiplicand, multiplier, mode="standalone", obj=None):
         if c in obj.c:
             ml(multiplicand, multiplier, mode=mode, obj=obj)
         else:
-            obj.c.append(c)  # append answer if unique
+            obj.c.add(c)  # append answer if unique
         obj.sendmsg(f"{a} * {b} = ")
         while True:
             time.sleep(obj.timeout)
@@ -52,7 +52,7 @@ def ml(multiplicand, multiplier, mode="standalone", obj=None):
             if uc in obj.uc:  # if user answer is in list then it's old
                 continue  # wait for new message
             else:
-                obj.uc.append(uc)  # append user answer if unique
+                obj.uc.add(uc)  # append user answer if unique
                 if uc == c:
                     obj.sendmsg("You're God Damn right!")
                     break
@@ -93,8 +93,8 @@ def dl(dividend, divider, mode="standalone", obj=None):
         if c1 in obj.c1 or c2 in obj.c2:
             dl(multiplicand, multiplier, mode=mode, obj=obj)
         else:
-            obj.c1.append(c1)  # append answer if unique
-            obj.c2.append(c2)  # append residual if unique
+            obj.c1.add(c1)  # append answer if unique
+            obj.c2.add(c2)  # append residual if unique
         obj.sendmsg(f"{a} // | % {b} = ")
         while True:
             time.sleep(obj.timeout)
@@ -110,8 +110,8 @@ def dl(dividend, divider, mode="standalone", obj=None):
             if uc1 in obj.uc1 or uc2 in obj.uc2:  # if user answers are in lists, then they're old
                 continue  # wait for new message
             else:
-                obj.uc1.append(uc1)  # append user answer if unique
-                obj.uc2.append(uc2)  # append user residual if unique
+                obj.uc1.add(uc1)  # append user answer if unique
+                obj.uc2.add(uc2)  # append user residual if unique
                 if uc1 == c1 and uc2 == c2:
                     obj.sendmsg("You're God Damn right!")
                     break
