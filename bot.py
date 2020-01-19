@@ -5,7 +5,7 @@ import time
 import sys
 
 
-import tsmath as tm  # import math module for handling math operations
+import tsmath as tm  # import math library for handling math operations
 
 
 
@@ -21,7 +21,7 @@ class Bot():
 
     def __init__(self, tok):
         # setting up timeout between iterations and iteration var
-        self.timeout = 1
+        self.timeout = 3
         self.itera = 1
         # setting up all sets for equations right answers and user supplied
         self.c = set()
@@ -33,6 +33,7 @@ class Bot():
         # setting up lists with starting difficulty variables
         self.mnum = [ 2, 1 ]
         self.dnum = [ 4, 2 ]
+        self.mmnum = [ 1, 2 ]
         # setting up check variables for sending messages
         self.convert_rpass = False
         self.convert_nitera = False
@@ -82,7 +83,7 @@ class Bot():
     def choice(self):
         self.readmsg()
         if self.repeat_choice_msg is False:  # send message if not yet sent
-            self.sendmsg("Do you want a division test or multiplication? (/mul or /div):")
+            self.sendmsg("Do you want a matrix multiplication, simple multiplication or simple division test? (/mmul, /mul or /div):")
             self.repeat_choice_msg = True
         if re.search(r"\'text\'\:\s\'\/mul\'", self.readlm):
             self.sendmsg("Multiplication is chosen")
@@ -95,6 +96,12 @@ class Bot():
             self.sendmsg("When you want to answer type ([answer], [residual])")
             self.choice_msg = True
             self.chosen = "div"
+            self.numb()
+        elif re.search(r"\'text'\:\s\'\/mmul\'", self.readlm):
+            self.sendmsg("Matrix multiplication is chosen")
+            self.sendmsg("When you want to answer type([answer1], [answer2])")
+            self.choice_msg = True
+            self.chosen = "mmul"
             self.numb()
         if self.choice_msg is False:  # if no new messages repeat
             time.sleep(self.timeout)
@@ -117,6 +124,7 @@ class Bot():
 
 
     def count(self):
+
         if self.chosen == 'mul':
             if self.convert_rpass is False:  # convert pass var if not yet done
                 self.rpass = int(self.rpass.group(1))
@@ -133,6 +141,7 @@ class Bot():
                 elif self.itera % self.rpass == 1 and self.itera != 1:
                     self.mnum[1] += 1  # every 1 pass increase difficulty value
             tm.ml(self.mnum[0], self.mnum[1], mode='telegram', obj=self)
+
         elif self.chosen == 'div':
             if self.convert_rpass is False:  # convert pass var if not yet done
                 self.rpass = int(self.rpass.group(1))
@@ -149,6 +158,23 @@ class Bot():
                 elif self.itera % self.rpass == 1 and self.itera != 1:
                     self.dnum[0] += 1  # every 1 pass increase difficulty value
             tm.dl(self.dnum[0], self.dnum[1], mode='telegram', obj=self)
+
+        elif self.chosen == 'mmul':
+            if self.convert_rpass is False:  # convert pass var if not yet done
+                self.rpass = int(self.rpass.group(1))
+                self.convert_rpass = True
+            if self.rpass == 1:  # for pass var of 1 we choose another approach
+                if self.itera != 1:
+                    if self.itera % 2 == 1:
+                        self.mmnum[1] += 1  # every 2 pass increase difficulty value
+                    else:
+                        self.mmnum[0] += 1  # every 1 pass increase difficulty value
+            else:
+                if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
+                    self.mmnum[1] += 1  # every 2 pass increase difficulty value
+                elif self.itera % self.rpass == 1 and self.itera != 1:
+                    self.mmnum[0] += 1  # every 1 pass increase difficulty value
+            tm.mml(self.mmnum[0], self.mmnum[1], mode='telegram', obj=self)
         self.itera += 1
         self.count()  # main recursion part is done here
 

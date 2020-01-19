@@ -15,7 +15,7 @@ To test on your computer:
 './berg.sh' for test in any GNU/Linux distribution where /usr/bin/sh is linked to Dash
 
 If you want to, you can explore the source code of TrachtenbergBot in Telegram, it is written on its own micro-framework from
-scratch. It accesses Telegram API without any intermediate libraries, except native Python ones. Because of complex function
+scratch. It accesses Telegram API without any intermediate libraries, except native Python and NumPy. Because of complex function
 and operations it is able to continue only one conversation. So your mistakes will be private, hehe. Just put your token of
 created Trachtenberg(num)Bot into tok.conf and than start it by:
 
