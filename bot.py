@@ -166,11 +166,10 @@ class Bot():
 
         if self.chosen == 'mul':
             if self.rpass == 1:  # for pass var of 1 we choose another approach
-                if self.itera != 1:
-                    if self.itera % 2 == 1:
-                        self.mnum[0] += 1
-                    else:
-                        self.mnum[1] += 1
+                if self.itera % 2 == 1 and self.itera != 1:
+                    self.mnum[0] += 1
+                elif self.itera % 2 == 0 and self.itera != 1:
+                    self.mnum[1] += 1
             else:
                 if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
                     self.mnum[0] += 1  # every 2 pass increase difficulty value
@@ -180,11 +179,10 @@ class Bot():
 
         elif self.chosen == 'div':
             if self.rpass == 1:  # for pass var of 1 we choose another approach
-                if self.itera != 1:
-                    if self.itera % 2 == 1:
-                        self.dnum[1] += 1
-                    else:
-                        self.dnum[0] += 1
+                if self.itera % 2 == 1 and self.itera != 1:
+                    self.dnum[1] += 1
+                elif self.itera % 2 == 0 and self.itera != 1:
+                    self.dnum[0] += 1
             else:
                 if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
                     self.dnum[1] += 1  # every 2 pass increase difficulty value
@@ -194,11 +192,10 @@ class Bot():
 
         elif self.chosen == 'mmul':
             if self.rpass == 1:  # for pass var of 1 we choose another approach
-                if self.itera != 1:
-                    if self.itera % 2 == 1:
-                        self.mmnum[1] += 1  # every 2 pass increase difficulty value
-                    else:
-                        self.mmnum[0] += 1  # every 1 pass increase difficulty value
+                if self.itera % 2 == 1 and self.itera != 1:
+                    self.mmnum[1] += 1  # every 2 pass increase difficulty value
+                elif self.itera % 2 == 0 and self.itera != 1:
+                    self.mmnum[0] += 1  # every 1 pass increase difficulty value
             else:
                 if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
                     self.mmnum[1] += 1  # every 2 pass increase difficulty value
