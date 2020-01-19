@@ -2,6 +2,12 @@ import tsmath as sm  # import math library for handling math operations
 
 
 
+mnum = [ 2, 1 ]
+dnum = [ 4, 2 ]
+mmnum = [ 1, 2 ]
+itera = 1
+
+
 answ = input("Do you want a matrix multiplication, simple multiplication or simple division test? (mmul, mul, div): ")
 try:
     rpass = int(input("How many iterations do you want before increasing difficulty? (num): "))
@@ -10,10 +16,6 @@ except ValueError:
 
 answ.lower()
 
-mnum = [ 2, 1 ]
-dnum = [ 4, 2 ]
-mmnum = [ 1, 2 ]
-itera = 1
 
 if answ == "mul":
     while True:
@@ -28,6 +30,7 @@ if answ == "mul":
                 mnum[0] += 1
             elif itera % rpass == 1 and itera != 1:
                 mnum[1] += 1
+
         sm.ml(mnum[0], mnum[1])
         itera += 1
 
@@ -44,6 +47,7 @@ elif answ == "div":
                 dnum[1] += 1
             elif itera % rpass == 1 and itera != 1:
                 dnum[0] += 1
+
         sm.dl(dnum[0], dnum[1])
         itera += 1
 
@@ -60,6 +64,7 @@ elif answ == "mmul":
                 mmnum[1] += 1
             elif itera % rpass == 1 and itera != 1:
                 mmnum[0] += 1
+
         sm.mml(mmnum[0], mmnum[1])
         itera += 1
 
