@@ -8,6 +8,7 @@ import sys
 import tsmath as tm  # import math library for handling math operations
 
 
+
 with open('tok.conf', 'r') as config:  # read Telegram token from file
     token = config.read().split('|')[1]  # for safety, of course
 
@@ -37,7 +38,7 @@ class Bot():
         self.choice_msg = False
         self.numb_msg = False
         self.msized_msg = False
-        # set special var for restart 
+        # set special var for restart
         self.restart_choice = False
         # setting up base url to make operations on it
         self.url = f"https://api.telegram.org/bot{tok}"
@@ -64,7 +65,7 @@ class Bot():
                 self.restart_choice = False  # reset special var for restart
             self.count_msg = True
             self.choice()
-        
+
         time.sleep(self.timeout)
         self.start()
 
@@ -145,7 +146,7 @@ class Bot():
                 self.msize = self.smatr
             self.msized_msg = True
             self.count()
-        
+
         time.sleep(self.timeout)
         self.msized()
 

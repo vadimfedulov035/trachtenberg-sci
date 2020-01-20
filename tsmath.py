@@ -1,7 +1,10 @@
 import time
 import re
 import random
+
+
 import numpy as np
+
 
 
 if __name__ == "__main__":
@@ -24,7 +27,7 @@ def ml(multiplicand, multiplier, mode="standalone", obj=None):
     a = random.randint(x1, y1)
     b = random.randint(x2, y2)
     c = a * b
-    
+
     if mode == 'standalone':
         try:
             uc = int(input(f"{a} * {b} = "))
@@ -34,7 +37,7 @@ def ml(multiplicand, multiplier, mode="standalone", obj=None):
                 print(f"No, right answer is {c}")
         except ValueError:
             print("You typed not a number!")
-    
+
     elif mode == 'telegram':
         # bot won't ask equation with the same answer, for novelty check
         if c in obj.c:
@@ -81,7 +84,7 @@ def dl(dividend, divider, mode="standalone", obj=None):
     b = random.randint(x2, y2)
     c1 = a // b
     c2 = a % b
-    
+
     if mode == 'standalone':
         try:
             uc1 = int(input(f"{a} // {b} = "))
@@ -92,7 +95,7 @@ def dl(dividend, divider, mode="standalone", obj=None):
                 print(f"No, right answer is {c1} with residual of {c2}")
         except ValueError:
             print("You typed not a number!")
-    
+
     elif mode == 'telegram':
         # bot won't ask equation with the same answer, for novelty check
         if c1 in obj.c1 or c2 in obj.c2:
@@ -138,66 +141,53 @@ def mml(multiplicand, multiplier, mode="standalone", matrix=2, obj=None):
         y2 *= 10
     y1 -= 1
     y2 -= 1
+
+    a1 = random.randint(x1, y1)
+    a2 = random.randint(x1, y1)
+    b1 = random.randint(x1, y1)
+    b2 = random.randint(x1, y1)
+    c1 = random.randint(x1, y1)
+    c2 = random.randint(x1, y1)
+
+    l1 = random.randint(x2, y2)
+    l2 = random.randint(x2, y2)
+    
     if matrix == 2:
-        a1 = random.randint(x1, y1)
-        a2 = random.randint(x1, y1)
-        b1 = random.randint(x1, y1)
-        b2 = random.randint(x1, y1)
-        c1 = random.randint(x2, y2)
-        c2 = random.randint(x2, y2)
         a = np.matrix([[a1, b1],
                        [a2, b2]])
-        b = np.matrix([[c1],
-                       [c2]])
-        c = np.matmul(a, b)
+        b = np.matrix([[l1],
+                       [l2]])
     elif matrix == 3:
-        a1 = random.randint(x1, y1)
-        a2 = random.randint(x1, y1)
         a3 = random.randint(x1, y1)
-        b1 = random.randint(x1, y1)
-        b2 = random.randint(x1, y1)
         b3 = random.randint(x1, y1)
-        c1 = random.randint(x1, y1)
-        c2 = random.randint(x1, y1)
         c3 = random.randint(x1, y1)
-        d1 = random.randint(x2, y2)
-        d2 = random.randint(x2, y2)
-        d3 = random.randint(x2, y2)
+        l3 = random.randint(x2, y2)
         a = np.matrix([[a1, b1, c1],
                        [a2, b2, c2],
                        [a3, b3, c3]])
-        b = np.matrix([[d1],
-                       [d2],
-                       [d3]])
-        c = np.matmul(a, b)
+        b = np.matrix([[l1],
+                       [l2],
+                       [l3]])
     elif matrix == 2.5:
         choices = [ "2x3", "3x2" ]
         fch = np.random.choice(choices, 1, replace=False, p=[0.5, 0.5])
-        a1 = random.randint(x1, y1)
-        a2 = random.randint(x1, y1)
-        b1 = random.randint(x1, y1)
-        b2 = random.randint(x1, y1)
-        d1 = random.randint(x2, y2)
-        d2 = random.randint(x2, y2)
-        if fch == "2x3":
-            c1 = random.randint(x1, y1)
-            c2 = random.randint(x1, y1)
-            d3 = random.randint(x2, y2)
+        if matrix == 3 or matrix == 2.5 and fch == "3x2":
+            l3 = random.randint(x2, y2)
             a = np.matrix([[a1, b1, c1],
                            [a2, b2, c2]])
-            b = np.matrix([[d1],
-                           [d2],
-                           [d3]])
-            c = np.matmul(a, b)
-        elif fch == "3x2":
+            b = np.matrix([[l1],
+                           [l2],
+                           [l3]])
+        else:
             a3 = random.randint(x1, y1)
             b3 = random.randint(x1, y1)
             a = np.matrix([[a1, b1],
                            [a2, b2],
                            [a3, b3]])
-            b = np.matrix([[d1],
-                           [d2]])
-            c = np.matmul(a, b)
+            b = np.matrix([[l1],
+                           [l2]])
+
+    c = np.matmul(a, b)
 
     if mode == "standalone":
         print(f"{a}\n*\n{b}\n= ?")
@@ -264,7 +254,7 @@ def mml(multiplicand, multiplier, mode="standalone", matrix=2, obj=None):
                     obj.c1.add(c1)  # add answer if unique
                     obj.c2.add(c2)  # add answer if unique
                     obj.c3.add(c3)  # add answer if unique
-            
+
 
             obj.sendmsg(f"{a}\n*\n{b}\n= ?")
 
@@ -295,7 +285,7 @@ def mml(multiplicand, multiplier, mode="standalone", matrix=2, obj=None):
                 if matrix == 3 or matrix == 2.5 and fch == "3x2":
                     obj.uc3.add(uc3)  # add user answer if unique
                 if matrix == 3 or matrix == 2.5 and fch == "3x2":
-                    if uc1 == c1 and uc2 == c2 and uc3 == c3: 
+                    if uc1 == c1 and uc2 == c2 and uc3 == c3:
                         obj.sendmsg("You're God Damn right!")
                         break
                     else:
