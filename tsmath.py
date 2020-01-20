@@ -170,7 +170,35 @@ def mml(multiplicand, multiplier, mode="standalone", matrix=2, obj=None):
                        [d2],
                        [d3]])
         c = np.matmul(a, b)
-        
+    elif matrix == 2.5:
+        choices = [ "2x3", "3x2" ]
+        fch = np.random.choice(choices, 1, replace=False, p=[0.5, 0.5])
+        a1 = random.randint(x1, y1)
+        a2 = random.randint(x1, y1)
+        b1 = random.randint(x1, y1)
+        b2 = random.randint(x1, y1)
+        d1 = random.randint(x2, y2)
+        d2 = random.randint(x2, y2)
+        if fch == "2x3":
+            c1 = random.randint(x1, y1)
+            c2 = random.randint(x1, y1)
+            d3 = random.randint(x2, y2)
+            a = np.matrix([[a1, b1, c1],
+                           [a2, b2, c2]])
+            b = np.matrix([[d1],
+                           [d2],
+                           [d3]])
+            c = np.matmul(a, b)
+        elif fch == "3x2":
+            a3 = random.randint(x1, y1)
+            b3 = random.randint(x1, y1)
+            a = np.matrix([[a1, b1],
+                           [a2, b2],
+                           [a3, b3]])
+            b = np.matrix([[d1],
+                           [d2]])
+            c = np.matmul(a, b)
+
     if mode == "standalone":
         print(f"{a}\n*\n{b}\n= ?")
         try:
@@ -217,17 +245,26 @@ def mml(multiplicand, multiplier, mode="standalone", matrix=2, obj=None):
                     else:
                         obj.sendmsg(f"No, right answer is {c1}, {c2}")
                         break
-        elif matrix == 3:
+        elif matrix == 2.5 or matrix == 3:
             c1 = int(c[0])
             c2 = int(c[1])
-            c3 = int(c[2])
+            if matrix == 3 or matrix == 2.5 and fch == "3x2":
+                c3 = int(c[2])
             # bot won't ask equation with the same answer, for novelty check
-            if c1 in obj.c1 or c2 in obj.c2 or c3 in obj.c3:
-                mml(multiplicand, multiplier, mode=mode, obj=obj)
+            if matrix == 2.5 and fch == "2x3":
+                if c1 in obj.c1 or c2 in obj.c2:
+                    mml(multiplicand, multiplier, mode=mode, obj=obj)
+                else:
+                    obj.c1.add(c1)
+                    obj.c2.add(c2)
             else:
-                obj.c1.add(c2)  # add answer if unique
-                obj.c2.add(c2)  # add answer if unique
-                obj.c3.add(c3)  # add answer if unique
+                if c1 in obj.c1 or c2 in obj.c2 or c3 in obj.c3:
+                    mml(multiplicand, multiplier, mode=mode, obj=obj)
+                else:
+                    obj.c1.add(c1)  # add answer if unique
+                    obj.c2.add(c2)  # add answer if unique
+                    obj.c3.add(c3)  # add answer if unique
+            
 
             obj.sendmsg(f"{a}\n*\n{b}\n= ?")
 
@@ -237,21 +274,37 @@ def mml(multiplicand, multiplier, mode="standalone", matrix=2, obj=None):
                 if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
                     obj.restart()
                 try:
-                    uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+                    if matrix == 2.5 and fch == "2x3":
+                        uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+                    else:
+                        uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
                     uc1 = int(str(uc.group(1)))
                     uc2 = int(str(uc.group(2)))
-                    uc3 = int(str(uc.group(3)))
+                    if matrix == 3 or matrix == 2.5 and fch == "3x2":
+                        uc3 = int(str(uc.group(3)))
                 except:
                     continue
-                if uc1 in obj.uc1 or uc2 in obj.uc2 or uc3 in obj.uc3:  # if user answers are in lists, then they're old
-                    continue  # wait for new message
+                if matrix == 3 or matrix == 2.5 and fch == "3x2":
+                    if uc1 in obj.uc1 or uc2 in obj.uc2 or uc3 in obj.uc3:  # if user answers are in lists, then they're old
+                        continue  # wait for new message
                 else:
-                    obj.uc1.add(uc1)  # add user answer if unique
-                    obj.uc2.add(uc2)  # add user answer if unique
+                    if uc1 in obj.uc1 or uc2 in obj.uc2:  # if user answers are in lists, then they're old
+                        continue  # wait for new message
+                obj.uc1.add(uc1)
+                obj.uc2.add(uc2)
+                if matrix == 3 or matrix == 2.5 and fch == "3x2":
                     obj.uc3.add(uc3)  # add user answer if unique
+                if matrix == 3 or matrix == 2.5 and fch == "3x2":
                     if uc1 == c1 and uc2 == c2 and uc3 == c3: 
                         obj.sendmsg("You're God Damn right!")
                         break
                     else:
                         obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}")
+                        break
+                else:
+                    if uc == c1 and uc2 == c2:
+                        obj.sendmsg("You're God Damn right!")
+                        break
+                    else:
+                        obj.sendmsg(f"No, right answer is {c1}, {c2}")
                         break
