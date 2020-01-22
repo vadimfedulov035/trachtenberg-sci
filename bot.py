@@ -21,31 +21,18 @@ class Bot():
         self.timeout = 1
         self.itera = 1
         # setting up all sets for equations right answers and user supplied
-        self.c = set()
-        self.uc = set()
-        self.c1 = set()
-        self.c2 = set()
-        self.c3 = set()
-        self.c4 = set()
-        self.c5 = set()
-        self.c6 = set()
-        self.c7 = set()
-        self.c8 = set()
-        self.c9 = set()
-        self.uc1 = set()
-        self.uc2 = set()
-        self.uc3 = set()
-        self.uc4 = set()
-        self.uc5 = set()
-        self.uc6 = set()
-        self.uc7 = set()
-        self.uc8 = set()
-        self.uc9 = set()
+        self.c, self.uc = set(), set()
+        self.c1, self.c2, self.c3 = set(), set(), set()
+        self.c4, self.c5, self.c6 = set(), set(), set()
+        self.c7, self.c8, self.c9 = set(), set(), set()
+        self.uc1, self.uc2, self.uc3 = set(), set(), set()
+        self.uc4, self.uc5, self.uc6 = set(), set(), set()
+        self.uc7, self.uc8, self.uc9 = set(), set(), set()
         # setting up lists with starting difficulty variables
         self.mnum = [ 2, 1 ]
         self.dnum = [ 4, 2 ]
+        self.vmnum = [ 1, 2 ]
         self.mmnum = [ 1, 2 ]
-        self.mmmnum = [ 1, 2 ]
         # setting up check variables for sending messages
         self.start_msg = False
         self.choice_msg = False
@@ -101,7 +88,7 @@ class Bot():
             self.readmsg()
             
             if self.choice_msg is False:  # send message if not yet sent
-                self.sendmsg("Do you want a matrix-matrix, vector-matrix, simple multiplication or simple division? (/mlmul, /lmul, /mul or /div):")
+                self.sendmsg("Do you want a matrix-matrix, vector-matrix, simple multiplication or simple division? (/mmul, /vmul, /mul or /div):")
                 self.choice_msg = True
 
             if re.search(r"\'text\'\:\s\'\/mul\'", self.readlm):
@@ -114,14 +101,14 @@ class Bot():
                 self.sendmsg("When you want to answer type ([answer], [residual])")
                 self.chosen = "div"
                 break
-            elif re.search(r"\'text'\:\s\'\/lmul\'", self.readlm):
+            elif re.search(r"\'text'\:\s\'\/vmul\'", self.readlm):
                 self.sendmsg("Vector-matrix multiplication is chosen")
                 self.sendmsg("When you want to answer type([answer1], [answer2])")
-                self.chosen = "lmul"
+                self.chosen = "vmul"
                 break
-            elif re.search(r"\'text'\:\s\'\/mlmul\'", self.readlm):
+            elif re.search(r"\'text'\:\s\'\/mmul\'", self.readlm):
                 self.sendmsg("Matrix-matrix multiplication is chosen")
-                self.chosen = "mlmul"
+                self.chosen = "mmul"
                 break
 
             time.sleep(self.timeout)
@@ -151,7 +138,7 @@ class Bot():
                 break
 
 
-        if self.chosen == 'lmul' or self.chosen == 'mlmul':
+        if self.chosen == 'vmul' or self.chosen == 'mmul':
             self.msized()
         else:
             self.count()
@@ -170,7 +157,6 @@ class Bot():
             try:
                 self.smatr = re.search(r"\'text\'\:\s\'\/m([2-4])\'", self.readlm)
                 self.smatr = int(str(self.smatr.group(1)))
-                print(self.smatr)
             except:
                 time.sleep(self.timeout)
                 continue
@@ -215,32 +201,32 @@ class Bot():
                         self.dnum[0] += 1  # every 1 pass increase difficulty value
                 tm.dl(self.dnum[0], self.dnum[1], obj=self)
 
-            elif self.chosen == 'lmul':
+            elif self.chosen == 'vmul':
                 if self.rpass == 1:  # for pass var of 1 we choose another approach
                     if self.itera % 2 == 1 and self.itera != 1:
-                        self.mmnum[1] += 1  # every 2 pass increase difficulty value
+                        self.vmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % 2 == 0 and self.itera != 1:
-                        self.mmnum[0] += 1  # every 1 pass increase difficulty value
+                        self.vmnum[0] += 1  # every 1 pass increase difficulty value
                 else:
                     if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
                         self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
-                        self.mmnum[0] += 1  # every 1 pass increase difficulty value
-                tm.lml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
+                        self.vmnum[0] += 1  # every 1 pass increase difficulty value
+                tm.vml(self.vmnum[0], self.vmnum[1], matrix=self.msize, obj=self)
 
             
-            elif self.chosen == 'mlmul':
+            elif self.chosen == 'mmul':
                 if self.rpass == 1:  # for pass var of 1 we choose another approach
                     if self.itera % 2 == 1 and self.itera != 1:
-                        self.mmmnum[1] += 1  # every 2 pass increase difficulty value
+                        self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % 2 == 0 and self.itera != 1:
-                        self.mmmnum[0] += 1  # every 1 pass increase difficulty value
+                        self.mmnum[0] += 1  # every 1 pass increase difficulty value
                 else:
                     if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                        self.mmmnum[1] += 1  # every 2 pass increase difficulty value
+                        self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
-                        self.mmmnum[0] += 1  # every 1 pass increase difficulty value
-                tm.mlml(self.mmmnum[0], self.mmmnum[1], matrix=self.msize, obj=self)
+                        self.mmnum[0] += 1  # every 1 pass increase difficulty value
+                tm.mml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
 
             self.itera += 1
 
