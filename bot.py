@@ -5,6 +5,7 @@ import time
 import sys
 import asyncio
 
+
 import tmath as tm  # import math library for handling math operations
 
 
@@ -18,6 +19,7 @@ class Bot():
 
     def __init__(self, tok):
         # setting up timeout between iterations and iteration var
+        self.cid = None
         self.timeout = 1
         self.itera = 1
         # setting up all sets for equations right answers and user supplied
@@ -44,32 +46,26 @@ class Bot():
         self.url = f"https://api.telegram.org/bot{tok}"
 
 
-    def _gcids(self):
-        self.readmsg()
-        cids = re.findall(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm)
-        return cids
-
-    
     def readmsg(self):
         self.requp = self.url + "/getupdates"  # set var for request
         self.msgreq = requests.get(self.requp)  # send actual request
         self.listmsg = self.msgreq.json().get('result')  # get all messages
         self.readlm = str(self.listmsg[-1]).lower()  # pick the last one
 
-    async def sendmsg(self, msg):
+    def sendmsg(self, msg):
         self.reqms = self.url + f"/sendmessage?text={msg}&chat_id={self.cid}"
         requests.get(self.reqms)  # sending actual request
 
 
     async def start(self):
-        
+
         while True:
-            
+
             self.readmsg()
-            
+
             if re.search(r'\/start', self.readlm) or self.restart_choice is True:
-                await self.sendmsg("Started setting up! Type /restart when set up is done, if you want to change your choice or start again! Don't delete dialog fully!")
-                
+                self.sendmsg("Started setting up! Type /restart when set up is done, if you want to change your choice or start again! Don't delete dialog fully!")
+
                 if self.restart_choice is True:  # if we are restarting we
                     self.restart_choice = False  # reset special var for restart
                 self.count_msg = True
@@ -86,32 +82,32 @@ class Bot():
 
 
     async def choice(self):
-        
+
         while True:
-            
+
             self.readmsg()
-            
+
             if self.choice_msg is False:  # send message if not yet sent
-                await self.sendmsg("Do you want a matrix-matrix, vector-matrix, simple multiplication or simple division? (/mmul, /vmul, /mul or /div):")
+                self.sendmsg("Do you want a matrix-matrix, vector-matrix, simple multiplication or simple division? (/mmul, /vmul, /mul or /div):")
                 self.choice_msg = True
 
             if re.search(r"\'text\'\:\s\'\/mul\'", self.readlm):
-                await self.sendmsg("Multiplication is chosen")
-                await self.sendmsg("When you want to answer type ([answer])")
+                self.sendmsg("Multiplication is chosen")
+                self.sendmsg("When you want to answer type ([answer])")
                 self.chosen = "mul"
                 break
             elif re.search(r"\'text\'\:\s\'\/div\'", self.readlm):
-                await self.sendmsg("Division is chosen")
-                await self.sendmsg("When you want to answer type ([answer], [residual])")
+                self.sendmsg("Division is chosen")
+                self.sendmsg("When you want to answer type ([answer], [residual])")
                 self.chosen = "div"
                 break
             elif re.search(r"\'text'\:\s\'\/vmul\'", self.readlm):
-                await self.sendmsg("Vector-matrix multiplication is chosen")
-                await self.sendmsg("When you want to answer type([answer1], [answer2])")
+                self.sendmsg("Vector-matrix multiplication is chosen")
+                self.sendmsg("When you want to answer type([answer1], [answer2])")
                 self.chosen = "vmul"
                 break
             elif re.search(r"\'text'\:\s\'\/mmul\'", self.readlm):
-                await self.sendmsg("Matrix-matrix multiplication is chosen")
+                self.sendmsg("Matrix-matrix multiplication is chosen")
                 self.chosen = "mmul"
                 break
 
@@ -121,13 +117,13 @@ class Bot():
 
 
     async def numb(self):
-        
+
         while True:
 
             self.readmsg()
 
             if self.numb_msg is False:  # send message if not yet send
-                await self.sendmsg('How many iterations do you want before increasing difficulty? (/d[num]):')
+                self.sendmsg('How many iterations do you want before increasing difficulty? (/d[num]):')
                 self.numb_msg = True
 
             try:
@@ -138,7 +134,7 @@ class Bot():
                 continue
 
             if self.rpass:
-                await self.sendmsg(f"Have chosen {self.rpass} iterations mode")
+                self.sendmsg(f"Have chosen {self.rpass} iterations mode")
                 break
 
 
@@ -155,7 +151,7 @@ class Bot():
             self.readmsg()
 
             if self.msized_msg is False:
-                await self.sendmsg('How big the matrix should be? 2 or 3 or 2.5 (4)? (/m[num])')
+                self.sendmsg('How big the matrix should be? 2 or 3 or 2.5 (4)? (/m[num])')
                 self.msized_msg = True
 
             try:
@@ -234,139 +230,27 @@ class Bot():
 
             self.itera += 1
 
-sbot = Bot(token)
-cids = sbot._gcids()
-print(range(len(cids)))
+fcids = [  ]
+requp = f"https://api.telegram.org/bot{token}/getupdates"  # set var for request
+msgreq = requests.get(requp)  # send actual request
+listmsg = msgreq.json().get('result')  # get all messages
+readm = str(listmsg).lower()  # pick the last one
+cids = re.findall(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", readm)
 
-for i in range(len(cids)):
-    print(i)
-    if i == 0:
-        pbot1 = Bot(token)
-        pbot1.cid = cids[i]
-    elif i == 1:
-        pbot2 = Bot(token)
-        pbot2.cid = cids[i]
-    elif i == 2:
-        pbot3 = Bot(token)
-        pbot3.cid = cids[i]
-    elif i == 3:
-        pbot4 = Bot(token)
-        pbot4.cid = cids[i]
-    elif i == 4:
-        pbot5 = Bot(token)
-        pbot5.cid = cids[i]
-    elif i == 5:
-        pbot6 = Bot(token)
-        pbot6.cid = cids[i]
-    elif i == 6:
-        pbot7 = Bot(token)
-        pbot7.cid = cids[i]
-    elif i == 7:
-        pbot8 = Bot(token)
-        pbot8.cid = cids[i]
-    elif i == 8:
-        pbot9 = Bot(token)
-        pbot9.cid = cids[i]
-    elif i == 9:
-        pbot10 = Bot(token)
-        pbot10.cid = cids[i]
+for cid in cids:
+    if cid not in fcids:
+        fcids.append(cid)
 
-if len(cids) == 1:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start()
-            ] )
-if len(cids) == 2:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start()
-            ] )
-elif len(cids) == 3:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start()
-            ] )
-elif len(cids) == 4:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start(),
-            pbot4.start()
-            ] )
-elif len(cids) == 5:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start(),
-            pbot4.start(),
-            pbot5.start()
-            ] )
-elif len(cids) == 6:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start(),
-            pbot4.start(),
-            pbot5.start(),
-            pbot6.start()
-            ] )
-elif len(cids) == 7:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start(),
-            pbot4.start(),
-            pbot5.start(),
-            pbot6.start(),
-            pbot7.start()
-            ] )
-elif len(cids) == 8:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start(),
-            pbot4.start(),
-            pbot5.start(),
-            pbot6.start(),
-            pbot7.start(),
-            pbot8.start()
-            ] )
-elif len(cids) == 9:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start(),
-            pbot4.start(),
-            pbot5.start(),
-            pbot6.start(),
-            pbot7.start(),
-            pbot8.start(),
-            pbot9.start()
-            ] )
-elif len(cids) == 10:
-    async def main():
-        await asyncio.wait( [
-            pbot1.start(),
-            pbot2.start(),
-            pbot3.start(),
-            pbot4.start(),
-            pbot5.start(),
-            pbot6.start(),
-            pbot7.start(),
-            pbot8.start(),
-            pbot9.start(),
-            pbot10.start()
-            ] )
+pbot1 = Bot(token)
+pbot2 = Bot(token)
+pbot1.cid = fcids[0]
+pbot2.cid = fcids[1]
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
-loop.close()
+print(pbot1.cid)
+print(pbot2.cid)
+
+async def main():
+    tasks = [pbot1.start(), pbot2.start()]
+    await asyncio.gather(*tasks)
+
+asyncio.run(main())
