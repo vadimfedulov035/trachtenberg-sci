@@ -3,7 +3,7 @@ import json
 import requests
 import time
 import sys
-
+import asyncio
 
 import tmath as tm  # import math library for handling math operations
 
@@ -44,121 +44,125 @@ class Bot():
         self.url = f"https://api.telegram.org/bot{tok}"
 
 
+    def _gcids(self):
+        self.readmsg()
+        cids = re.findall(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm)
+        return cids
+
+    
     def readmsg(self):
         self.requp = self.url + "/getupdates"  # set var for request
         self.msgreq = requests.get(self.requp)  # send actual request
         self.listmsg = self.msgreq.json().get('result')  # get all messages
         self.readlm = str(self.listmsg[-1]).lower()  # pick the last one
-        self.cid = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm).group(1)
 
-    def sendmsg(self, msg):
+    async def sendmsg(self, msg):
         self.reqms = self.url + f"/sendmessage?text={msg}&chat_id={self.cid}"
         requests.get(self.reqms)  # sending actual request
 
 
-    def start(self):
+    async def start(self):
         
         while True:
             
             self.readmsg()
             
             if re.search(r'\/start', self.readlm) or self.restart_choice is True:
-                self.sendmsg("Started setting up! Type /restart when set up is done, if you want to change your choice or start again! Don't delete dialog fully!")
+                await self.sendmsg("Started setting up! Type /restart when set up is done, if you want to change your choice or start again! Don't delete dialog fully!")
                 
                 if self.restart_choice is True:  # if we are restarting we
                     self.restart_choice = False  # reset special var for restart
                 self.count_msg = True
                 break
 
-            time.sleep(self.timeout)
+            await asyncio.sleep(self.timeout)
+        await self.choice()
 
-        self.choice()
 
-
-    def restart(self):
+    async def restart(self):
         self.__init__(token)
         self.restart_choice = True  # set special var for restart
-        self.start()
+        await self.start()
 
 
-    def choice(self):
+    async def choice(self):
         
         while True:
             
             self.readmsg()
             
             if self.choice_msg is False:  # send message if not yet sent
-                self.sendmsg("Do you want a matrix-matrix, vector-matrix, simple multiplication or simple division? (/mmul, /vmul, /mul or /div):")
+                await self.sendmsg("Do you want a matrix-matrix, vector-matrix, simple multiplication or simple division? (/mmul, /vmul, /mul or /div):")
                 self.choice_msg = True
 
             if re.search(r"\'text\'\:\s\'\/mul\'", self.readlm):
-                self.sendmsg("Multiplication is chosen")
-                self.sendmsg("When you want to answer type ([answer])")
+                await self.sendmsg("Multiplication is chosen")
+                await self.sendmsg("When you want to answer type ([answer])")
                 self.chosen = "mul"
                 break
             elif re.search(r"\'text\'\:\s\'\/div\'", self.readlm):
-                self.sendmsg("Division is chosen")
-                self.sendmsg("When you want to answer type ([answer], [residual])")
+                await self.sendmsg("Division is chosen")
+                await self.sendmsg("When you want to answer type ([answer], [residual])")
                 self.chosen = "div"
                 break
             elif re.search(r"\'text'\:\s\'\/vmul\'", self.readlm):
-                self.sendmsg("Vector-matrix multiplication is chosen")
-                self.sendmsg("When you want to answer type([answer1], [answer2])")
+                await self.sendmsg("Vector-matrix multiplication is chosen")
+                await self.sendmsg("When you want to answer type([answer1], [answer2])")
                 self.chosen = "vmul"
                 break
             elif re.search(r"\'text'\:\s\'\/mmul\'", self.readlm):
-                self.sendmsg("Matrix-matrix multiplication is chosen")
+                await self.sendmsg("Matrix-matrix multiplication is chosen")
                 self.chosen = "mmul"
                 break
 
-            time.sleep(self.timeout)
+            await asyncio.sleep(self.timeout)
 
-        self.numb()
+        await self.numb()
 
 
-    def numb(self):
+    async def numb(self):
         
         while True:
 
             self.readmsg()
 
             if self.numb_msg is False:  # send message if not yet send
-                self.sendmsg('How many iterations do you want before increasing difficulty? (/d[num]):')
+                await self.sendmsg('How many iterations do you want before increasing difficulty? (/d[num]):')
                 self.numb_msg = True
 
             try:
                 self.rpass = re.search(r"\'text\'\:\s\'\/d([0-9]{1,6})\'", self.readlm)
                 self.rpass = int(str(self.rpass.group(1)))
             except:
-                time.sleep(self.timeout)
+                await asyncio.sleep(self.timeout)
                 continue
 
             if self.rpass:
-                self.sendmsg(f"Have chosen {self.rpass} iterations mode")
+                await self.sendmsg(f"Have chosen {self.rpass} iterations mode")
                 break
 
 
         if self.chosen == 'vmul' or self.chosen == 'mmul':
-            self.msized()
+            await self.msized()
         else:
-            self.count()
+            await self.count()
 
 
-    def msized(self):
+    async def msized(self):
 
         while True:
 
             self.readmsg()
 
             if self.msized_msg is False:
-                self.sendmsg('How big the matrix should be? 2 or 3 or 2.5 (4)? (/m[num])')
+                await self.sendmsg('How big the matrix should be? 2 or 3 or 2.5 (4)? (/m[num])')
                 self.msized_msg = True
 
             try:
                 self.smatr = re.search(r"\'text\'\:\s\'\/m([2-4])\'", self.readlm)
                 self.smatr = int(str(self.smatr.group(1)))
             except:
-                time.sleep(self.timeout)
+                await asyncio.sleep(self.timeout)
                 continue
 
             if self.smatr == 4:
@@ -168,10 +172,10 @@ class Bot():
                 self.msize = self.smatr
                 break
 
-        self.count()
+        await self.count()
 
 
-    def count(self):
+    async def count(self):
 
         while True:
 
@@ -186,7 +190,7 @@ class Bot():
                         self.mnum[0] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.mnum[1] += 1  # every 1 pass increase difficulty value
-                tm.ml(self.mnum[0], self.mnum[1], obj=self)
+                await tm.ml(self.mnum[0], self.mnum[1], obj=self)
 
             elif self.chosen == 'div':
                 if self.rpass == 1:  # for pass var of 1 we choose another approach
@@ -199,7 +203,7 @@ class Bot():
                         self.dnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.dnum[0] += 1  # every 1 pass increase difficulty value
-                tm.dl(self.dnum[0], self.dnum[1], obj=self)
+                await tm.dl(self.dnum[0], self.dnum[1], obj=self)
 
             elif self.chosen == 'vmul':
                 if self.rpass == 1:  # for pass var of 1 we choose another approach
@@ -212,7 +216,7 @@ class Bot():
                         self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.vmnum[0] += 1  # every 1 pass increase difficulty value
-                tm.vml(self.vmnum[0], self.vmnum[1], matrix=self.msize, obj=self)
+                await tm.vml(self.vmnum[0], self.vmnum[1], matrix=self.msize, obj=self)
 
             
             elif self.chosen == 'mmul':
@@ -226,10 +230,143 @@ class Bot():
                         self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.mmnum[0] += 1  # every 1 pass increase difficulty value
-                tm.mml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
+                await tm.mml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
 
             self.itera += 1
 
+sbot = Bot(token)
+cids = sbot._gcids()
+print(range(len(cids)))
 
-pbot = Bot(token)  # init bot with token read from file
-pbot.start()
+for i in range(len(cids)):
+    print(i)
+    if i == 0:
+        pbot1 = Bot(token)
+        pbot1.cid = cids[i]
+    elif i == 1:
+        pbot2 = Bot(token)
+        pbot2.cid = cids[i]
+    elif i == 2:
+        pbot3 = Bot(token)
+        pbot3.cid = cids[i]
+    elif i == 3:
+        pbot4 = Bot(token)
+        pbot4.cid = cids[i]
+    elif i == 4:
+        pbot5 = Bot(token)
+        pbot5.cid = cids[i]
+    elif i == 5:
+        pbot6 = Bot(token)
+        pbot6.cid = cids[i]
+    elif i == 6:
+        pbot7 = Bot(token)
+        pbot7.cid = cids[i]
+    elif i == 7:
+        pbot8 = Bot(token)
+        pbot8.cid = cids[i]
+    elif i == 8:
+        pbot9 = Bot(token)
+        pbot9.cid = cids[i]
+    elif i == 9:
+        pbot10 = Bot(token)
+        pbot10.cid = cids[i]
+
+if len(cids) == 1:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start()
+            ] )
+if len(cids) == 2:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start()
+            ] )
+elif len(cids) == 3:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start()
+            ] )
+elif len(cids) == 4:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start()
+            ] )
+elif len(cids) == 5:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start()
+            ] )
+elif len(cids) == 6:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start()
+            ] )
+elif len(cids) == 7:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start()
+            ] )
+elif len(cids) == 8:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start()
+            ] )
+elif len(cids) == 9:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start()
+            ] )
+elif len(cids) == 10:
+    async def main():
+        await asyncio.wait( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start()
+            ] )
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+loop.close()
