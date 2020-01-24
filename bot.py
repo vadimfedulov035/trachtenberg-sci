@@ -3,7 +3,6 @@ import json
 import requests
 import time
 import sys
-import asyncio
 
 
 import tmath as tm  # import math library for handling math operations
@@ -19,7 +18,6 @@ class Bot():
 
     def __init__(self, tok):
         # setting up timeout between iterations and iteration var
-        self.cid = None
         self.timeout = 1
         self.itera = 1
         # setting up all sets for equations right answers and user supplied
@@ -57,7 +55,7 @@ class Bot():
         requests.get(self.reqms)  # sending actual request
 
 
-    async def start(self):
+    def start(self):
 
         while True:
 
@@ -71,17 +69,17 @@ class Bot():
                 self.count_msg = True
                 break
 
-            await asyncio.sleep(self.timeout)
-        await self.choice()
+            time.sleep(self.timeout)
+        self.choice()
 
 
-    async def restart(self):
+    def restart(self):
         self.__init__(token)
         self.restart_choice = True  # set special var for restart
-        await self.start()
+        self.start()
 
 
-    async def choice(self):
+    def choice(self):
 
         while True:
 
@@ -111,12 +109,12 @@ class Bot():
                 self.chosen = "mmul"
                 break
 
-            await asyncio.sleep(self.timeout)
+            time.sleep(self.timeout)
 
-        await self.numb()
+        self.numb()
 
 
-    async def numb(self):
+    def numb(self):
 
         while True:
 
@@ -130,7 +128,7 @@ class Bot():
                 self.rpass = re.search(r"\'text\'\:\s\'\/d([0-9]{1,6})\'", self.readlm)
                 self.rpass = int(str(self.rpass.group(1)))
             except:
-                await asyncio.sleep(self.timeout)
+                time.sleep(self.timeout)
                 continue
 
             if self.rpass:
@@ -139,12 +137,12 @@ class Bot():
 
 
         if self.chosen == 'vmul' or self.chosen == 'mmul':
-            await self.msized()
+            self.msized()
         else:
-            await self.count()
+            self.count()
 
 
-    async def msized(self):
+    def msized(self):
 
         while True:
 
@@ -158,7 +156,7 @@ class Bot():
                 self.smatr = re.search(r"\'text\'\:\s\'\/m([2-4])\'", self.readlm)
                 self.smatr = int(str(self.smatr.group(1)))
             except:
-                await asyncio.sleep(self.timeout)
+                time.sleep(self.timeout)
                 continue
 
             if self.smatr == 4:
@@ -168,10 +166,10 @@ class Bot():
                 self.msize = self.smatr
                 break
 
-        await self.count()
+        self.count()
 
 
-    async def count(self):
+    def count(self):
 
         while True:
 
@@ -186,7 +184,7 @@ class Bot():
                         self.mnum[0] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.mnum[1] += 1  # every 1 pass increase difficulty value
-                await tm.ml(self.mnum[0], self.mnum[1], obj=self)
+                tm.ml(self.mnum[0], self.mnum[1], obj=self)
 
             elif self.chosen == 'div':
                 if self.rpass == 1:  # for pass var of 1 we choose another approach
@@ -199,7 +197,7 @@ class Bot():
                         self.dnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.dnum[0] += 1  # every 1 pass increase difficulty value
-                await tm.dl(self.dnum[0], self.dnum[1], obj=self)
+                tm.dl(self.dnum[0], self.dnum[1], obj=self)
 
             elif self.chosen == 'vmul':
                 if self.rpass == 1:  # for pass var of 1 we choose another approach
@@ -212,7 +210,7 @@ class Bot():
                         self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.vmnum[0] += 1  # every 1 pass increase difficulty value
-                await tm.vml(self.vmnum[0], self.vmnum[1], matrix=self.msize, obj=self)
+                tm.vml(self.vmnum[0], self.vmnum[1], matrix=self.msize, obj=self)
 
             
             elif self.chosen == 'mmul':
@@ -226,31 +224,10 @@ class Bot():
                         self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.mmnum[0] += 1  # every 1 pass increase difficulty value
-                await tm.mml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
+                tm.mml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
 
             self.itera += 1
 
-fcids = [  ]
-requp = f"https://api.telegram.org/bot{token}/getupdates"  # set var for request
-msgreq = requests.get(requp)  # send actual request
-listmsg = msgreq.json().get('result')  # get all messages
-readm = str(listmsg).lower()  # pick the last one
-cids = re.findall(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", readm)
 
-for cid in cids:
-    if cid not in fcids:
-        fcids.append(cid)
-
-pbot1 = Bot(token)
-pbot2 = Bot(token)
-pbot1.cid = fcids[0]
-pbot2.cid = fcids[1]
-
-print(pbot1.cid)
-print(pbot2.cid)
-
-async def main():
-    tasks = [pbot1.start(), pbot2.start()]
-    await asyncio.gather(*tasks)
-
-asyncio.run(main())
+pbot = Bot(token)
+pbot.start()

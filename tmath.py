@@ -1,7 +1,6 @@
 import time
 import re
 import random
-import asyncio
 
 
 import numpy as np
@@ -12,7 +11,7 @@ if __name__ == "__main__":
     print("It is math module, not a standalone program!")
 
 
-async def ml(multiplicand, multiplier, obj=None):
+def ml(multiplicand, multiplier, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -37,7 +36,7 @@ async def ml(multiplicand, multiplier, obj=None):
         obj.c.add(c)  # add answer if unique
     obj.sendmsg(f"{a} * {b} = ")
     while True:
-        await asyncio.sleep(obj.timeout)
+        time.sleep(obj.timeout)
         obj.readmsg()
         if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
             obj.restart()
@@ -58,7 +57,7 @@ async def ml(multiplicand, multiplier, obj=None):
                 break
 
 
-async def dl(dividend, divider, obj=None):
+def dl(dividend, divider, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(dividend - 1):
@@ -85,7 +84,7 @@ async def dl(dividend, divider, obj=None):
         obj.c2.add(c2)  # add residual if unique
     obj.sendmsg(f"{a} // | % {b} = ")
     while True:
-        await asyncio.sleep(obj.timeout)
+        time.sleep(obj.timeout)
         obj.readmsg()
         if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
             obj.restart()
@@ -108,7 +107,7 @@ async def dl(dividend, divider, obj=None):
                 break
 
 
-async def vml(multiplicand, multiplier, matrix=2, obj=None):
+def vml(multiplicand, multiplier, matrix=2, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -198,7 +197,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
 
         while True:
 
-            await asyncio.sleep(obj.timeout)
+            time.sleep(obj.timeout)
             obj.readmsg()
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
                 obj.restart()
@@ -237,7 +236,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
 
         while True:
 
-            await asyncio.sleep(obj.timeout)
+            time.sleep(obj.timeout)
             obj.readmsg()
 
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
@@ -265,7 +264,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                 break
 
 
-async def mml(multiplicand, multiplier, matrix=2, obj=None):
+def mml(multiplicand, multiplier, matrix=2, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -373,7 +372,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
 
         while True:
 
-            await asyncio.sleep(obj.timeout)
+            time.sleep(obj.timeout)
             obj.readmsg()
             
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
@@ -431,7 +430,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
 
         while True:
 
-            await asyncio.sleep(obj.timeout)
+            time.sleep(obj.timeout)
             obj.readmsg()
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
                 obj.restart()
