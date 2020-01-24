@@ -1,6 +1,7 @@
 import time
 import re
 import random
+import asyncio
 
 
 import numpy as np
@@ -11,7 +12,7 @@ if __name__ == "__main__":
     print("It is math module, not a standalone program!")
 
 
-def ml(multiplicand, multiplier, obj=None):
+async def ml(multiplicand, multiplier, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -31,15 +32,16 @@ def ml(multiplicand, multiplier, obj=None):
 
     # bot won't ask equation with the same answer, for novelty check
     if c in obj.c:
-        ml(multiplicand, multiplier, obj=obj)
+        await ml(multiplicand, multiplier, obj=obj)
     else:
         obj.c.add(c)  # add answer if unique
-    obj.sendmsg(f"{a} * {b} = ")
+    await obj.sendmsg(f"{a} * {b} = ")
+
     while True:
-        time.sleep(obj.timeout)
-        obj.readmsg()
+        await asyncio.sleep(obj.timeout)
+        await obj.readmsg()
         if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
-            obj.restart()
+            await obj.restart()
         try:
             uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\'", obj.readlm)
             uc = int(str(uc.group(1)))
@@ -50,14 +52,14 @@ def ml(multiplicand, multiplier, obj=None):
         else:
             obj.uc.add(uc)  # add user answer if unique
             if uc == c:
-                obj.sendmsg("You're God Damn right!")
+                await obj.sendmsg("You're God Damn right!")
                 break
             elif uc != c:
-                obj.sendmsg(f"No, right answer is {c}")
+                await obj.sendmsg(f"No, right answer is {c}")
                 break
 
 
-def dl(dividend, divider, obj=None):
+async def dl(dividend, divider, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(dividend - 1):
@@ -78,16 +80,16 @@ def dl(dividend, divider, obj=None):
 
     # bot won't ask equation with the same answer, for novelty check
     if c1 in obj.c1 or c2 in obj.c2:
-        dl(multiplicand, multiplier, obj=obj)
+        await dl(multiplicand, multiplier, obj=obj)
     else:
         obj.c1.add(c1)  # add answer if unique
         obj.c2.add(c2)  # add residual if unique
-    obj.sendmsg(f"{a} // | % {b} = ")
+    await obj.sendmsg(f"{a} // | % {b} = ")
     while True:
-        time.sleep(obj.timeout)
-        obj.readmsg()
+        await asyncio.sleep(obj.timeout)
+        await obj.readmsg()
         if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
-            obj.restart()
+            await obj.restart()
         try:
             uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
             uc1 = int(str(uc.group(1)))
@@ -100,14 +102,14 @@ def dl(dividend, divider, obj=None):
             obj.uc1.add(uc1)  # add user answer if unique
             obj.uc2.add(uc2)  # add user residual if unique
             if uc1 == c1 and uc2 == c2:
-                obj.sendmsg("You're God Damn right!")
+                await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                obj.sendmsg(f"No, right answer is {c1} with residual of {c2}")
+                await obj.sendmsg(f"No, right answer is {c1} with residual of {c2}")
                 break
 
 
-def vml(multiplicand, multiplier, matrix=2, obj=None):
+async def vml(multiplicand, multiplier, matrix=2, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -189,18 +191,18 @@ def vml(multiplicand, multiplier, matrix=2, obj=None):
         c2 = int(c[1])
         # bot won't ask equation with the same answer, for novelty check
         if c1 in obj.c1 or c2 in obj.c2:
-            mml(multiplicand, multiplier, obj=obj)
+            await mml(multiplicand, multiplier, obj=obj)
         else:
             obj.c1.add(c2)  # add answer if unique
             obj.c2.add(c2)
-        obj.sendmsg(f"{a}\n*\n{b}\n= ?")
+        await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
 
         while True:
 
-            time.sleep(obj.timeout)
-            obj.readmsg()
+            await asyncio.sleep(obj.timeout)
+            await obj.readmsg()
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
-                obj.restart()
+                await obj.restart()
             try:
                 uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
                 uc1 = int(str(uc.group(1)))
@@ -213,10 +215,10 @@ def vml(multiplicand, multiplier, matrix=2, obj=None):
                 obj.uc1.add(uc1)  # add user answer if unique
                 obj.uc2.add(uc2)
                 if uc1 == c1 and uc2 == c2:
-                    obj.sendmsg("You're God Damn right!")
+                    await obj.sendmsg("You're God Damn right!")
                     break
                 else:
-                    obj.sendmsg(f"No, right answer is {c1}, {c2}")
+                    await obj.sendmsg(f"No, right answer is {c1}, {c2}")
                     break
 
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
@@ -225,22 +227,22 @@ def vml(multiplicand, multiplier, matrix=2, obj=None):
         c3 = int(c[2])
         # bot won't ask equation with the same answer, for novelty check
         if c1 in obj.c1 or c2 in obj.c2 or c3 in obj.c3:
-            mml(multiplicand, multiplier, mode=mode, obj=obj)
+            await mml(multiplicand, multiplier, mode=mode, obj=obj)
         else:
             obj.c1.add(c1)  # add answer if unique
             obj.c2.add(c2)
             obj.c3.add(c3)
 
 
-        obj.sendmsg(f"{a}\n*\n{b}\n= ?")
+        await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
 
         while True:
 
-            time.sleep(obj.timeout)
-            obj.readmsg()
+            await asyncio.sleep(obj.timeout)
+            await obj.readmsg()
 
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
-                obj.restart()
+                await obj.restart()
 
             try:
                 uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
@@ -257,14 +259,14 @@ def vml(multiplicand, multiplier, matrix=2, obj=None):
             obj.uc2.add(uc2)
             obj.uc3.add(uc3)
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
-                obj.sendmsg("You're God Damn right!")
+                await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}")
+                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}")
                 break
 
 
-def mml(multiplicand, multiplier, matrix=2, obj=None):
+async def mml(multiplicand, multiplier, matrix=2, obj=None):
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -361,22 +363,22 @@ def mml(multiplicand, multiplier, matrix=2, obj=None):
 
         # bot won't ask equation with the same answer, for novelty check
         if c1 in obj.c1 or c2 in obj.c2 or c3 in obj.c3 or c4 in obj.c4:
-            mlml(multiplicand, multiplier, obj=obj)
+            await mlml(multiplicand, multiplier, obj=obj)
         else:
             obj.c1.add(c1)  # add answer if unique
             obj.c2.add(c2)
             obj.c3.add(c3)
             obj.c4.add(c4)
 
-        obj.sendmsg(f"{a}\n*****\n{b}\n====?")
+        await obj.sendmsg(f"{a}\n*****\n{b}\n====?")
 
         while True:
 
-            time.sleep(obj.timeout)
-            obj.readmsg()
+            await asyncio.sleep(obj.timeout)
+            await obj.readmsg()
             
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
-                obj.restart()
+                await obj.restart()
             try:
                 uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
                 uc1 = int(str(uc.group(1)))
@@ -395,10 +397,10 @@ def mml(multiplicand, multiplier, matrix=2, obj=None):
                 obj.uc4.add(uc4)
 
                 if uc1 == c1 and uc2 == c2 and uc3 == c3 and uc4 == c4:
-                    obj.sendmsg("You're God Damn right!")
+                    await obj.sendmsg("You're God Damn right!")
                     break
                 else:
-                    obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}")
+                    await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}")
                     break
 
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
@@ -413,7 +415,7 @@ def mml(multiplicand, multiplier, matrix=2, obj=None):
         c9 = int(c[2, 2])
         # bot won't ask equation with the same answer, for novelty check
         if c1 in obj.c1 or c2 in obj.c2 or c3 in obj.c3 or c4 in obj.c4 or c5 in obj.c5 or c6 in obj.c6:
-            mlml(multiplicand, multiplier, obj=obj)
+            await mlml(multiplicand, multiplier, obj=obj)
         else:
             obj.c1.add(c1)  # add answers if unique
             obj.c2.add(c2)
@@ -430,10 +432,10 @@ def mml(multiplicand, multiplier, matrix=2, obj=None):
 
         while True:
 
-            time.sleep(obj.timeout)
-            obj.readmsg()
+            await asyncio.sleep(obj.timeout)
+            await obj.readmsg()
             if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
-                obj.restart()
+                await obj.restart()
             try:
                 uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10}),\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
                 uc1 = int(str(uc.group(1)))
@@ -459,8 +461,8 @@ def mml(multiplicand, multiplier, matrix=2, obj=None):
             obj.uc8.add(uc8)
             obj.uc9.add(uc9)
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
-                obj.sendmsg("You're God Damn right!")
+                await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}, {c5}, {c6}, {c7}, {c8}, {c9}")
+                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}, {c5}, {c6}, {c7}, {c8}, {c9}")
                 break
