@@ -4,7 +4,6 @@
 ![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.jpg)
 
 If you have read the original book you will be able to test your knowledge easily by just chatting with bot in Telegram.
-In future releases the bot will be able to hold more than only one dialog with the help of async.
 
 If you want to, you can explore the source code of TrachtenbergBot in Telegram, it is written on its own micro-framework from
 scratch. It accesses Telegram API without any intermediate libraries, except native Python and NumPy. Because of complex function

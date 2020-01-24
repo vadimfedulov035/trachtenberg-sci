@@ -49,6 +49,7 @@ class Bot():
         self.msgreq = requests.get(self.requp)  # send actual request
         self.listmsg = self.msgreq.json().get('result')  # get all messages
         self.readlm = str(self.listmsg[-1]).lower()  # pick the last one
+        self.cid = re.search(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", self.readlm).group(1)
 
     def sendmsg(self, msg):
         self.reqms = self.url + f"/sendmessage?text={msg}&chat_id={self.cid}"
