@@ -18,9 +18,11 @@ class Bot():
 
 
     def __init__(self, tok, num):
+        # setting initial parameters
+        self.number = num
+        self.token = tok
         # setting up timeout between iterations and iteration var
-        self.num = num
-        self.timeout = 1
+        self.timeout = 0.5
         self.itera = 1
         # setting up all sets for equations right answers and user supplied
         self.c, self.uc = set(), set()
@@ -43,7 +45,7 @@ class Bot():
         # set special var for restart
         self.restart_choice = False
         # setting up base url to make operations on it
-        self.url = f"https://api.telegram.org/bot{tok}"
+        self.url = f"https://api.telegram.org/bot{self.token}"
         # send initial request to set cid
         self.readlm = 'placeholder'
         self.date = 1
@@ -53,11 +55,12 @@ class Bot():
         self.msgreq = requests.get(self.requp)  # send actual request
         self.listmsg = self.msgreq.json().get('result')  # get all messages
         self.cids = re.findall(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", str(self.listmsg).lower())
-        for cid in self.cids:
-            if cid not in self.fcids:
-                self.fcids.append(cid)
-        self.cid = int(self.fcids[self.num])
-        print(f"{self.num} : {self.cid}")
+        if self.cids is not None:
+            for cid in self.cids:
+                if cid not in self.fcids:
+                    self.fcids.append(cid)
+            self.cid = int(self.fcids[self.number])
+            print(f"{self.number}: {self.cid}")
 
 
     async def readmsg(self):
@@ -73,7 +76,7 @@ class Bot():
 
 
     async def sendmsg(self, msg):
-        self.reqms = self.url + f"/sendmessage?text={msg}&chat_id={self.cid}"
+        self.reqms = self.url + f"/sendmessage?text={msg}&chat_id={self.cid}" # setting request
         requests.get(self.reqms)  # sending actual request
 
 
@@ -243,14 +246,179 @@ class Bot():
                         self.mmnum[1] += 1  # every 2 pass increase difficulty value
                     elif self.itera % self.rpass == 1 and self.itera != 1:
                         self.mmnum[0] += 1  # every 1 pass increase difficulty value
-                tm.mml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
+                await tm.mml(self.mmnum[0], self.mmnum[1], matrix=self.msize, obj=self)
 
             self.itera += 1
 
 
-pbot1 = Bot(token, 0)
-pbot2 = Bot(token, 1)
-async def main():
-    await asyncio.gather(pbot1.start(),pbot2.start())
+nbot = 0
+
+while True:
+
+    try:
+        pbot1 = Bot(token, 0)
+        nbot += 1
+    except:
+        print("No users yet")
+        continue
+
+    try:
+        pbot2 = Bot(token, 1)
+        nbot += 1
+    except:
+        print("One user connected")
+        break
+
+    try:
+        pbot3 = Bot(token, 2)
+        nbot += 1
+    except:
+        print("Two users connected")
+        break
+
+    try:
+        pbot4 = Bot(token, 3)
+        nbot += 1
+    except:
+        print("Three users connected")
+        break
+
+    try:
+        pbot5 = Bot(token, 4)
+        nbot += 1
+    except:
+        print("Four users connected")
+        break
+
+    try:
+        pbot6 = Bot(token, 5)
+        nbot += 1
+    except:
+        print("Five users connected")
+        break
+
+    try:
+        pbot7 = Bot(token, 6)
+        nbot += 1
+    except:
+        print("Six users connected")
+        break
+
+    try:
+        pbot8 = Bot(token, 7)
+        nbot += 1
+    except:
+        print("Seven users connected")
+        break
+
+    try:
+        pbot9 = Bot(token, 8)
+        nbot += 1
+    except:
+        print("Eight users connected")
+        break
+
+    try:
+        pbot10 = Bot(token, 9)
+        nbot += 1
+    except:
+        print("Nine users connected")
+        break
+    else:
+        print("Ten users connected, maximum overload")
+
+if nbot == 1:
+    async def main():
+        await pbot1.start()
+elif nbot == 2:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start()
+            )
+elif nbot == 3:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start()
+            )
+elif nbot == 4:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start()
+            )
+elif nbot == 5:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start()
+            ) 
+elif nbot == 6:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start()
+            )
+elif nbot == 7:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start()
+            )
+elif nbot == 8:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start()
+            )
+elif nbot == 8:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start()
+            )
+elif nbot == 10:
+    async def main():
+        await asyncio.gather( [
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start()
+            ] )
 
 asyncio.run(main())

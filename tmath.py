@@ -35,7 +35,7 @@ async def ml(multiplicand, multiplier, obj=None):
         await ml(multiplicand, multiplier, obj=obj)
     else:
         obj.c.add(c)  # add answer if unique
-    await obj.sendmsg(f"{a} * {b} = ")
+    await obj.sendmsg(f"{a} * {b} = ?")
 
     while True:
         await asyncio.sleep(obj.timeout)
@@ -55,7 +55,7 @@ async def ml(multiplicand, multiplier, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             elif uc != c:
-                await obj.sendmsg(f"No, right answer is {c}")
+                await obj.sendmsg(f"No, right answer is {c}!")
                 break
 
 
@@ -84,7 +84,7 @@ async def dl(dividend, divider, obj=None):
     else:
         obj.c1.add(c1)  # add answer if unique
         obj.c2.add(c2)  # add residual if unique
-    await obj.sendmsg(f"{a} // | % {b} = ")
+    await obj.sendmsg(f"{a} // | % {b} = ?")
     while True:
         await asyncio.sleep(obj.timeout)
         await obj.readmsg()
@@ -105,7 +105,7 @@ async def dl(dividend, divider, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                await obj.sendmsg(f"No, right answer is {c1} with residual of {c2}")
+                await obj.sendmsg(f"No, right answer is {c1} with residual of {c2}!")
                 break
 
 
@@ -218,7 +218,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     await obj.sendmsg("You're God Damn right!")
                     break
                 else:
-                    await obj.sendmsg(f"No, right answer is {c1}, {c2}")
+                    await obj.sendmsg(f"No, right answer is {c1}, {c2}!")
                     break
 
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
@@ -262,7 +262,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}")
+                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}!")
                 break
 
 
@@ -370,7 +370,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             obj.c3.add(c3)
             obj.c4.add(c4)
 
-        await obj.sendmsg(f"{a}\n*****\n{b}\n====?")
+        await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
 
         while True:
 
@@ -428,7 +428,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             obj.c9.add(c9)
 
 
-        obj.sendmsg(f"{a}\n*****\n{b}\n====?")
+        obj.sendmsg(f"{a}\n*\n{b}\n= ?")
 
         while True:
 
@@ -464,5 +464,5 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}, {c5}, {c6}, {c7}, {c8}, {c9}")
+                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}, {c5}, {c6}, {c7}, {c8}, {c9}!")
                 break
