@@ -21,6 +21,7 @@ class Bot():
         # setting initial parameters
         self.number = num
         self.token = tok
+        self.ldate = 0
         # setting up timeout between iterations and iteration var
         self.timeout = 0.5
         self.itera = 1
@@ -47,15 +48,12 @@ class Bot():
         # setting up base url to make operations on it
         self.url = f"https://api.telegram.org/bot{self.token}"
         # send initial request to set cid
-        self.readlm = 'placeholder'
-        self.date = 1
-        self.ldate = 0
-        self.fcids = [  ]
         self.requp = self.url + "/getupdates"  # set var for request
         self.msgreq = requests.get(self.requp)  # send actual request
         self.listmsg = self.msgreq.json().get('result')  # get all messages
         self.cids = re.findall(r"\'chat\'\:\s\{\'id\'\:\s([0-9]{8,12})", str(self.listmsg).lower())
         if self.cids is not None:
+            self.fcids = [  ]
             for cid in self.cids:
                 if cid not in self.fcids:
                     self.fcids.append(cid)
