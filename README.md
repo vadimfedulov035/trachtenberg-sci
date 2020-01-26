@@ -15,6 +15,6 @@ work with Telegram API and library for working with math operations.
 - [x] Add ability to hold up to 10 conversations at once
 - [ ] Add Calculus operations
 - [ ] Translate bot messages to Russian, German, French
-- [ ] Make more comments, make the more understandable
+- [ ] Make more comments, make them more understandable
 - [ ] Optimize code for all PEP-8 standards and improve readability
 - [ ] Put bot at production
