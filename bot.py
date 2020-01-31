@@ -40,7 +40,6 @@ class Bot():
         self.mmnum = [ 1, 2 ]
         # setting up check variables for sending messages
         self.start_msg = False
-        self.lang_msg = False
         self.choice_msg = False
         self.numb_msg = False
         self.msized_msg = False
@@ -86,7 +85,7 @@ class Bot():
             await self.readmsg()
 
             if re.search(r'\/start', self.readlm) or self.restart_choice is True:
-                await self.sendmsg("Started setting up! Type /restart when set up is done, if you want to change your choice or start again!")
+                await self.sendmsg("Started setting up! Type /restart when set up is done, if you want to change your choice or start again! Don't delete dialog fully!")
 
                 if self.restart_choice is True:  # if we are restarting we
                     self.restart_choice = False  # reset special var for restart
@@ -94,40 +93,13 @@ class Bot():
                 break
 
             await asyncio.sleep(self.timeout)
-        await self.lang()
+        await self.choice()
 
 
     async def restart(self):
         self.__init__(token)
         self.restart_choice = True  # set special var for restart
         await self.start()
-
-    async def lang(self):
-        
-        while True:
-            
-            await self.readmsg()
-
-            if self.lang_msg is False:  # send message if not yet sent
-                await self.sendmsg("What language do you want to choose for counting? (/eng, /ger, /rus)")
-                self.lang_msg = True
-
-            if re.search(r"\'text'\:\s\'\/eng\'", self.readlm):
-                self.lang = "eng"
-                break
-            elif re.search(r"\'text'\:\s\'\/ger\'", self.readlm):
-                self.lang = "ger"
-                break
-            elif re.search(r"\'text'\:\s\'\/rus\'", self.readlm):
-                self.lang = "rus"
-                break
-            elif re.search(r"\'text'\:\s\'\/fre\'", self.readlm):
-                pass 
-
-
-            await asyncio.sleep(self.timeout)
-
-        await self.choice()
 
 
     async def choice(self):
@@ -138,28 +110,23 @@ class Bot():
 
             if self.choice_msg is False:  # send message if not yet sent
                 await self.sendmsg("Do you want a matrix-matrix, vector-matrix, simple multiplication or simple division? (/mmul, /vmul, /mul or /div):")
-                await self.sendmsg("Вы хотите матричное, векторно-матричное, простое умножение или простое деление? (/mmul, /vmul, /mul or /div)")
                 self.choice_msg = True
 
             if re.search(r"\'text\'\:\s\'\/mul\'", self.readlm):
                 await self.sendmsg("Multiplication is chosen")
-                await self.senmsg("Умножение выбрано")
                 self.chosen = "mul"
+                break
+            elif re.search(r"\'text\'\:\s\'\/div\'", self.readlm):
+                await self.sendmsg("Division is chosen")
+                self.chosen = "div"
                 break
             elif re.search(r"\'text'\:\s\'\/vmul\'", self.readlm):
                 await self.sendmsg("Vector-matrix multiplication is chosen")
-                await self.sendmsg("Векторно-матричное умножение выбрано")
                 self.chosen = "vmul"
                 break
             elif re.search(r"\'text'\:\s\'\/mmul\'", self.readlm):
                 await self.sendmsg("Matrix-matrix multiplication is chosen")
-                await self.sendmsg("Матричное умножение выбрано")
                 self.chosen = "mmul"
-                break
-            elif re.search(r"\'text\'\:\s\'\/div\'", self.readlm):
-                await self.sendmsg("Division is chosen")
-                await self.senmsg("Деление выбрано")
-                self.chosen = "div"
                 break
 
             await asyncio.sleep(self.timeout)
@@ -174,8 +141,7 @@ class Bot():
             await self.readmsg()
 
             if self.numb_msg is False:  # send message if not yet send
-                await self.sendmsg("How many equations do you want before increasing difficulty? (/d[num]):")
-                await self.sendmsg("Как много примеров вы хотите перед увеличением сложности? (/d[num]):")
+                await self.sendmsg('How many iterations do you want before increasing difficulty? (/d[num]):')
                 self.numb_msg = True
 
             try:
@@ -187,7 +153,6 @@ class Bot():
 
             if self.rpass:
                 await self.sendmsg(f"Have chosen {self.rpass} iterations mode")
-                await self.sendmsg(f"Выбран мод в {self.rpass} примеров")
                 break
 
 
@@ -205,7 +170,6 @@ class Bot():
 
             if self.msized_msg is False:
                 await self.sendmsg('How big the matrix should be? 2 or 3 or 2.5 (4)? (/m[num])')
-                await self.sendmsg("Насколько большой должна быть матрица? 2 или 3 или 2.5 (4)? (/m[num])")
                 self.msized_msg = True
 
             try:
