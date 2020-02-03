@@ -10,7 +10,7 @@ import tmath as tm  # import math library for handling math operations
 
 
 
-with open('tok.conf', 'r') as config:  # read Telegram token from file
+with open('config.conf', 'r') as config:  # read Telegram token from file
     token = config.read().split('|')[1]  # for safety, of course
 
 
