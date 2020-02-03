@@ -97,7 +97,7 @@ class Bot():
 
 
     async def restart(self):
-        self.__init__(token)
+        self.__init__(token, self.number)
         self.restart_choice = True  # set special var for restart
         await self.start()
 
