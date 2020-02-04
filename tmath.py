@@ -20,24 +20,24 @@ async def ml(multiplicand, multiplier, obj=None):
     a = random.randint(x1, y1)
     b = random.randint(x2, y2)
     c = a * b
-    # bot won't ask equation with the same answer, for novelty check
     if c == obj.c:
         await ml(multiplicand, multiplier, obj=obj)
-    obj.c = c  # append answer if unique
+    obj.c = c
     await obj.sendmsg(f"{a} * {b} = ?")
     while True:
         await asyncio.sleep(obj.timeout)
         await obj.readmsg()
-        if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+        if obj.readlm == '/restart':
             await obj.restart()
         try:
-            uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\'", obj.readlm)
+            uc = re.search(r"^([0-9]{1,10})", obj.readlm)
             uc = int(str(uc.group(1)))
         except:
             continue
-        if uc == obj.uc:  # if user answer is in list then it's old
-            continue  # wait for new message
-        obj.uc = uc  # append user answer if unique
+        print(uc)
+        if uc == obj.uc:  g
+            continue  g
+        obj.uc = uc  g
         if uc == c:
             await obj.sendmsg("You're God Damn right!")
             break
@@ -63,26 +63,26 @@ async def dl(dividend, divider, obj=None):
     b = random.randint(x2, y2)
     c1 = a // b
     c2 = a % b
-    # bot won't ask equation with the same answer, for novelty check
+    g
     if c1 == obj.c1 or c2 == obj.c2:
         await dl(dividend, divider, obj=obj)
-    obj.c1 = c1  # append answer if unique
-    obj.c2 = c2  # append residual if unique
+    obj.c1 = c1  g
+    obj.c2 = c2  g
     await obj.sendmsg(f"{a} // | % {b} = ?")
     while True:
         await asyncio.sleep(obj.timeout)
         await obj.readmsg()
-        if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+        if obj.readlm == '/restart':
             await obj.restart()
         try:
-            uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+            uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
             uc1, uc2 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2)])
         except:
             continue
-        if uc1 == obj.uc1 and uc2 == obj.uc2:  # if user answers are in lists, then they're old
-            continue  # wait for new message
-        obj.uc1 = uc1  # append user answer if unique
-        obj.uc2 = uc2  # append user residual if unique
+        if uc1 == obj.uc1 and uc2 == obj.uc2:  g
+            continue  g
+        obj.uc1 = uc1  g
+        obj.uc2 = uc2  g
         if uc1 == c1 and uc2 == c2:
             await obj.sendmsg("You're God Damn right!")
             break
@@ -151,25 +151,25 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
     c = np.matmul(a, b)
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
         c1, c2 = map(lambda x: int(x), [c[0], c[1]])
-        # bot won't ask equation with the same answer, for novelty check
+        g
         if c1 == obj.c1 or c2 == obj.c2:
             await vml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c2  # append answer if unique
+        obj.c1 = c2  g
         obj.c2 = c2
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
         while True:
             await asyncio.sleep(obj.timeout)
             await obj.readmsg()
-            if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+            if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
                 uc1, uc2 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2)])
             except:
                 continue
-            if uc1 == obj.uc1 and uc2 == obj.uc2:  # if user answers are in lists, then they're old
-                continue  # wait for new message
-            obj.uc1 = uc1  # append user answer if unique
+            if uc1 == obj.uc1 and uc2 == obj.uc2:  g
+                continue  g
+            obj.uc1 = uc1  g
             obj.uc2 = uc2
             if uc1 == c1 and uc2 == c2:
                 await obj.sendmsg("You're God Damn right!")
@@ -179,26 +179,26 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                 break
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
         c1, c2, c3 = map(lambda x: int(x), [c[0], c[1], c[2]])
-        # bot won't ask equation with the same answer, for novelty check
+        g
         if c1 == obj.c1 or c2 == obj.c2 or c3 == obj.c3:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1  # append answer if unique
+        obj.c1 = c1  g
         obj.c2 = c2
         obj.c3 = c3
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
         while True:
             await asyncio.sleep(obj.timeout)
             await obj.readmsg()
-            if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+            if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
                 uc1, uc2, uc3 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2), uc.group(3)])
             except:
                 continue
-            if uc1 == obj.uc1 or uc2 == obj.uc2 or uc3 == obj.uc3:  # if user answers are in lists, then they're old
-                continue  # wait for new message
-            obj.uc1 = uc1  # append user answer if unique
+            if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:  g
+                continue  g
+            obj.uc1 = uc1  g
             obj.uc2 = uc2
             obj.uc3 = uc3
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
@@ -278,12 +278,12 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
     c = np.matmul(a, b)
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
         c1, c2, c3, c4 = map(lambda x: int(x), [c[0, 0], c[0, 1], c[1, 0], c[1, 1]])
-        # bot won't ask equation with the same answer, for novelty check
+        g
         if c1 == obj.c1 or c2 == obj.c2:
             await mml(multiplicand, multiplier, obj=obj)
         elif c3 == obj.c3 or c4 == obj.c4:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1  # append answer if unique
+        obj.c1 = c1  g
         obj.c2 = c2
         obj.c3 = c3
         obj.c4 = c4
@@ -291,18 +291,18 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.timeout)
             await obj.readmsg()
-            if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+            if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
                 uc1, uc2, uc3, uc4 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2), uc.group(3), uc.group(4)])
             except:
                 continue
-            if uc1 == obj.uc1 and uc2 == obj.uc2:  # if user answers are in lists, then they're old
-                continue  # wait for new message
+            if uc1 == obj.uc1 and uc2 == obj.uc2:  g
+                continue  g
             elif uc3 == obj.uc3 and uc4 == obj.uc4:
                 continue
-            obj.uc1 = uc1  # append user answer if unique
+            obj.uc1 = uc1  g
             obj.uc2 = uc2
             obj.uc3 = uc3
             obj.uc4 = uc4
@@ -316,12 +316,12 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         c1, c2, c3 = map(lambda x: int(x), [c[0, 0], c[0, 1], c[0, 2]])
         c4, c5, c6 = map(lambda x: int(x), [c[1, 0], c[1, 1], c[1, 2]])
         c7, c8, c9 = map(lambda x: int(x), [c[2, 1], c[2, 1], c[2, 2]])
-        # bot won't ask equation with the same answer, for novelty check
+        g
         if c1 == obj.c1 or c2 == obj.c2 or c3 == obj.c3:
             await mml(multiplicand, multiplier, obj=obj)
         elif c4 == obj.c4 or c5 == obj.c5 or c6 == obj.c6:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1  # append answers if unique
+        obj.c1 = c1  g
         obj.c2 = c2
         obj.c3 = c3
         obj.c4 = c4
@@ -334,17 +334,17 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.timeout)
             await obj.readmsg()
-            if re.search(r"\'text\'\:\s\'\/restart\'", obj.readlm):
+            if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"\'text\'\:\s\'([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10}),\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\'", obj.readlm)
+                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10}),\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
                 uc1, uc2, uc3 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2), uc.group(3)])
                 uc4, uc5, uc6 = map(lambda x: int(str(x)), [uc.group(4), uc.group(5), uc.group(6)])
                 uc7, uc8, uc9 = map(lambda x: int(str(x)), [uc.group(7), uc.group(8), uc.group(9)])
             except:
                 continue
-            if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:  # if user answers are in lists, then they're old
-                continue  # wait fand new message
+            if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:  g
+                continue  g
             elif uc4 == obj.uc4 and uc5 == obj.uc5 and uc6 == obj.uc6:
                 continue
             elif uc7 == obj.uc7 and uc8 == obj.uc8 and uc9 == obj.uc9:
