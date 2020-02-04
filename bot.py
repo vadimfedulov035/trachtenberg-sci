@@ -18,14 +18,14 @@ class Bot():
         # setting up timeout between iterations and iteration var
         self.timeout = 0.5
         self.itera = 1
-        # setting up all sets for equations right answers and user supplied
-        self.c, self.uc = set(), set()
-        self.c1, self.c2, self.c3 = set(), set(), set()
-        self.c4, self.c5, self.c6 = set(), set(), set()
-        self.c7, self.c8, self.c9 = set(), set(), set()
-        self.uc1, self.uc2, self.uc3 = set(), set(), set()
-        self.uc4, self.uc5, self.uc6 = set(), set(), set()
-        self.uc7, self.uc8, self.uc9 = set(), set(), set()
+        # setting up all lists for equations right answers and user supplied
+        self.c, self.uc = None, None
+        self.c1, self.c2, self.c3 = None, None, None
+        self.c4, self.c5, self.c6 = None, None, None
+        self.c7, self.c8, self.c9 = None, None, None
+        self.uc1, self.uc2, self.uc3 = None, None, None
+        self.uc4, self.uc5, self.uc6 = None, None, None
+        self.uc7, self.uc8, self.uc9 = None, None, None
         # setting up lists with starting difficulty variables
         self.mnum = [2, 1]
         self.dnum = [4, 2]
