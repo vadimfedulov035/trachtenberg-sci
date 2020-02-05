@@ -16,6 +16,6 @@ work with Telegram API and library for working with math operations.
 - [x] Add requirements.txt
 - [x] Optimize code for high effeciency
 - [x] Optimize code for most of PEP-8 standards and improve readability
-- [x] Make comments for understandability (50%)
+- [x] Make comments for understandability (75%)
 - [ ] Translate bot messages to Russian
 - [ ] Put bot at production

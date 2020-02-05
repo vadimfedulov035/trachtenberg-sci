@@ -19,9 +19,11 @@ class Bot():
         self.TIMEOUT = 0.5  # best timeout for not overloading API
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
+        self.ERROR = "Sorry, I didn't understand you, I will restart dialog!"
         """non-static variables are defined here for further work"""
         self.date = 0  # date set to zero will serve in expression as starter
         self.itera = 1  # iteration counter
+        self.nearrest = False
         self.c, self.uc = None, None
         self.c1, self.c2, self.c3 = None, None, None
         self.c4, self.c5, self.c6 = None, None, None
@@ -80,8 +82,8 @@ class Bot():
         while True:
             await self.readmsg()
             if self.readlmsg == '/start' or self.restart_ch is True:
-                f1 = "Started setting up! Type /restart when set up is done, "
-                f2 = "if you want to change your choice or start again!"
+                f1 = "Started setting up! Type /restart when, "
+                f2 = "if you want to change your choice(s) and start again!"
                 self.fmsg = f1 + f2  # combine first msg
                 await self.sendmsg(self.fmsg)  # send first msg
                 if self.restart_ch is True:
@@ -130,6 +132,8 @@ class Bot():
         """choice of speed of increasing difficulty is made here"""
         while True:
             await self.readmsg()  # read last msg and extract from command num
+            if self.readlmsg == "/restart":
+                await self.restart()
             if self.numb_msg is False:
                 it1 = "How many iterations do you want before increasing "
                 it2 = "difficulty? (/d[num]):"
@@ -140,6 +144,9 @@ class Bot():
                 self.rpass = re.findall(r"^\/d([0-9]{1,6})", self.readlmsg)
                 self.rpass = int(self.rpass[0])  # num is extracted here
             except IndexError:  # if not found (no new msgs)
+                if self.readlmsg != f'/{self.chosen}':
+                    await self.sendmsg(self.ERROR)
+                    await self.restart()
                 await asyncio.sleep(self.TIMEOUT)
                 continue  # go to start of the loop
             if self.rpass:  # if num exist we send info about mode
@@ -154,6 +161,8 @@ class Bot():
         """choice of matrix size is made here"""
         while True:
             await self.readmsg()
+            if self.readlmsg == "/restart":
+                self.restart()
             if self.msized_msg is False:
                 ms1 = "How big the matrix should be? "
                 ms2 = "2 or 3 or 2.5 (4)? "
@@ -165,6 +174,9 @@ class Bot():
                 self.smatr = re.findall(r"^\/m([2-4])", self.readlmsg)
                 self.smatr = int(self.smatr[0])
             except IndexError:  # if not found (no new msgs)
+                if self.readlmsg != f'/d{self.rpass}':
+                    await self.sendmsg(self.ERROR)
+                    await self.restart()
                 await asyncio.sleep(self.TIMEOUT)
                 continue  # go to start of the loop
             if self.smatr == 4:  # 4th option is variation of 2 and 3
@@ -176,7 +188,7 @@ class Bot():
         await self.count()  # start counting now
 
     async def count(self):
-        """counting is done here"""
+        """counting and functions' calls are done here"""
         while True:  # endless loop unless function restarts bot
             if self.chosen == 'mul':
                 if self.rpass == 1:  # for value of 1 we use different approach

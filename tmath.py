@@ -5,6 +5,7 @@ import numpy as np
 
 
 async def ml(multiplicand, multiplier, obj=None):
+    """Basic Multiplication operation"""
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -27,9 +28,9 @@ async def ml(multiplicand, multiplier, obj=None):
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlmsg == '/restart':
+        if obj.readlmsg == '/restart':  # check for restart msg
             await obj.restart()
-        try:
+        try:  # check for previous msg and only after try to find next one
             if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
                 uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                 uc = int(uc[0])
@@ -37,10 +38,9 @@ async def ml(multiplicand, multiplier, obj=None):
                 raise TypeError("Got no new messages!")
         except TypeError:
             continue
-        print(uc)
         if uc == obj.uc:
-            continue
-        obj.uc = uc
+            continue  # if got old msg try again
+        obj.uc = uc  # if got new msg assign it value to var
         if uc == c:
             await obj.sendmsg("You're God Damn right!")
             break
@@ -50,6 +50,7 @@ async def ml(multiplicand, multiplier, obj=None):
 
 
 async def dl(dividend, divider, obj=None):
+    """Basic Division operation"""
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(dividend - 1):
@@ -74,9 +75,9 @@ async def dl(dividend, divider, obj=None):
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlmsg == '/restart':
+        if obj.readlmsg == '/restart':  # check for restart msg
             await obj.restart()
-        try:
+        try:  # check for previous msg and only after try to find next one
             if not re.search(r"^\/d[0-9]{1,6}", obj.readlmsg):
                 uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
                 uc1, uc2 = int(uc[0]), int(uc[1])
@@ -85,8 +86,8 @@ async def dl(dividend, divider, obj=None):
         except TypeError:
             continue
         if uc1 == obj.uc1 and uc2 == obj.uc2:
-            continue
-        obj.uc1 = uc1
+            continue  # if got old msg try again
+        obj.uc1 = uc1  # if got new msg assign it's values to vars
         obj.uc2 = uc2
         if uc1 == c1 and uc2 == c2:
             await obj.sendmsg("You're God Damn right!")
@@ -99,6 +100,7 @@ async def dl(dividend, divider, obj=None):
 
 
 async def vml(multiplicand, multiplier, matrix=2, obj=None):
+    """Linear Algebra operation: vector-matrix multiplication"""
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -111,18 +113,20 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         y2 *= 10
     y1 -= 1
     y2 -= 1
+    """start of specification block"""
+    """non-static vars for basic matricies specification"""
     a1 = random.randint(x1, y1)
     a2 = random.randint(x1, y1)
     b1 = random.randint(x1, y1)
     b2 = random.randint(x1, y1)
     l1 = random.randint(x2, y2)
     l2 = random.randint(x2, y2)
-    if matrix == 2:
+    if matrix == 2:  # here we don't need to specify more vars
         a = np.matrix([[a1, b1],
                        [a2, b2]])
         b = np.matrix([[l1],
                        [l2]])
-    elif matrix == 3:
+    elif matrix == 3:  # here we need to specify some more vars
         c1 = random.randint(x1, y1)
         c2 = random.randint(x1, y1)
         a3 = random.randint(x1, y1)
@@ -135,7 +139,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         b = np.matrix([[l1],
                        [l2],
                        [l3]])
-    elif matrix == 2.5:
+    elif matrix == 2.5:  # here we specify few more vars depending on choice
         choices = ["2x3", "3x2"]
         fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
         if matrix == 2.5 and fch == "2x3":
@@ -156,19 +160,21 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             b = np.matrix([[l1],
                            [l2]])
     c = np.matmul(a, b)
+    """end of specification block"""
+    """start of counting block"""
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
         c1, c2 = c[0], c[1]
         if c1 == obj.c1 or c2 == obj.c2:
             await vml(multiplicand, multiplier, obj=obj)
         obj.c1 = c2
         obj.c2 = c2
-        await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
+        await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':
+            if obj.readlmsg == '/restart':  # check for restart msg
                 await obj.restart()
-            try:
+            try:  # check for previous msg and only after try to find next one
                 if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
                     uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
                     uc1, uc2 = int(uc[0]), int(uc[1])
@@ -177,8 +183,8 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
-                continue
-            obj.uc1 = uc1
+                continue  # if got old msg try again
+            obj.uc1 = uc1  # if got new msg assign it's values to vars
             obj.uc2 = uc2
             if uc1 == c1 and uc2 == c2:
                 await obj.sendmsg("You're God Damn right!")
@@ -193,13 +199,13 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c1 = c1
         obj.c2 = c2
         obj.c3 = c3
-        await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
+        await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':
+            if obj.readlmsg == '/restart':  # check for restart msg
                 await obj.restart()
-            try:
+            try:  # check for previous msg and only after try to find next one
                 if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
                     uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
                     uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
@@ -208,8 +214,8 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
-                continue
-            obj.uc1 = uc1
+                continue  # if got old msg try again 
+            obj.uc1 = uc1  # if got new msg assign it's values to vars
             obj.uc2 = uc2
             obj.uc3 = uc3
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
@@ -221,6 +227,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
 
 
 async def mml(multiplicand, multiplier, matrix=2, obj=None):
+    """Linear Algebra operation: matrix-matrix multiplication"""
     x1, x2 = 1, 1
     y1, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -233,6 +240,8 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         y2 *= 10
     y1 -= 1
     y2 -= 1
+    """start of specification block"""
+    """non-static vars for basic matricies specification"""
     a1 = random.randint(x1, y1)
     a2 = random.randint(x1, y1)
     b1 = random.randint(x1, y1)
@@ -241,12 +250,12 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
     l2 = random.randint(x2, y2)
     q1 = random.randint(x2, y2)
     q2 = random.randint(x2, y2)
-    if matrix == 2:
+    if matrix == 2:  # here we don't need to specify more vars
         a = np.matrix([[a1, b1],
                        [a2, b2]])
         b = np.matrix([[l1, q1],
                        [l2, q2]])
-    elif matrix == 3:
+    elif matrix == 3:  # here we need to specify much more vars
         c1 = random.randint(x1, y1)
         c2 = random.randint(x1, y1)
         s1 = random.randint(x2, y2)
@@ -263,7 +272,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         b = np.matrix([[l1, q1, s1],
                        [l2, q2, s2],
                        [l3, q3, s3]])
-    elif matrix == 2.5:
+    elif matrix == 2.5:  # here we specify few more vars depending on choice
         choices = ["2x3", "3x2"]
         fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
         if matrix == 2.5 and fch == "2x3":
@@ -287,6 +296,8 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             b = np.matrix([[l1, q1, s1],
                            [l2, q2, s2]])
     c = np.matmul(a, b)
+    """end of specification block"""
+    """start of counting block"""
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
         c1, c2, c3, c4 = c[0, 0], c[0, 1], c[1, 0], c[1, 1]
         if c1 == obj.c1 or c2 == obj.c2:
@@ -297,13 +308,13 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c2 = c2
         obj.c3 = c3
         obj.c4 = c4
-        await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
+        await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':
+            if obj.readlmsg == '/restart':  # check for restart msg
                 await obj.restart()
-            try:
+            try:  # check for previous msg and only after try to find next one
                 if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
                     uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
                     uc1, uc2 = int(uc[0]), int(uc[1])
@@ -313,10 +324,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
-                continue
+                continue  # if got old msg try again
             elif uc3 == obj.uc3 and uc4 == obj.uc4:
                 continue
-            obj.uc1 = uc1
+            obj.uc1 = uc1  # if got new msg assign it's values to vars
             obj.uc2 = uc2
             obj.uc3 = uc3
             obj.uc4 = uc4
@@ -345,13 +356,13 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c7 = c7
         obj.c8 = c8
         obj.c9 = c9
-        await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
+        await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':
+            if obj.readlmsg == '/restart':  # check for restart msg
                 await obj.restart()
-            try:
+            try:  # check for previous msg and only after try to find next one
                 if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
                     uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
                     uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
@@ -362,12 +373,12 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
-                continue
+                continue  # if got old msg try again
             elif uc4 == obj.uc4 and uc5 == obj.uc5 and uc6 == obj.uc6:
                 continue
             elif uc7 == obj.uc7 and uc8 == obj.uc8 and uc9 == obj.uc9:
                 continue
-            obj.uc1 = uc1
+            obj.uc1 = uc1  # if got new msg assign it's values to vars
             obj.uc2 = uc2
             obj.uc3 = uc3
             obj.uc4 = uc4
