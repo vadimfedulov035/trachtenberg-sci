@@ -3,21 +3,25 @@ import asyncio
 import urllib
 import requests
 import json
-import tmath as tm  
+import tmath as tm
 
 
-with open('config.conf', 'r') as config:  
-    token = config.read().split('|')[1]  
+with open('config.conf', 'r') as config:
+    token = config.read().split('|')[1]
 
 
 class Bot():
 
     def __init__(self, tok, num):
-        self.number = num
-        self.token = tok
-        self.date = 0
-        self.timeout = 0.5
-        self.itera = 1
+        """static variables are defined here for correct start up"""
+        self.NUMBER = num  # num serves as enumerator of cid later
+        self.TOKEN = tok  # token for connection to API
+        self.TIMEOUT = 0.5  # best timeout for not overloading API
+        self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
+        self.URLR = self.URL + "/getupdates"
+        """non-static variables are defined here for further work"""
+        self.date = 0  # date set to zero will serve in expression as starter
+        self.itera = 1  # iteration counter
         self.c, self.uc = None, None
         self.c1, self.c2, self.c3 = None, None, None
         self.c4, self.c5, self.c6 = None, None, None
@@ -34,13 +38,13 @@ class Bot():
         self.numb_msg = False
         self.msized_msg = False
         self.restart_ch = False
-        self.url = f"https://api.telegram.org/bot{self.token}"
-        self.requp = self.url + "/getupdates"  
-        self.msgreq = urllib.request.urlopen(self.requp)  
-        self.rj = self.msgreq.read()  
+        """first request for getting chat ids (cids) is done here"""
+        self.msgreq = urllib.request.urlopen(self.URLR)
+        self.rj = self.msgreq.read()
         self.j = json.loads(self.rj.decode('utf-8'))
         n = 0
         cids = []
+        """parsing loop through all cids"""
         while True:
             try:
                 cid = self.j['result'][n]['message']['chat']['id']
@@ -49,101 +53,105 @@ class Bot():
                 n += 1
             except IndexError:
                 break
-        self.cid = int(cids[self.number])
-        print(f"{self.number}: {self.cid}")
+        self.CID = int(cids[self.NUMBER])  # we pick one cid based on num
+        print(f"{self.NUMBER}: {self.CID}")
 
     async def readmsg(self):
-        self.requp = self.url + "/getupdates"  
-        self.msgreq = urllib.request.urlopen(self.requp)  
+        """new reqest to get fresh json data"""
+        self.msgreq = urllib.request.urlopen(self.URLR)
         self.rj = self.msgreq.read()
         self.j = json.loads(self.rj.decode('utf-8'))
+        """loop through json to find last message by date"""
         for j in self.j['result']:
-            cid = j['message']['chat']['id']
-            if self.cid == cid:
+            cid = j['message']['chat']['id']  # check date only if cid is bot's
+            if cid == self.CID:
                 date = j['message']['date']
-                if date >= self.date:
-                    self.date = date
-                    self.readlm = j['message']['text']
+                if date >= self.date:  # if date is later then set before
+                    self.date = date  # got later date, linked message (msg)
+                    self.readlmsg = j['message']['text']  # got later msg
 
     async def sendmsg(self, msg):
-        self.reqadd = f"/sendmessage?text={msg}&chat_id={self.cid}"
-        self.reqms = self.url + self.reqadd
-        requests.get(self.reqms)
+        """integrate into static url cid and message"""
+        self.s = f"/sendmessage?text={msg}&chat_id={self.CID}"
+        self.urls = self.URL + self.s
+        requests.get(self.urls)
 
     async def start(self):
         while True:
             await self.readmsg()
-            if self.readlm == '/start' or self.restart_ch is True:
+            if self.readlmsg == '/start' or self.restart_ch is True:
                 f1 = "Started setting up! Type /restart when set up is done, "
                 f2 = "if you want to change your choice or start again!"
-                self.fmsg = f1 + f2
-                await self.sendmsg(self.fmsg)
-                if self.restart_ch is True:  
-                    self.restart_ch = False  
+                self.fmsg = f1 + f2  # combine first msg
+                await self.sendmsg(self.fmsg)  # send first msg
+                if self.restart_ch is True:
+                    self.restart_ch = False
                 self.count_msg = True
                 break
-            await asyncio.sleep(self.timeout)
+            await asyncio.sleep(self.TIMEOUT)
         await self.choice()
 
     async def restart(self):
-        self.__init__(token, self.number)
-        self.restart_ch = True  
+        self.__init__(token, self.NUMBER)
+        self.restart_ch = True
         await self.start()
 
     async def choice(self):
+        """choice of counting mode is done here"""
         while True:
-            await self.readmsg()
-            if self.choice_msg is False:  
+            await self.readmsg()  # read last msg and compare with commands
+            if self.choice_msg is False:
                 ch1 = "Do you want a matrix-matrix, vector-matrix, "
                 ch2 = "simple multiplication or simple division? "
                 ch3 = "(/mmul, /vmul, /mul or /div):"
-                chmsg = ch1 + ch2 + ch3
-                await self.sendmsg(chmsg)
+                chmsg = ch1 + ch2 + ch3  # combine choice msg
+                await self.sendmsg(chmsg)  # send choice msg
                 self.choice_msg = True
-            if self.readlm == '/mul':
+            if self.readlmsg == '/mul':
                 await self.sendmsg("Multiplication is chosen")
                 self.chosen = "mul"
                 break
-            elif self.readlm == '/div':
+            elif self.readlmsg == '/div':
                 await self.sendmsg("Division is chosen")
                 self.chosen = "div"
                 break
-            elif self.readlm == '/vmul':
+            elif self.readlmsg == '/vmul':
                 await self.sendmsg("Vector-matrix multiplication is chosen")
                 self.chosen = "vmul"
                 break
-            elif self.readlm == '/mmul':
+            elif self.readlmsg == '/mmul':
                 await self.sendmsg("Matrix-matrix multiplication is chosen")
                 self.chosen = "mmul"
                 break
-            await asyncio.sleep(self.timeout)
-        await self.numb()
+            await asyncio.sleep(self.TIMEOUT)  # timeout inside loop
+        await self.numb()  # go further only if we have choice made
 
     async def numb(self):
+        """choice of speed of increasing difficulty is made here"""
         while True:
-            await self.readmsg()
-            if self.numb_msg is False:  
+            await self.readmsg()  # read last msg and extract from command num
+            if self.numb_msg is False:
                 it1 = "How many iterations do you want before increasing "
                 it2 = "difficulty? (/d[num]):"
                 self.itmsg = it1 + it2
                 await self.sendmsg(self.itmsg)
                 self.numb_msg = True
             try:
-                self.rit = r"\/d([0-9]{1,6})"
-                self.rpass = re.find(self.rit, self.readlm)
-                self.rpass = int(self.rpass[1])
-            except AttributeError:
-                await asyncio.sleep(self.timeout)
-                continue
-            if self.rpass:
+                self.rpass = re.findall(r"^\/d([0-9]{1,6})", self.readlmsg)
+                self.rpass = int(self.rpass[0])  # num is extracted here
+            except IndexError:  # if not found (no new msgs)
+                await asyncio.sleep(self.TIMEOUT)
+                continue  # go to start of the loop
+            if self.rpass:  # if num exist we send info about mode
                 await self.sendmsg(f"Have chosen {self.rpass} iterations mode")
                 break
         if self.chosen == 'vmul' or self.chosen == 'mmul':
-            await self.msized()
+            await self.msized()  # for matrix operations we need their size
         else:
-            await self.count()
+            await self.count()  # for basic operation we start counting now
 
     async def msized(self):
+        """choice of matrix size is made here"""
         while True:
             await self.readmsg()
             if self.msized_msg is False:
@@ -154,74 +162,75 @@ class Bot():
                 await self.sendmsg(self.msmsg)
                 self.msized_msg = True
             try:
-                self.smatr = re.find(r"\/m([2-4])", self.readlm)
-                self.smatr = int(self.smatr[1])
-            except AttributeError:
-                await asyncio.sleep(self.timeout)
-                continue
-            if self.smatr == 4:
+                self.smatr = re.findall(r"^\/m([2-4])", self.readlmsg)
+                self.smatr = int(self.smatr[0])
+            except IndexError:  # if not found (no new msgs)
+                await asyncio.sleep(self.TIMEOUT)
+                continue  # go to start of the loop
+            if self.smatr == 4:  # 4th option is variation of 2 and 3
                 self.msize = 2.5
                 break
-            else:
+            else:  # otherwise we set int to variable
                 self.msize = self.smatr
                 break
-        await self.count()
+        await self.count()  # start counting now
 
     async def count(self):
-        while True:
+        """counting is done here"""
+        while True:  # endless loop unless function restarts bot
             if self.chosen == 'mul':
-                if self.rpass == 1:  
+                if self.rpass == 1:  # for value of 1 we use different approach
                     if self.itera % 2 == 1 and self.itera != 1:
-                        self.mnum[0] += 1
+                        self.mnum[0] += 1  # every 2 pass increase first num
                     elif self.itera % 2 == 0 and self.itera != 1:
-                        self.mnum[1] += 1
-                else:
+                        self.mnum[1] += 1  # every 1 pass increase second num
+                else:  # otherwise use standard algorithm
                     if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                        self.mnum[0] += 1  
+                        self.mnum[0] += 1  # every 2 pass increase first num
                     elif self.itera % self.rpass == 1 and self.itera != 1:
-                        self.mnum[1] += 1  
+                        self.mnum[1] += 1  # every 1 pass increase second num
                 self.n1, self.n2 = self.mnum[0], self.mnum[1]
                 await tm.ml(self.n1, self.n2, obj=self)
             elif self.chosen == 'div':
-                if self.rpass == 1:  
+                if self.rpass == 1:  # for value of 1 we use different approach
                     if self.itera % 2 == 1 and self.itera != 1:
-                        self.dnum[1] += 1
+                        self.dnum[1] += 1  # every 2 pass increase second num
                     elif self.itera % 2 == 0 and self.itera != 1:
-                        self.dnum[0] += 1
-                else:
+                        self.dnum[0] += 1  # every 1 pass increase first num
+                else:  # otherwise use standard algorithm
                     if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                        self.dnum[1] += 1  
+                        self.dnum[1] += 1  # every 2 pass increase second num
                     elif self.itera % self.rpass == 1 and self.itera != 1:
-                        self.dnum[0] += 1  
+                        self.dnum[0] += 1  # every 1 pass increase first num
                 self.n1, self.n2 = self.dnum[0], self.dnum[1]
                 await tm.dl(self.n1, self.n2, obj=self)
             elif self.chosen == 'vmul':
-                if self.rpass == 1:  
+                if self.rpass == 1:  # for value of 1 we use different approach
                     if self.itera % 2 == 1 and self.itera != 1:
-                        self.vmnum[1] += 1  
+                        self.vmnum[1] += 1  # every 2 pass increase second num
                     elif self.itera % 2 == 0 and self.itera != 1:
-                        self.vmnum[0] += 1  
-                else:
+                        self.vmnum[0] += 1  # every 1 pass increase first num
+                else:  # otherwise use standard algorithm
                     if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                        self.mmnum[1] += 1  
+                        self.mmnum[1] += 1  # every 2 pass increase second num
                     elif self.itera % self.rpass == 1 and self.itera != 1:
-                        self.vmnum[0] += 1  
+                        self.vmnum[0] += 1  # every 1 pass increase first num
                 self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
                 await tm.vml(self.n1, self.n2, matrix=self.msize, obj=self)
             elif self.chosen == 'mmul':
-                if self.rpass == 1:  
+                if self.rpass == 1:  # for value of 1 we use different approach
                     if self.itera % 2 == 1 and self.itera != 1:
-                        self.mmnum[1] += 1  
+                        self.mmnum[1] += 1  # every 2 pass increase second num
                     elif self.itera % 2 == 0 and self.itera != 1:
-                        self.mmnum[0] += 1  
-                else:
+                        self.mmnum[0] += 1  # every 1 pass increase first num
+                else:  # otherwise use standard algorithm
                     if self.itera % (self.rpass * 2) == 1 and self.itera != 1:
-                        self.mmnum[1] += 1  
+                        self.mmnum[1] += 1  # every 1 pass increase second num
                     elif self.itera % self.rpass == 1 and self.itera != 1:
-                        self.mmnum[0] += 1  
+                        self.mmnum[0] += 1  # every 2 pass increase first num
                 self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
                 await tm.mml(self.n1, self.n2, matrix=self.msize, obj=self)
-            self.itera += 1
+            self.itera += 1  # add 1 to iterator for algorithm counting
 
 
 nbot = 0
@@ -384,3 +393,4 @@ elif nbot == 10:
             pbot10.start()
             )
 
+asyncio.run(main())

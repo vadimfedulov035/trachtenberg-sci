@@ -25,14 +25,17 @@ async def ml(multiplicand, multiplier, obj=None):
     obj.c = c
     await obj.sendmsg(f"{a} * {b} = ?")
     while True:
-        await asyncio.sleep(obj.timeout)
+        await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlm == '/restart':
+        if obj.readlmsg == '/restart':
             await obj.restart()
         try:
-            uc = re.findall(r"([0-9]{1,10})", obj.readlm)
-            uc = int(uc[0])
-        except:
+            if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
+                uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
+                uc = int(uc[0])
+            else:
+                raise TypeError("Got no new messages!")
+        except TypeError:
             continue
         print(uc)
         if uc == obj.uc:
@@ -69,14 +72,17 @@ async def dl(dividend, divider, obj=None):
     obj.c2 = c2
     await obj.sendmsg(f"{a} // | % {b} = ?")
     while True:
-        await asyncio.sleep(obj.timeout)
+        await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlm == '/restart':
+        if obj.readlmsg == '/restart':
             await obj.restart()
         try:
-            uc = re.findall(r"[0-9]{1,10}", obj.readlm)
-            uc1, uc2 = int(uc[0]), int(uc[1])
-        except:
+            if not re.search(r"^\/d[0-9]{1,6}", obj.readlmsg):
+                uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
+                uc1, uc2 = int(uc[0]), int(uc[1])
+            else:
+                raise TypeError("Got no new messages!")
+        except TypeError:
             continue
         if uc1 == obj.uc1 and uc2 == obj.uc2:
             continue
@@ -86,7 +92,9 @@ async def dl(dividend, divider, obj=None):
             await obj.sendmsg("You're God Damn right!")
             break
         else:
-            await obj.sendmsg(f"No, right answer is {c1} with residual of {c2}!")
+            msg1 = f"No, right answer is {c1} "
+            msg2 = f"with residual of {c2}!"
+            await obj.sendmsg(msg1+msg2)
             break
 
 
@@ -156,14 +164,17 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c2 = c2
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
         while True:
-            await asyncio.sleep(obj.timeout)
+            await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlm == '/restart':
+            if obj.readlmsg == '/restart':
                 await obj.restart()
             try:
-                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
-                uc1, uc2 = int(uc[0]), int(uc[1])
-            except:
+                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
+                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
+                    uc1, uc2 = int(uc[0]), int(uc[1])
+                else:
+                    raise TypeError('Got no new messages!')
+            except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
                 continue
@@ -184,14 +195,17 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c3 = c3
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
         while True:
-            await asyncio.sleep(obj.timeout)
+            await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlm == '/restart':
+            if obj.readlmsg == '/restart':
                 await obj.restart()
             try:
-                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
-                uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
-            except:
+                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
+                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
+                    uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
+                else:
+                    raise TypeError('Got no new messages!')
+            except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
                 continue
@@ -285,15 +299,18 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c4 = c4
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
         while True:
-            await asyncio.sleep(obj.timeout)
+            await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlm == '/restart':
+            if obj.readlmsg == '/restart':
                 await obj.restart()
             try:
-                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
-                uc1, uc2 = int(uc[0]), int(uc[1])
-                uc3, uc4 = int(uc[2]), int(uc[3])
-            except:
+                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
+                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
+                    uc1, uc2 = int(uc[0]), int(uc[1])
+                    uc3, uc4 = int(uc[2]), int(uc[3])
+                else:
+                    raise TypeError('Got no new messages!')
+            except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
                 continue
@@ -307,7 +324,9 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}")
+                msg1 = "No, right answer is "
+                msg2 = f"{c1}, {c2}, {c3}, {c4}"
+                await obj.sendmsg(msg1+msg2)
                 break
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
         c1, c2, c3 = c[0, 0], c[0, 1], c[0, 2]
@@ -328,16 +347,19 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c9 = c9
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
         while True:
-            await asyncio.sleep(obj.timeout)
+            await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlm == '/restart':
+            if obj.readlmsg == '/restart':
                 await obj.restart()
             try:
-                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
-                uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
-                uc4, uc5, uc6 = int(uc[3]), int(uc[4]), int(uc[5])
-                uc7, uc8, uc9 = int(uc[6]), int(uc[7]), int(uc[8])
-            except:
+                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
+                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
+                    uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
+                    uc4, uc5, uc6 = int(uc[3]), int(uc[4]), int(uc[5])
+                    uc7, uc8, uc9 = int(uc[6]), int(uc[7]), int(uc[8])
+                else:
+                    raise TypeError('Got no new messages!')
+            except TypeError:
                 continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
                 continue
@@ -358,5 +380,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}, {c5}, {c6}, {c7}, {c8}, {c9}!")
+                msg1 = "No, right answer is "
+                msg2 = f"{c1}, {c2}, {c3}, {c4}, {c5}, {c6}, {c7}, {c8}, {c9}!"
+                await obj.sendmsg(msg1+msg2)
                 break
