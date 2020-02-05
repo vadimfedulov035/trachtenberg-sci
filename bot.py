@@ -13,14 +13,11 @@ with open('config.conf', 'r') as config:
 class Bot():
 
     def __init__(self, tok, num):
-        
         self.number = num
         self.token = tok
         self.date = 0
-        
         self.timeout = 0.5
         self.itera = 1
-        
         self.c, self.uc = None, None
         self.c1, self.c2, self.c3 = None, None, None
         self.c4, self.c5, self.c6 = None, None, None
@@ -28,21 +25,16 @@ class Bot():
         self.uc1, self.uc2, self.uc3 = None, None, None
         self.uc4, self.uc5, self.uc6 = None, None, None
         self.uc7, self.uc8, self.uc9 = None, None, None
-        
         self.mnum = [2, 1]
         self.dnum = [4, 2]
         self.vmnum = [1, 2]
         self.mmnum = [1, 2]
-        
         self.start_msg = False
         self.choice_msg = False
         self.numb_msg = False
         self.msized_msg = False
-        
         self.restart_ch = False
-        
         self.url = f"https://api.telegram.org/bot{self.token}"
-        
         self.requp = self.url + "/getupdates"  
         self.msgreq = urllib.request.urlopen(self.requp)  
         self.rj = self.msgreq.read()  
@@ -74,22 +66,17 @@ class Bot():
                     self.readlm = j['message']['text']
 
     async def sendmsg(self, msg):
-        
         self.reqadd = f"/sendmessage?text={msg}&chat_id={self.cid}"
-        
         self.reqms = self.url + self.reqadd
-        
         requests.get(self.reqms)
 
     async def start(self):
-
         while True:
             await self.readmsg()
             if self.readlm == '/start' or self.restart_ch is True:
                 f1 = "Started setting up! Type /restart when set up is done, "
-                f2 = "if you want to change your choice or start again! "
-                f3 = "Don't delete dialog fully!"
-                self.fmsg = f1 + f2 + f3
+                f2 = "if you want to change your choice or start again!"
+                self.fmsg = f1 + f2
                 await self.sendmsg(self.fmsg)
                 if self.restart_ch is True:  
                     self.restart_ch = False  
@@ -143,8 +130,8 @@ class Bot():
                 self.numb_msg = True
             try:
                 self.rit = r"\/d([0-9]{1,6})"
-                self.rpass = re.search(self.rit, self.readlm)
-                self.rpass = int(str(self.rpass.group(1)))
+                self.rpass = re.find(self.rit, self.readlm)
+                self.rpass = int(self.rpass[1])
             except AttributeError:
                 await asyncio.sleep(self.timeout)
                 continue
@@ -167,8 +154,8 @@ class Bot():
                 await self.sendmsg(self.msmsg)
                 self.msized_msg = True
             try:
-                self.smatr = re.search(r"\/m([2-4])", self.readlm)
-                self.smatr = int(str(self.smatr.group(1)))
+                self.smatr = re.find(r"\/m([2-4])", self.readlm)
+                self.smatr = int(self.smatr[1])
             except AttributeError:
                 await asyncio.sleep(self.timeout)
                 continue
@@ -240,7 +227,6 @@ class Bot():
 nbot = 0
 
 while True:
-
     try:
         pbot1 = Bot(token, 0)
         nbot += 1

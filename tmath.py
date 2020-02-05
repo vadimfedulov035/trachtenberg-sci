@@ -30,14 +30,14 @@ async def ml(multiplicand, multiplier, obj=None):
         if obj.readlm == '/restart':
             await obj.restart()
         try:
-            uc = re.search(r"^([0-9]{1,10})", obj.readlm)
-            uc = int(str(uc.group(1)))
+            uc = re.findall(r"([0-9]{1,10})", obj.readlm)
+            uc = int(uc[0])
         except:
             continue
         print(uc)
-        if uc == obj.uc:  g
-            continue  g
-        obj.uc = uc  g
+        if uc == obj.uc:
+            continue
+        obj.uc = uc
         if uc == c:
             await obj.sendmsg("You're God Damn right!")
             break
@@ -63,11 +63,10 @@ async def dl(dividend, divider, obj=None):
     b = random.randint(x2, y2)
     c1 = a // b
     c2 = a % b
-    g
     if c1 == obj.c1 or c2 == obj.c2:
         await dl(dividend, divider, obj=obj)
-    obj.c1 = c1  g
-    obj.c2 = c2  g
+    obj.c1 = c1
+    obj.c2 = c2
     await obj.sendmsg(f"{a} // | % {b} = ?")
     while True:
         await asyncio.sleep(obj.timeout)
@@ -75,14 +74,14 @@ async def dl(dividend, divider, obj=None):
         if obj.readlm == '/restart':
             await obj.restart()
         try:
-            uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
-            uc1, uc2 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2)])
+            uc = re.findall(r"[0-9]{1,10}", obj.readlm)
+            uc1, uc2 = int(uc[0]), int(uc[1])
         except:
             continue
-        if uc1 == obj.uc1 and uc2 == obj.uc2:  g
-            continue  g
-        obj.uc1 = uc1  g
-        obj.uc2 = uc2  g
+        if uc1 == obj.uc1 and uc2 == obj.uc2:
+            continue
+        obj.uc1 = uc1
+        obj.uc2 = uc2
         if uc1 == c1 and uc2 == c2:
             await obj.sendmsg("You're God Damn right!")
             break
@@ -150,11 +149,10 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                            [l2]])
     c = np.matmul(a, b)
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
-        c1, c2 = map(lambda x: int(x), [c[0], c[1]])
-        g
+        c1, c2 = c[0], c[1]
         if c1 == obj.c1 or c2 == obj.c2:
             await vml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c2  g
+        obj.c1 = c2
         obj.c2 = c2
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
         while True:
@@ -163,13 +161,13 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
-                uc1, uc2 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2)])
+                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
+                uc1, uc2 = int(uc[0]), int(uc[1])
             except:
                 continue
-            if uc1 == obj.uc1 and uc2 == obj.uc2:  g
-                continue  g
-            obj.uc1 = uc1  g
+            if uc1 == obj.uc1 and uc2 == obj.uc2:
+                continue
+            obj.uc1 = uc1
             obj.uc2 = uc2
             if uc1 == c1 and uc2 == c2:
                 await obj.sendmsg("You're God Damn right!")
@@ -178,11 +176,10 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg(f"No, right answer is {c1}, {c2}!")
                 break
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
-        c1, c2, c3 = map(lambda x: int(x), [c[0], c[1], c[2]])
-        g
+        c1, c2, c3 = c[0], c[1], c[2]
         if c1 == obj.c1 or c2 == obj.c2 or c3 == obj.c3:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1  g
+        obj.c1 = c1
         obj.c2 = c2
         obj.c3 = c3
         await obj.sendmsg(f"{a}\n*\n{b}\n= ?")
@@ -192,13 +189,13 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
-                uc1, uc2, uc3 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2), uc.group(3)])
+                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
+                uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
             except:
                 continue
-            if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:  g
-                continue  g
-            obj.uc1 = uc1  g
+            if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
+                continue
+            obj.uc1 = uc1
             obj.uc2 = uc2
             obj.uc3 = uc3
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
@@ -277,13 +274,12 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                            [l2, q2, s2]])
     c = np.matmul(a, b)
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
-        c1, c2, c3, c4 = map(lambda x: int(x), [c[0, 0], c[0, 1], c[1, 0], c[1, 1]])
-        g
+        c1, c2, c3, c4 = c[0, 0], c[0, 1], c[1, 0], c[1, 1]
         if c1 == obj.c1 or c2 == obj.c2:
             await mml(multiplicand, multiplier, obj=obj)
         elif c3 == obj.c3 or c4 == obj.c4:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1  g
+        obj.c1 = c1
         obj.c2 = c2
         obj.c3 = c3
         obj.c4 = c4
@@ -294,15 +290,16 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
-                uc1, uc2, uc3, uc4 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2), uc.group(3), uc.group(4)])
+                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
+                uc1, uc2 = int(uc[0]), int(uc[1])
+                uc3, uc4 = int(uc[2]), int(uc[3])
             except:
                 continue
-            if uc1 == obj.uc1 and uc2 == obj.uc2:  g
-                continue  g
+            if uc1 == obj.uc1 and uc2 == obj.uc2:
+                continue
             elif uc3 == obj.uc3 and uc4 == obj.uc4:
                 continue
-            obj.uc1 = uc1  g
+            obj.uc1 = uc1
             obj.uc2 = uc2
             obj.uc3 = uc3
             obj.uc4 = uc4
@@ -313,15 +310,14 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}, {c4}")
                 break
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
-        c1, c2, c3 = map(lambda x: int(x), [c[0, 0], c[0, 1], c[0, 2]])
-        c4, c5, c6 = map(lambda x: int(x), [c[1, 0], c[1, 1], c[1, 2]])
-        c7, c8, c9 = map(lambda x: int(x), [c[2, 1], c[2, 1], c[2, 2]])
-        g
+        c1, c2, c3 = c[0, 0], c[0, 1], c[0, 2]
+        c4, c5, c6 = c[1, 0], c[1, 1], c[1, 2]
+        c7, c8, c9 = c[2, 1], c[2, 1], c[2, 2]
         if c1 == obj.c1 or c2 == obj.c2 or c3 == obj.c3:
             await mml(multiplicand, multiplier, obj=obj)
         elif c4 == obj.c4 or c5 == obj.c5 or c6 == obj.c6:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1  g
+        obj.c1 = c1
         obj.c2 = c2
         obj.c3 = c3
         obj.c4 = c4
@@ -337,14 +333,14 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             if obj.readlm == '/restart':
                 await obj.restart()
             try:
-                uc = re.search(r"^([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10}),\s([0-9]{1,10})\,\s([0-9]{1,10})\,\s([0-9]{1,10})", obj.readlm)
-                uc1, uc2, uc3 = map(lambda x: int(str(x)), [uc.group(1), uc.group(2), uc.group(3)])
-                uc4, uc5, uc6 = map(lambda x: int(str(x)), [uc.group(4), uc.group(5), uc.group(6)])
-                uc7, uc8, uc9 = map(lambda x: int(str(x)), [uc.group(7), uc.group(8), uc.group(9)])
+                uc = re.findall(r"[0-9]{1,10}", obj.readlm)
+                uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
+                uc4, uc5, uc6 = int(uc[3]), int(uc[4]), int(uc[5])
+                uc7, uc8, uc9 = int(uc[6]), int(uc[7]), int(uc[8])
             except:
                 continue
-            if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:  g
-                continue  g
+            if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
+                continue
             elif uc4 == obj.uc4 and uc5 == obj.uc5 and uc6 == obj.uc6:
                 continue
             elif uc7 == obj.uc7 and uc8 == obj.uc8 and uc9 == obj.uc9:
