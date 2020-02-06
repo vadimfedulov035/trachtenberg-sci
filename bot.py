@@ -20,10 +20,11 @@ class Bot():
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
         self.ERROR = "Sorry, I didn't understand you, I will restart dialog!"
+        self.MISTYPE = "Sorry, I didn't understand you, type more clearly!"
         """non-static variables are defined here for further work"""
         self.date = 0  # date set to zero will serve in expression as starter
         self.itera = 1  # iteration counter
-        self.nearrest = False
+        self.prevmsg = None
         self.c, self.uc = None, None
         self.c1, self.c2, self.c3 = None, None, None
         self.c4, self.c5, self.c6 = None, None, None
@@ -83,8 +84,9 @@ class Bot():
             await self.readmsg()
             if self.readlmsg == '/start' or self.restart_ch is True:
                 f1 = "Started setting up! Type /restart when, "
-                f2 = "if you want to change your choice(s) and start again!"
-                self.fmsg = f1 + f2  # combine first msg
+                f2 = "if you want to change your choice(s) and start again, "
+                f3 = "you can restart after at least one made choice!"
+                self.fmsg = f1 + f2 + f3  # combine first msg
                 await self.sendmsg(self.fmsg)  # send first msg
                 if self.restart_ch is True:
                     self.restart_ch = False
@@ -258,58 +260,49 @@ while True:
         pbot2 = Bot(token, 1)
         nbot += 1
     except IndexError:
-        print("One user connected")
         break
     try:
         pbot3 = Bot(token, 2)
         nbot += 1
     except IndexError:
-        print("Two users connected")
         break
     try:
         pbot4 = Bot(token, 3)
         nbot += 1
     except IndexError:
-        print("Three users connected")
         break
     try:
         pbot5 = Bot(token, 4)
         nbot += 1
     except IndexError:
-        print("Four users connected")
         break
     try:
         pbot6 = Bot(token, 5)
         nbot += 1
     except IndexError:
-        print("Five users connected")
         break
     try:
         pbot7 = Bot(token, 6)
         nbot += 1
     except IndexError:
-        print("Six users connected")
         break
     try:
         pbot8 = Bot(token, 7)
         nbot += 1
     except IndexError:
-        print("Seven users connected")
         break
     try:
         pbot9 = Bot(token, 8)
         nbot += 1
     except IndexError:
-        print("Eight users connected")
         break
     try:
         pbot10 = Bot(token, 9)
         nbot += 1
     except IndexError:
-        print("Nine users connected")
         break
     else:
-        print("Ten users connected, maximum overload")
+        print("Maximum overload")
 
 if nbot == 1:
     async def main():

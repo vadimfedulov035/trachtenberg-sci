@@ -25,19 +25,22 @@ async def ml(multiplicand, multiplier, obj=None):
         await ml(multiplicand, multiplier, obj=obj)
     obj.c = c
     await obj.sendmsg(f"{a} * {b} = ?")
+    obj.prevmsg = obj.readlmsg
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
         if obj.readlmsg == '/restart':  # check for restart msg
             await obj.restart()
-        try:  # check for previous msg and only after try to find next one
-            if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
+        elif obj.readlmsg == obj.prevmsg:
+            continue
+        else:
+            try:
                 uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                 uc = int(uc[0])
-            else:
-                raise TypeError("Got no new messages!")
-        except TypeError:
-            continue
+            except IndexError:
+                await obj.sendmsg(obj.MISTYPE)
+                obj.prevmsg = obj.readlmsg
+                continue
         if uc == obj.uc:
             continue  # if got old msg try again
         obj.uc = uc  # if got new msg assign it value to var
@@ -72,19 +75,22 @@ async def dl(dividend, divider, obj=None):
     obj.c1 = c1
     obj.c2 = c2
     await obj.sendmsg(f"{a} // | % {b} = ?")
+    obj.prevmsg = obj.readlmsg
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
         if obj.readlmsg == '/restart':  # check for restart msg
             await obj.restart()
-        try:  # check for previous msg and only after try to find next one
-            if not re.search(r"^\/d[0-9]{1,6}", obj.readlmsg):
-                uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
-                uc1, uc2 = int(uc[0]), int(uc[1])
-            else:
-                raise TypeError("Got no new messages!")
-        except TypeError:
+        elif obj.readlmsg == obj.prevmsg:
             continue
+        else:
+            try:
+                uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
+                uc1, uc2 = int(uc[0]), int(uc[1])
+            except IndexError:
+                await obj.sendmsg(obj.MISTYPE)
+                obj.prevmsg = obj.readlmsg
+                continue
         if uc1 == obj.uc1 and uc2 == obj.uc2:
             continue  # if got old msg try again
         obj.uc1 = uc1  # if got new msg assign it's values to vars
@@ -169,19 +175,22 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c1 = c2
         obj.c2 = c2
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
+        obj.prevmsg = obj.readlmsg
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
             if obj.readlmsg == '/restart':  # check for restart msg
                 await obj.restart()
-            try:  # check for previous msg and only after try to find next one
-                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
-                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
-                    uc1, uc2 = int(uc[0]), int(uc[1])
-                else:
-                    raise TypeError('Got no new messages!')
-            except TypeError:
+            elif obj.readlmsg == obj.prevmsg:
                 continue
+            else:
+                try:
+                    uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
+                    uc1, uc2 = int(uc[0]), int(uc[1])
+                except IndexError:
+                    await obj.sendmsg(obj.MISTYPE)
+                    obj.prevmsg = obj.readlmsg
+                    continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
                 continue  # if got old msg try again
             obj.uc1 = uc1  # if got new msg assign it's values to vars
@@ -200,19 +209,22 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c2 = c2
         obj.c3 = c3
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
+        obj.prevmsg = obj.readlmsg
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
             if obj.readlmsg == '/restart':  # check for restart msg
                 await obj.restart()
-            try:  # check for previous msg and only after try to find next one
-                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
-                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
-                    uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
-                else:
-                    raise TypeError('Got no new messages!')
-            except TypeError:
+            elif obj.readlmsg == obj.prevmsg:
                 continue
+            else:
+                try:
+                    uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
+                    uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
+                except IndexError:
+                    await obj.sendmsg(obj.MISTYPE)
+                    obj.prevmsg = obj.readlmsg
+                    continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
                 continue  # if got old msg try again 
             obj.uc1 = uc1  # if got new msg assign it's values to vars
@@ -309,20 +321,23 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c3 = c3
         obj.c4 = c4
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
+        obj.prevmsg = obj.readlmsg
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
             if obj.readlmsg == '/restart':  # check for restart msg
                 await obj.restart()
-            try:  # check for previous msg and only after try to find next one
-                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
-                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
+            elif obj.readlmsg == obj.prevmsg:
+                continue
+            else:
+                try:
+                    uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                     uc1, uc2 = int(uc[0]), int(uc[1])
                     uc3, uc4 = int(uc[2]), int(uc[3])
-                else:
-                    raise TypeError('Got no new messages!')
-            except TypeError:
-                continue
+                except IndexError:
+                    await obj.sendmsg(obj.MISTYPE)
+                    obj.prevmsg = obj.readlmsg
+                    continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
                 continue  # if got old msg try again
             elif uc3 == obj.uc3 and uc4 == obj.uc4:
@@ -357,21 +372,25 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         obj.c8 = c8
         obj.c9 = c9
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
+        obj.prevmsg = obj.readlmsg
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
             if obj.readlmsg == '/restart':  # check for restart msg
+                print(obj.readlmsg)
                 await obj.restart()
-            try:  # check for previous msg and only after try to find next one
-                if not re.search(r"^\/(d|m)[0-9]{1,6}", obj.readlmsg):
-                    uc = re.findall(r"[0-9]{1,10}", obj.readlmsg)
+            elif obj.readlmsg == obj.prevmsg:
+                continue
+            else:
+                try:
+                    uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                     uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
                     uc4, uc5, uc6 = int(uc[3]), int(uc[4]), int(uc[5])
                     uc7, uc8, uc9 = int(uc[6]), int(uc[7]), int(uc[8])
-                else:
-                    raise TypeError('Got no new messages!')
-            except TypeError:
-                continue
+                except IndexError:
+                    await obj.sendmsg(obj.MISTYPE)
+                    obj.prevmsg = obj.readlmsg
+                    continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
                 continue  # if got old msg try again
             elif uc4 == obj.uc4 and uc5 == obj.uc5 and uc6 == obj.uc6:
