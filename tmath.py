@@ -199,7 +199,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                await obj.sendmsg(f"No, right answer is {c1}, {c2}!")
+                await obj.sendmsg(f"No, right answer is\n{c}!")
                 break
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
         c1, c2, c3 = c[0], c[1], c[2]
@@ -234,7 +234,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                await obj.sendmsg(f"No, right answer is {c1}, {c2}, {c3}!")
+                await obj.sendmsg(f"No, right answer is\n{c}!")
                 break
 
 
@@ -350,9 +350,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                msg1 = "No, right answer is "
-                msg2 = f"{c1}, {c2}, {c3}, {c4}"
-                await obj.sendmsg(msg1+msg2)
+                await obj.sendmsg(f"No, right answer is\n{c}")
                 break
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
         c1, c2, c3 = c[0, 0], c[0, 1], c[0, 2]
@@ -410,7 +408,5 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 await obj.sendmsg("You're God Damn right!")
                 break
             else:
-                msg1 = "No, right answer is "
-                msg2 = f"{c1}, {c2}, {c3}, {c4}, {c5}, {c6}, {c7}, {c8}, {c9}!"
-                await obj.sendmsg(msg1+msg2)
+                await obj.sendmsg(f"No, right answer is\n{c}")
                 break
