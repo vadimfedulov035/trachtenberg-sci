@@ -29,7 +29,7 @@ async def ml(multiplicand, multiplier, obj=None):
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlmsg == '/restart':  # check for restart msg
+        if obj.readlmsg == "/restart":  # check for restart msg
             await obj.restart()
         elif obj.readlmsg == obj.prevmsg:
             continue
@@ -79,7 +79,7 @@ async def dl(dividend, divider, obj=None):
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlmsg == '/restart':  # check for restart msg
+        if obj.readlmsg == "/restart":  # check for restart msg
             await obj.restart()
         elif obj.readlmsg == obj.prevmsg:
             continue
@@ -93,7 +93,7 @@ async def dl(dividend, divider, obj=None):
                 continue
         if uc1 == obj.uc1 and uc2 == obj.uc2:
             continue  # if got old msg try again
-        obj.uc1 = uc1  # if got new msg assign it's values to vars
+        obj.uc1 = uc1  # if got new msg assign it"s values to vars
         obj.uc2 = uc2
         if uc1 == c1 and uc2 == c2:
             await obj.sendmsg("You're God Damn right!")
@@ -127,7 +127,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
     b2 = random.randint(x1, y1)
     l1 = random.randint(x2, y2)
     l2 = random.randint(x2, y2)
-    if matrix == 2:  # here we don't need to specify more vars
+    if matrix == 2:  # here we don"t need to specify more vars
         a = np.matrix([[a1, b1],
                        [a2, b2]])
         b = np.matrix([[l1],
@@ -179,7 +179,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':  # check for restart msg
+            if obj.readlmsg == "/restart":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
                 continue
@@ -193,7 +193,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
                 continue  # if got old msg try again
-            obj.uc1 = uc1  # if got new msg assign it's values to vars
+            obj.uc1 = uc1  # if got new msg assign it"s values to vars
             obj.uc2 = uc2
             if uc1 == c1 and uc2 == c2:
                 await obj.sendmsg("You're God Damn right!")
@@ -213,7 +213,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':  # check for restart msg
+            if obj.readlmsg == "/restart":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
                 continue
@@ -226,8 +226,8 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     obj.prevmsg = obj.readlmsg
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
-                continue  # if got old msg try again 
-            obj.uc1 = uc1  # if got new msg assign it's values to vars
+                continue  # if got old msg try again
+            obj.uc1 = uc1  # if got new msg assign it"s values to vars
             obj.uc2 = uc2
             obj.uc3 = uc3
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
@@ -262,7 +262,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
     l2 = random.randint(x2, y2)
     q1 = random.randint(x2, y2)
     q2 = random.randint(x2, y2)
-    if matrix == 2:  # here we don't need to specify more vars
+    if matrix == 2:  # here we don"t need to specify more vars
         a = np.matrix([[a1, b1],
                        [a2, b2]])
         b = np.matrix([[l1, q1],
@@ -325,7 +325,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':  # check for restart msg
+            if obj.readlmsg == "/restart":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
                 continue
@@ -342,7 +342,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 continue  # if got old msg try again
             elif uc3 == obj.uc3 and uc4 == obj.uc4:
                 continue
-            obj.uc1 = uc1  # if got new msg assign it's values to vars
+            obj.uc1 = uc1  # if got new msg assign it"s values to vars
             obj.uc2 = uc2
             obj.uc3 = uc3
             obj.uc4 = uc4
@@ -374,7 +374,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == '/restart':  # check for restart msg
+            if obj.readlmsg == "/restart":  # check for restart msg
                 print(obj.readlmsg)
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
@@ -395,7 +395,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 continue
             elif uc7 == obj.uc7 and uc8 == obj.uc8 and uc9 == obj.uc9:
                 continue
-            obj.uc1 = uc1  # if got new msg assign it's values to vars
+            obj.uc1 = uc1  # if got new msg assign it"s values to vars
             obj.uc2 = uc2
             obj.uc3 = uc3
             obj.uc4 = uc4
