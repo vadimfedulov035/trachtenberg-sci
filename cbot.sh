@@ -2,26 +2,13 @@
 
 echo "Start of cbot"
 
-./cbot.exe
+xfce4-terminal -e /home/devbr/Documents/Projects/trachtenberg-sci/__cbot__/cbot.exe
 
-wloop(){
 while true; do
-        if [ -z `fping "api.telegram.org" | grep "alive"` ]; then
-                printf "\nConnection was lost! Now waiting 5s and trying to restart cbot!"
-                wait 5
-        else
-		killall cbot.exe
-                ./cbot.exe & cloop
-        fi
-done
-}
-
-cloop(){
-while true; do
-	if [ `date | cut -d" " -f 5 | cut -d":" -f 2` = 00 ]; then
-		wloop
-	else
-		wait 5
+	if [ `fping "api.telegram.org" | grep "alive" | cut -d" " -f 3` != "alive" ]; then
+		printf "\nConnection was lost! Now waiting 10s and trying to restart cbot!"
+	elif [ `date | cut -d" " -f 5 | cut -d":" -f 2` == "00" ]; then
+		killall cbot.exe; xfce4-terminal -e /home/devbr/Documents/Projects/trachtenberg-sci/__cbot__/cbot.exe
 	fi
+	wait 10
 done
-}
