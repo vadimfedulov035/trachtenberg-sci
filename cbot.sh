@@ -6,7 +6,7 @@ tgerr=false
 xfce4-terminal -e "./cbot.exe"
 
 while true; do
-        if [ $((10#`ping api.telegram.org -q -c 10 | sed -n '4p' | cut -d' ' -f 4` -ge 10#5)) ]; then
+	if [ `ping api.telegram.org -q -c 10 | sed -n '4p' | cut -d' ' -f 4` -le 5 ]; then
 		printf "\nConnection was lost! Now waiting 10 seconds and trying to restart cbot!"
 		sleep 10
 		tgerr=true
