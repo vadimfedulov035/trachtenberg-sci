@@ -29,7 +29,7 @@ async def ml(multiplicand, multiplier, obj=None):
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlmsg == "/restart":  # check for restart msg
+        if obj.readlmsg == "/start":  # check for restart msg
             await obj.restart()
         elif obj.readlmsg == obj.prevmsg:
             continue
@@ -79,7 +79,7 @@ async def dl(dividend, divider, obj=None):
     while True:
         await asyncio.sleep(obj.TIMEOUT)
         await obj.readmsg()
-        if obj.readlmsg == "/restart":  # check for restart msg
+        if obj.readlmsg == "/start":  # check for restart msg
             await obj.restart()
         elif obj.readlmsg == obj.prevmsg:
             continue
@@ -179,7 +179,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == "/restart":  # check for restart msg
+            if obj.readlmsg == "/start":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
                 continue
@@ -213,7 +213,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == "/restart":  # check for restart msg
+            if obj.readlmsg == "/start":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
                 continue
@@ -325,7 +325,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == "/restart":  # check for restart msg
+            if obj.readlmsg == "/start":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
                 continue
@@ -374,7 +374,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         while True:
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
-            if obj.readlmsg == "/restart":  # check for restart msg
+            if obj.readlmsg == "/start":  # check for restart msg
                 print(obj.readlmsg)
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
