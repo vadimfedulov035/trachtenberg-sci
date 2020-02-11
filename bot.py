@@ -81,7 +81,7 @@ class Bot():
         while True:
             await self.readmsg()
             if self.readlmsg == "/start" or self.restart_ch is True:
-                f1 = "Started setting up! Type /start when, "
+                f1 = "Started setting up! Type /start when want to restart, "
                 f2 = "if you want to change your choice(s) and start again, "
                 f3 = "you can restart after at least one made choice!"
                 self.fmsg = f1 + f2 + f3  # combine first msg
@@ -192,53 +192,53 @@ class Bot():
         for i in itertools.count(start=1, step=1):
             if self.chosen == "mul":
                 if self.rpass == 1:  # for var of 1 we choose special approach
-                    if i % 2 == 1:
+                    if i % 2 == 1 and i != 1:
                         self.mnum[0] += 1  # every 2 pass increase first num
-                    elif i % 2 == 0:
+                    elif i % 2 == 0 and i != 1:
                         self.mnum[1] += 1  # every 1 pass increase second num
                 else:  # for other vars we use usual approach
-                    if i % (self.rpass * 2) == 1:
+                    if i % (self.rpass * 2) == 1 and i != 1:
                         self.mnum[0] += 1  # every 2 pass increase first num
-                    elif i % self.rpass == 1:
+                    elif i % self.rpass == 1 and i != 1:
                         self.mnum[1] += 1  # every 1 pass increase second num
                 self.n1, self.n2 = self.mnum[0], self.mnum[1]
                 await tm.ml(self.n1, self.n2, obj=self)
             elif self.chosen == "div":
                 if self.rpass == 1:  # for var of 1 we choose special approach
-                    if i % 2 == 1:
+                    if i % 2 == 1 and i != 1:
                         self.dnum[1] += 1  # every 2 pass increase second num
-                    elif i % 2 == 0:
+                    elif i % 2 == 0 and i != 1:
                         self.dnum[0] += 1  # every 1 pass increase first num
                 else:  # for other vars we use usual approach
-                    if i % (self.rpass * 2) == 1:
+                    if i % (self.rpass * 2) == 1 and i != 1:
                         self.dnum[1] += 1  # every 2 pass increase second num
-                    elif i % self.rpass == 1:
+                    elif i % self.rpass == 1 and i != 1:
                         self.dnum[0] += 1  # every 1 pass increase first num
                 self.n1, self.n2 = self.dnum[0], self.dnum[1]
                 await tm.dl(self.n1, self.n2, obj=self)
             elif self.chosen == "vmul":
                 if self.rpass == 1:  # for var of 1 we choose special approach
-                    if i % 2 == 1:
+                    if i % 2 == 1 and i != 1:
                         self.mmnum[1] += 1  # every 2 pass increase second num
-                    elif i % 2 == 0:
+                    elif i % 2 == 0 and i != 1:
                         self.vmnum[0] += 1  # every 1 pass increase first num
                 else:  # for other vars we use usual approach
-                    if i % (self.rpass * 2) == 0:
+                    if i % (self.rpass * 2) == 1 and i != 1:
                         self.dnum[1] += 1  # every 2 pass increase second num
-                    elif i % self.rpass == 1:
+                    elif i % self.rpass == 1 and i != 1:
                         self.dnum[0] += 1  # every 1 pass increase first num
                 self.n1, self.n2 = self.dnum[0], self.dnum[1]
                 await tm.vml(self.n1, self.n2, matrix=self.msize, obj=self)
             elif self.chosen == "mmul":
                 if self.rpass == 1:  # for var of 1 we choose special approach
-                    if i % 2 == 1:
+                    if i % 2 == 1 and i != 1:
                         self.mmnum[1] += 1  # every 1 pass increase second num
-                    elif i % 2 == 0:
+                    elif i % 2 == 0 and i != 1:
                         self.mmnum[0] += 1  # every 2 pass increase first num
                 else:  # for other vars we use usual approach
-                    if i % (self.rpass * 2) == 1:
+                    if i % (self.rpass * 2) == 1 and i != 1:
                         self.mmnum[1] += 1  # every 1 pass increase second num
-                    elif i % self.rpass == 1:
+                    elif i % self.rpass == 1 and i != 1:
                         self.mmnum[0] += 1  # every 2 pass increase first num
                 self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
                 await tm.mml(self.n1, self.n2, matrix=self.msize, obj=self)
