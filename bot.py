@@ -189,14 +189,14 @@ class Bot():
 
     async def count(self):
         """counting and functions" calls are done here"""
-        for i in itertools.count():
+        for i in itertools.count(start=1, step=1):
             if self.chosen == "mul":
-                if self.rpass == 1:  # for value of 1 we use different approach
+                if self.rpass == 1:
                     if i % 2 == 1 and i != 1:
                         self.mnum[0] += 1  # every 2 pass increase first num
                     elif i % 2 == 0 and i != 1:
                         self.mnum[1] += 1  # every 1 pass increase second num
-                else:  # otherwise use standard algorithm
+                else:
                     if i % (self.rpass * 2) == 1 and i != 1:
                         self.mnum[0] += 1  # every 2 pass increase first num
                     elif i % self.rpass == 1 and i != 1:
@@ -204,12 +204,12 @@ class Bot():
                 self.n1, self.n2 = self.mnum[0], self.mnum[1]
                 await tm.ml(self.n1, self.n2, obj=self)
             elif self.chosen == "div":
-                if self.rpass == 1:  # for value of 1 we use different approach
+                if self.rpass == 1:
                     if i % 2 == 1 and i != 1:
                         self.dnum[1] += 1  # every 2 pass increase second num
                     elif i % 2 == 0 and i != 1:
                         self.dnum[0] += 1  # every 1 pass increase first num
-                else:  # otherwise use standard algorithm
+                else:
                     if i % (self.rpass * 2) == 1 and i != 1:
                         self.dnum[1] += 1  # every 2 pass increase second num
                     elif i % self.rpass == 1 and i != 1:
@@ -217,29 +217,62 @@ class Bot():
                 self.n1, self.n2 = self.dnum[0], self.dnum[1]
                 await tm.dl(self.n1, self.n2, obj=self)
             elif self.chosen == "vmul":
-                if self.rpass == 1:  # for value of 1 we use different approach
+                if self.rpass == 1:
                     if i % 2 == 1 and i != 1:
-                        self.vmnum[1] += 1  # every 2 pass increase second num
+                        self.mmnum[1] += 1  # every 2 pass increase second num
                     elif i % 2 == 0 and i != 1:
                         self.vmnum[0] += 1  # every 1 pass increase first num
-                else:  # otherwise use standard algorithm
-                    if i % (self.rpass * 2) == 1 and i != 1:
-                        self.mmnum[1] += 1  # every 2 pass increase second num
+                else:
+                    if i % (self.rpass * 2) == 0 and i != 1:
+                        self.dnum[1] += 1  # every 2 pass increase second num
                     elif i % self.rpass == 1 and i != 1:
-                        self.vmnum[0] += 1  # every 1 pass increase first num
-                self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
+                        self.dnum[0] += 1  # every 1 pass increase first num
+                self.n1, self.n2 = self.dnum[0], self.dnum[1]
                 await tm.vml(self.n1, self.n2, matrix=self.msize, obj=self)
             elif self.chosen == "mmul":
-                if self.rpass == 1:  # for value of 1 we use different approach
+                if self.rpass == 1:
                     if i % 2 == 1 and i != 1:
-                        self.mmnum[1] += 1  # every 2 pass increase second num
+                        self.mmnum[1] += 1  # every 1 pass increase second num
                     elif i % 2 == 0 and i != 1:
-                        self.mmnum[0] += 1  # every 1 pass increase first num
-                else:  # otherwise use standard algorithm
+                        self.mmnum[0] += 1  # every 2 pass increase first num
+                else:
                     if i % (self.rpass * 2) == 1 and i != 1:
                         self.mmnum[1] += 1  # every 1 pass increase second num
                     elif i % self.rpass == 1 and i != 1:
                         self.mmnum[0] += 1  # every 2 pass increase first num
+                self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
+                await tm.mml(self.n1, self.n2, matrix=self.msize, obj=self)
+
+
+nbot = 0
+
+while True:
+    try:
+        pbot1 = Bot(token, 0)
+        nbot += 1
+    except IndexError:
+        print("No users yet")
+        continue
+    try:
+        pbot2 = Bot(token, 1)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot3 = Bot(token, 2)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot4 = Bot(token, 3)
+        nbot += 1
+                self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
+                await tm.vml(self.n1, self.n2, matrix=self.msize, obj=self)
+            elif self.chosen == "mmul":
+                if i % (self.rpass * 2) == 1 and i != 1:
+                    self.mmnum[1] += 1  # every 1 pass increase second num
+                elif i % self.rpass == 1 and i != 1:
+                    self.mmnum[0] += 1  # every 2 pass increase first num
                 self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
                 await tm.mml(self.n1, self.n2, matrix=self.msize, obj=self)
 
@@ -295,6 +328,106 @@ while True:
         break
     try:
         pbot10 = Bot(token, 9)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot11 = Bot(token, 10)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot12 = Bot(token, 11)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot13 = Bot(token, 12)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot14 = Bot(token, 13)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot15 = Bot(token, 14)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot16 = Bot(token, 15)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot17 = Bot(token, 16)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot18 = Bot(token, 17)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot19 = Bot(token, 18)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot20 = Bot(token, 19)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot21 = Bot(token, 20)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot22 = Bot(token, 21)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot23 = Bot(token, 22)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot24 = Bot(token, 23)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot25 = Bot(token, 24)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot26 = Bot(token, 25)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot27 = Bot(token, 26)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot28 = Bot(token, 27)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot29 = Bot(token, 28)
+        nbot += 1
+    except IndexError:
+        break
+    try:
+        pbot30 = Bot(token, 29)
         nbot += 1
     except IndexError:
         break
@@ -367,7 +500,7 @@ elif nbot == 8:
             pbot7.start(),
             pbot8.start()
             )
-elif nbot == 8:
+elif nbot == 9:
     async def main():
         await asyncio.gather(
             pbot1.start(),
@@ -393,6 +526,516 @@ elif nbot == 10:
             pbot8.start(),
             pbot9.start(),
             pbot10.start()
+            )
+elif nbot == 11:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start()
+            )
+elif nbot == 12:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start()
+            )
+elif nbot == 13:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start()
+            )
+elif nbot == 14:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start()
+            )
+elif nbot == 15:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start()
+            )
+elif nbot == 16:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start()
+            )
+elif nbot == 17:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start()
+            )
+elif nbot == 18:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start()
+            )
+elif nbot == 19:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start()
+            )
+
+elif nbot == 20:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start()
+            )
+elif nbot == 21:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start()
+            )
+elif nbot == 22:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start()
+            )
+elif nbot == 23:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            )
+elif nbot == 24:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            pbot24.start()
+            )
+elif nbot == 25:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            pbot24.start(),
+            pbot25.start()
+            )
+elif nbot == 26:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            pbot24.start()
+            pbot26.start()
+            )
+elif nbot == 27:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            pbot24.start(),
+            pbot25.start(),
+            pbot26.start(),
+            pbot27.start()
+            )
+elif nbot == 28:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            pbot24.start(),
+            pbot25.start(),
+            pbot26.start(),
+            pbot27.start(),
+            pbot28.start()
+            )
+elif nbot == 29:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            pbot24.start(),
+            pbot25.start(),
+            pbot26.start(),
+            pbot27.start(),
+            pbot28.start(),
+            pbot29.start()
+            )
+elif nbot == 30:
+    async def main():
+        await asyncio.gather(
+            pbot1.start(),
+            pbot2.start(),
+            pbot3.start(),
+            pbot4.start(),
+            pbot5.start(),
+            pbot6.start(),
+            pbot7.start(),
+            pbot8.start(),
+            pbot9.start(),
+            pbot10.start(),
+            pbot10.start(),
+            pbot11.start(),
+            pbot12.start(),
+            pbot13.start(),
+            pbot14.start(),
+            pbot15.start(),
+            pbot16.start(),
+            pbot17.start(),
+            pbot18.start(),
+            pbot19.start(),
+            pbot20.start(),
+            pbot21.start(),
+            pbot22.start(),
+            pbot23.start(),
+            pbot24.start(),
+            pbot25.start(),
+            pbot26.start(),
+            pbot27.start(),
+            pbot28.start(),
+            pbot29.start(),
+            pbot30.start()
             )
 
 asyncio.run(main())
