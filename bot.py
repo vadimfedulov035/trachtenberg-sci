@@ -78,10 +78,10 @@ class Bot():
         requests.get(self.urls)
 
     async def start(self):
-        for i in itertools.count():
+        while True:
             await self.readmsg()
             if self.readlmsg == "/start" or self.restart_ch is True:
-                f1 = "Started setting up! Type /restart when, "
+                f1 = "Started setting up! Type /start when, "
                 f2 = "if you want to change your choice(s) and start again, "
                 f3 = "you can restart after at least one made choice!"
                 self.fmsg = f1 + f2 + f3  # combine first msg
@@ -132,7 +132,7 @@ class Bot():
         """choice of speed of increasing difficulty is made here"""
         while True:
             await self.readmsg()  # read last msg and extract from command num
-            if self.readlmsg == "/restart":
+            if self.readlmsg == "/start":
                 await self.restart()
             if self.numb_msg is False:
                 it1 = "How many iterations do you want before increasing "
@@ -161,7 +161,7 @@ class Bot():
         """choice of matrix size is made here"""
         while True:
             await self.readmsg()
-            if self.readlmsg == "/restart":
+            if self.readlmsg == "/start":
                 self.restart()
             if self.msized_msg is False:
                 ms1 = "How big the matrix should be? "
@@ -191,88 +191,55 @@ class Bot():
         """counting and functions" calls are done here"""
         for i in itertools.count(start=1, step=1):
             if self.chosen == "mul":
-                if self.rpass == 1:
-                    if i % 2 == 1 and i != 1:
+                if self.rpass == 1:  # for var of 1 we choose special approach
+                    if i % 2 == 1:
                         self.mnum[0] += 1  # every 2 pass increase first num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0:
                         self.mnum[1] += 1  # every 1 pass increase second num
-                else:
-                    if i % (self.rpass * 2) == 1 and i != 1:
+                else:  # for other vars we use usual approach
+                    if i % (self.rpass * 2) == 1:
                         self.mnum[0] += 1  # every 2 pass increase first num
-                    elif i % self.rpass == 1 and i != 1:
+                    elif i % self.rpass == 1:
                         self.mnum[1] += 1  # every 1 pass increase second num
                 self.n1, self.n2 = self.mnum[0], self.mnum[1]
                 await tm.ml(self.n1, self.n2, obj=self)
             elif self.chosen == "div":
-                if self.rpass == 1:
-                    if i % 2 == 1 and i != 1:
+                if self.rpass == 1:  # for var of 1 we choose special approach
+                    if i % 2 == 1:
                         self.dnum[1] += 1  # every 2 pass increase second num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0:
                         self.dnum[0] += 1  # every 1 pass increase first num
-                else:
-                    if i % (self.rpass * 2) == 1 and i != 1:
+                else:  # for other vars we use usual approach
+                    if i % (self.rpass * 2) == 1:
                         self.dnum[1] += 1  # every 2 pass increase second num
-                    elif i % self.rpass == 1 and i != 1:
+                    elif i % self.rpass == 1:
                         self.dnum[0] += 1  # every 1 pass increase first num
                 self.n1, self.n2 = self.dnum[0], self.dnum[1]
                 await tm.dl(self.n1, self.n2, obj=self)
             elif self.chosen == "vmul":
-                if self.rpass == 1:
-                    if i % 2 == 1 and i != 1:
+                if self.rpass == 1:  # for var of 1 we choose special approach
+                    if i % 2 == 1:
                         self.mmnum[1] += 1  # every 2 pass increase second num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0:
                         self.vmnum[0] += 1  # every 1 pass increase first num
-                else:
-                    if i % (self.rpass * 2) == 0 and i != 1:
+                else:  # for other vars we use usual approach
+                    if i % (self.rpass * 2) == 0:
                         self.dnum[1] += 1  # every 2 pass increase second num
-                    elif i % self.rpass == 1 and i != 1:
+                    elif i % self.rpass == 1:
                         self.dnum[0] += 1  # every 1 pass increase first num
                 self.n1, self.n2 = self.dnum[0], self.dnum[1]
                 await tm.vml(self.n1, self.n2, matrix=self.msize, obj=self)
             elif self.chosen == "mmul":
-                if self.rpass == 1:
-                    if i % 2 == 1 and i != 1:
+                if self.rpass == 1:  # for var of 1 we choose special approach
+                    if i % 2 == 1:
                         self.mmnum[1] += 1  # every 1 pass increase second num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0:
                         self.mmnum[0] += 1  # every 2 pass increase first num
-                else:
-                    if i % (self.rpass * 2) == 1 and i != 1:
+                else:  # for other vars we use usual approach
+                    if i % (self.rpass * 2) == 1:
                         self.mmnum[1] += 1  # every 1 pass increase second num
-                    elif i % self.rpass == 1 and i != 1:
+                    elif i % self.rpass == 1:
                         self.mmnum[0] += 1  # every 2 pass increase first num
-                self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
-                await tm.mml(self.n1, self.n2, matrix=self.msize, obj=self)
-
-
-nbot = 0
-
-while True:
-    try:
-        pbot1 = Bot(token, 0)
-        nbot += 1
-    except IndexError:
-        print("No users yet")
-        continue
-    try:
-        pbot2 = Bot(token, 1)
-        nbot += 1
-    except IndexError:
-        break
-    try:
-        pbot3 = Bot(token, 2)
-        nbot += 1
-    except IndexError:
-        break
-    try:
-        pbot4 = Bot(token, 3)
-        nbot += 1
-                self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
-                await tm.vml(self.n1, self.n2, matrix=self.msize, obj=self)
-            elif self.chosen == "mmul":
-                if i % (self.rpass * 2) == 1 and i != 1:
-                    self.mmnum[1] += 1  # every 1 pass increase second num
-                elif i % self.rpass == 1 and i != 1:
-                    self.mmnum[0] += 1  # every 2 pass increase first num
                 self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
                 await tm.mml(self.n1, self.n2, matrix=self.msize, obj=self)
 
@@ -805,7 +772,7 @@ elif nbot == 23:
             pbot20.start(),
             pbot21.start(),
             pbot22.start(),
-            pbot23.start(),
+            pbot23.start()
             )
 elif nbot == 24:
     async def main():
@@ -896,7 +863,7 @@ elif nbot == 26:
             pbot21.start(),
             pbot22.start(),
             pbot23.start(),
-            pbot24.start()
+            pbot24.start(),
             pbot26.start()
             )
 elif nbot == 27:
