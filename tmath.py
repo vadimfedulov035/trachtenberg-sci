@@ -5,9 +5,9 @@ import numpy as np
 
 
 async def ml(multiplicand, multiplier, obj=None):
-    """Basic Multiplication operation"""
-    x1, x2 = 1, 1
-    y1, y2 = 1, 1
+    """Arithmetics operation: Multiplication"""
+    x1, y1 = 1, 1
+    x2, y2 = 1, 1
     for i in range(multiplicand - 1):
         x1 *= 10
     for i in range(multiplicand):
@@ -53,9 +53,9 @@ async def ml(multiplicand, multiplier, obj=None):
 
 
 async def dl(dividend, divider, obj=None):
-    """Basic Division operation"""
-    x1, x2 = 1, 1
-    y1, y2 = 1, 1
+    """Arithmetics operation: Division"""
+    x1, y1 = 1, 1
+    x2, y2 = 1, 1
     for i in range(dividend - 1):
         x1 *= 10
     for i in range(dividend):
@@ -107,8 +107,8 @@ async def dl(dividend, divider, obj=None):
 
 async def vml(multiplicand, multiplier, matrix=2, obj=None):
     """Linear Algebra operation: vector-matrix multiplication"""
-    x1, x2 = 1, 1
-    y1, y2 = 1, 1
+    x1, y1 = 1, 1
+    x2, y2 = 1, 1
     for i in range(multiplicand - 1):
         x1 *= 10
     for i in range(multiplicand):
@@ -240,8 +240,8 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
 
 async def mml(multiplicand, multiplier, matrix=2, obj=None):
     """Linear Algebra operation: matrix-matrix multiplication"""
-    x1, x2 = 1, 1
-    y1, y2 = 1, 1
+    x1, y1 = 1, 1
+    x2, y2 = 1, 1
     for i in range(multiplicand - 1):
         x1 *= 10
     for i in range(multiplicand):
@@ -375,7 +375,6 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             await asyncio.sleep(obj.TIMEOUT)
             await obj.readmsg()
             if obj.readlmsg == "/start":  # check for restart msg
-                print(obj.readlmsg)
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:
                 continue
@@ -410,3 +409,86 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             else:
                 await obj.sendmsg(f"No, right answer is\n{c}")
                 break
+
+
+async def sqr(sqrn, obj=None):
+    """Basic Squaring operation"""
+    x1, y1 = 1, 1
+    for i in range(sqrn - 1):
+        x1 *= 10
+    for i in range(sqrn):
+        y1 *= 10
+    y1 -= 1
+    a = random.randint(x1, y1)
+    c = a ** 2 
+    if c == obj.c:
+        await sqr(sqrn, obj=obj)
+    obj.c = c
+    await obj.sendmsg(f"{a} ** 2 = ?")
+    obj.prevmsg = obj.readlmsg
+    while True:
+        await asyncio.sleep(obj.TIMEOUT)
+        await obj.readmsg()
+        if obj.readlmsg == "/start":  # check for restart msg
+            await obj.restart()
+        elif obj.readlmsg == obj.prevmsg:
+            continue
+        else:
+            try:
+                uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
+                uc = int(uc[0])
+            except IndexError:
+                await obj.sendmsg(obj.MISTYPE)
+                obj.prevmsg = obj.readlmsg
+                continue
+        if uc == obj.uc:
+            continue  # if got old msg try again
+        obj.uc = uc  # if got new msg assign it value to var
+        if uc == c:
+            await obj.sendmsg("You're God Damn right!")
+            break
+        elif uc != c:
+            await obj.sendmsg(f"No, right answer is {c}!")
+            break
+
+
+async def root(root, obj=None):
+    """Arithmetics operation: Square Root taking"""
+    x1, y1 = 1, 1
+    for i in range(root - 1):
+        x1 *= 10
+    for i in range(root):
+        y1 *= 10
+    y1 -= 1
+    a = random.randint(x1, y1)
+    b = a ** 2
+    c = b ** 0.5
+    if c == obj.c:
+        await sqr(root, obj=obj)
+    obj.c = c
+    await obj.sendmsg(f"{b} ** 0.5 = ?")
+    obj.prevmsg = obj.readlmsg
+    while True:
+        await asyncio.sleep(obj.TIMEOUT)
+        await obj.readmsg()
+        if obj.readlmsg == "/start":  # check for restart msg
+            await obj.restart()
+        elif obj.readlmsg == obj.prevmsg:
+            continue
+        else:
+            try:
+                uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
+                uc = int(uc[0])
+            except IndexError:
+                await obj.sendmsg(obj.MISTYPE)
+                obj.prevmsg = obj.readlmsg
+                continue
+        if uc == obj.uc:
+            continue  # if got old msg try again
+        obj.uc = uc  # if got new msg assign it value to var
+        if uc == c:
+            await obj.sendmsg("You're God Damn right!")
+            break
+        elif uc != c:
+            await obj.sendmsg(f"No, right answer is {int(c)}!")
+            break
