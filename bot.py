@@ -267,7 +267,6 @@ class Bot():
     async def count(self):
         """Counting endless loop"""
         for i in itertools.count(start=1, step=1):  # specially defined loop
-            """Arithmetics operations"""
             if self.chosen == "mul":  # check for counting mode option
                 if self.fmul:  # define loop's from initial obj's vars
                     if self.ch_cmod:
