@@ -72,8 +72,7 @@ async def dl(dividend, divider, obj=None):
     c2 = a % b
     if c1 == obj.c1 or c2 == obj.c2:
         await dl(dividend, divider, obj=obj)
-    obj.c1 = c1
-    obj.c2 = c2
+    obj.c1, obj.c2 = c1, c2
     await obj.sendmsg(f"{a} // | % {b} = ?")
     obj.prevmsg = obj.readlmsg
     while True:
@@ -93,8 +92,7 @@ async def dl(dividend, divider, obj=None):
                 continue
         if uc1 == obj.uc1 and uc2 == obj.uc2:
             continue  # if got old msg try again
-        obj.uc1 = uc1  # if got new msg assign it"s values to vars
-        obj.uc2 = uc2
+        obj.uc1, obj.uc2 = uc1, uc2
         if uc1 == c1 and uc2 == c2:
             await obj.sendmsg("You're God Damn right!")
             break
@@ -172,8 +170,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         c1, c2 = c[0], c[1]
         if c1 == obj.c1 or c2 == obj.c2:
             await vml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c2
-        obj.c2 = c2
+        obj.c1, obj.c2 = c1, c2
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         obj.prevmsg = obj.readlmsg
         while True:
@@ -193,8 +190,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
                 continue  # if got old msg try again
-            obj.uc1 = uc1  # if got new msg assign it"s values to vars
-            obj.uc2 = uc2
+            obj.uc1, obj.uc2 = uc1, uc2
             if uc1 == c1 and uc2 == c2:
                 await obj.sendmsg("You're God Damn right!")
                 break
@@ -205,9 +201,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         c1, c2, c3 = c[0], c[1], c[2]
         if c1 == obj.c1 or c2 == obj.c2 or c3 == obj.c3:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1
-        obj.c2 = c2
-        obj.c3 = c3
+        obj.c1, obj.c2, obj.c3 = c1, c2, c3
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         obj.prevmsg = obj.readlmsg
         while True:
@@ -227,9 +221,7 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
                 continue  # if got old msg try again
-            obj.uc1 = uc1  # if got new msg assign it"s values to vars
-            obj.uc2 = uc2
-            obj.uc3 = uc3
+            obj.uc1, obj.uc2, obj.uc3 = uc1, uc2, uc3
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
                 await obj.sendmsg("You're God Damn right!")
                 break
@@ -316,10 +308,8 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             await mml(multiplicand, multiplier, obj=obj)
         elif c3 == obj.c3 or c4 == obj.c4:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1
-        obj.c2 = c2
-        obj.c3 = c3
-        obj.c4 = c4
+        obj.c1, obj.c2 = c1, c2
+        obj.c3, obj.c4 = c3, c4
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         obj.prevmsg = obj.readlmsg
         while True:
@@ -342,10 +332,8 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 continue  # if got old msg try again
             elif uc3 == obj.uc3 and uc4 == obj.uc4:
                 continue
-            obj.uc1 = uc1  # if got new msg assign it"s values to vars
-            obj.uc2 = uc2
-            obj.uc3 = uc3
-            obj.uc4 = uc4
+            obj.uc1, obj.uc2 = uc1, uc2
+            obj.uc3, obj.uc4 = uc3, uc4
             if uc1 == c1 and uc2 == c2 and uc3 == c3 and uc4 == c4:
                 await obj.sendmsg("You're God Damn right!")
                 break
@@ -360,15 +348,9 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             await mml(multiplicand, multiplier, obj=obj)
         elif c4 == obj.c4 or c5 == obj.c5 or c6 == obj.c6:
             await mml(multiplicand, multiplier, obj=obj)
-        obj.c1 = c1
-        obj.c2 = c2
-        obj.c3 = c3
-        obj.c4 = c4
-        obj.c5 = c5
-        obj.c6 = c6
-        obj.c7 = c7
-        obj.c8 = c8
-        obj.c9 = c9
+        obj.c1, obj.c2, obj.c3 = c1, c2, c3
+        obj.c4, obj.c5, obj.c6 = c4, c5, c6
+        obj.c7, obj.c8, obj.c9 = c7, c8, c9
         await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         obj.prevmsg = obj.readlmsg
         while True:
@@ -394,15 +376,9 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                 continue
             elif uc7 == obj.uc7 and uc8 == obj.uc8 and uc9 == obj.uc9:
                 continue
-            obj.uc1 = uc1  # if got new msg assign it"s values to vars
-            obj.uc2 = uc2
-            obj.uc3 = uc3
-            obj.uc4 = uc4
-            obj.uc5 = uc5
-            obj.uc6 = uc6
-            obj.uc7 = uc7
-            obj.uc8 = uc8
-            obj.uc9 = uc9
+            obj.uc1, obj.uc2, obj.uc3 = uc1, uc2, uc3
+            obj.uc4, obj.uc5, obj.uc5 = uc4, uc5, uc6
+            obj.uc7, obj.uc8, obj.uc9 = uc7, uc8, uc9
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
                 await obj.sendmsg("You're God Damn right!")
                 break
@@ -412,7 +388,7 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
 
 
 async def sqr(sqrn, obj=None):
-    """Basic Squaring operation"""
+    """Arithmetics operation: Squaring"""
     x1, y1 = 1, 1
     for i in range(sqrn - 1):
         x1 *= 10
@@ -420,7 +396,7 @@ async def sqr(sqrn, obj=None):
         y1 *= 10
     y1 -= 1
     a = random.randint(x1, y1)
-    c = a ** 2 
+    c = a ** 2
     if c == obj.c:
         await sqr(sqrn, obj=obj)
     obj.c = c
