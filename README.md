@@ -16,6 +16,8 @@ work with Telegram API and library for working with math operations.
 - [x] Add requirements.txt
 - [x] Optimize code for high effeciency
 - [x] Optimize code for most of PEP-8 standards and improve readability
-- [x] Make comments for understandability (85%)
+- [x] Make comments for understandability
 - [x] Put bot in alpha test
+- [x] Put bot in beta test
+- [ ] Update comments for new functionality
 - [ ] Put bot at production
