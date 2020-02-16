@@ -2,7 +2,7 @@ import asyncio
 from bot import Bot
 
 
-with open("config.conf", "r") as config:
+with open("start.conf", "r") as config:
     token = config.read().split("|")[1]
 
 nbot = 0

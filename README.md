@@ -14,7 +14,7 @@ work with Telegram API and library for working with math operations.
 - [x] Add asyncio functionality and make code asynchronous
 - [x] Add ability to hold up to 50 conversations at once
 - [x] Optimize code for high effeciency
-- [ ] Optimize code for PEP-8 standards and improve readability
+- [x] Optimize code for PEP-8 standards and improve readability
 - [x] Make comments for understandability
 - [x] Put bot in alpha test
 - [x] Put bot in beta test

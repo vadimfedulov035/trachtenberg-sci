@@ -7,7 +7,10 @@ import requests
 import tmath as tm
 
 
-with open("config.conf", "r") as config:
+if __name__ == "__main__":
+    print("This is not a standalone program!")
+
+with open("token.conf", "r") as config:
     token = config.read().split("|")[1]
 
 
@@ -78,7 +81,7 @@ class Bot():
             if cid == self.CID:  # check date only if CID in msg
                 date = j["message"]["date"]
                 if date >= self.date:
-                    self.date = date  # update date, if later found
+                    self.ldate = date  # update date, if later found
                     self.readlmsg = j["message"]["text"]  # latest msg
 
     async def sendmsg(self, msg):
@@ -91,6 +94,7 @@ class Bot():
         while True:
             await self.readmsg()
             if self.readlmsg == "/start" or self.restart_ch:
+                self.pdate = self.ldate
                 f1 = "Started setting up! Type /start when want to restart, "
                 f2 = "if you want to change your choice(s) and start again, "
                 f3 = "you can restart after at least one made choice!"
@@ -112,6 +116,8 @@ class Bot():
         """Counting Mode: define operation"""
         while True:
             await self.readmsg()  # get latest msg
+            if self.readlmsg == "/start" and self.ldate != self.pdate:
+                await self.restart()  # check for restart command, date
             if not self.choice_msg:
                 ch1 = "Do you want a linear algebra operations: "
                 ch2 = "matrix-matrix or vector-matrix multiplication; "
@@ -155,8 +161,8 @@ class Bot():
         """Difficulty Speed"""
         while True:
             await self.readmsg()  # read latest msg
-            if self.readlmsg == "/start":  # check for restart command
-                await self.restart()
+            if self.readlmsg == "/start":
+                await self.restart()  # check for restart command
             """send method's msg"""
             if not self.numb_msg:
                 it1 = "How many iterations do you want before increasing "
@@ -186,8 +192,8 @@ class Bot():
         """Diff Init parameters"""
         while True:
             await self.readmsg()  # read latest msg
-            if self.readlmsg == "/start":  # check for restart command
-                await self.restart()
+            if self.readlmsg == "/start":
+                await self.restart()  # check for restart command
             elif self.readlmsg == "/0":  # check for continue command
                 await self.sendmsg(f"No changes to init mode were made!")
                 self.ch_chmod = False
@@ -237,7 +243,7 @@ class Bot():
         while True:
             await self.readmsg()
             if self.readlmsg == "/start":
-                self.restart()
+                self.restart()  # check for restart command
             """send method's msg"""
             if self.msized_msg is False:
                 ms1 = "How big the matrix should be? "
@@ -247,7 +253,7 @@ class Bot():
                 await self.sendmsg(self.msmsg)
                 self.msized_msg = True
             """try to extract msize, restart if got msg and failed"""
-            try:
+            try:  # to extract num from latest msg
                 self.smatr = re.findall(r"^\/m([2-4])", self.readlmsg)
                 self.smatr = int(self.smatr[0])
             except IndexError:
