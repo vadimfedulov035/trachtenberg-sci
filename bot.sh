@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cbot(){
-exec "./cbot.exe"
+python3.7 start.py"
 }
 
 echo "Start of cbot"
@@ -15,7 +15,7 @@ while true; do
 			if [ $pdate != `echo $bdate | cut -d":" -f 1` ]; then
 				tgerr=false
 				pdate=`echo $bdate | cut -d":" -f 1`
-				killall cbot.exe
+				killall python3
 				cbot
 			fi
 		fi

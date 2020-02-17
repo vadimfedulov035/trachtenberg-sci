@@ -18,4 +18,4 @@ work with Telegram API and library for working with math operations.
 - [x] Make comments for understandability
 - [x] Put bot in alpha test
 - [x] Put bot in beta test
-- [ ] Put bot at production
+- [x] Put bot at production

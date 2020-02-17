@@ -1,3 +1,4 @@
+#!/usr/bin/python3.7
 import asyncio
 from bot import Bot
 
