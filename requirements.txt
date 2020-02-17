@@ -1,3 +1,4 @@
+# (sudo) pip3.7 install -r requitements.txt
 requests
 asyncio
 numpy
