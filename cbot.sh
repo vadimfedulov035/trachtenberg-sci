@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cbot(){
-xfce4-terminal -e "torify ./cbot.exe"
+exec "./cbot.exe"
 }
 
 echo "Start of cbot"
