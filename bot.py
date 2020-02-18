@@ -95,11 +95,8 @@ class Bot():
         while True:
             await self.readmsg()
             if self.readlmsg == "/start" or self.restart_ch:
-                self.pdate = self.ldate
-                f1 = "Started setting up! Type /start when want to restart, "
-                f2 = "if you want to change your choice(s) and start again, "
-                f3 = "you can restart after at least one made choice!"
-                self.fmsg = f1 + f2 + f3
+                self.pdate = self.ldate  # set date for restart comparison
+                fmsg = "Started setting up! Type /start when want to restart!"
                 await self.sendmsg(self.fmsg)
                 if self.restart_ch:
                     self.restart_ch = False  # if restarted - change state
@@ -117,6 +114,11 @@ class Bot():
         """Counting Mode: define operation"""
         while True:
             await self.readmsg()  # get latest msg
+            """check both last and recorded dates of /start,
+            to check if /start command is new; otherwise
+            bot will ignore newer command, thinking it is
+            the same message, this can happen only during
+            restart after not making any choices"""
             if self.readlmsg == "/start" and self.ldate != self.pdate:
                 await self.restart()  # check for restart command, date
             if not self.choice_msg:
