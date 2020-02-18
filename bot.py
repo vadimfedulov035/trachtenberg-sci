@@ -294,7 +294,7 @@ class Bot():
                 await tm.ml(self.n1, self.n2, obj=self)
             elif self.chosen == "div":  # check for counting mode option
                 if self.fdiv:  # define loop's from initial obj's vars
-                    if self.ch_chmod:
+                    if self.ch_cmod:
                         self.n1, self.n2 = self.chmod1, self.chmod2
                     else:
                         self.n1, self.n2 = self.dnum[0], self.dnum[1]
@@ -312,7 +312,7 @@ class Bot():
                 await tm.dl(self.n1, self.n2, obj=self)
             elif self.chosen == "sqr":  # check for counting mode option
                 if self.fsqr:  # define loop's from initial obj's vars
-                    if self.ch_chmod:
+                    if self.ch_cmod:
                         self.n1 = self.chmod1
                     else:
                         self.n1 = self.sqnum
@@ -326,7 +326,7 @@ class Bot():
                 await tm.sqr(self.n1, obj=self)
             elif self.chosen == "root":  # check for counting mode option
                 if self.froot:  # define loop's from initial obj's vars
-                    if self.ch_chmod:
+                    if self.ch_cmod:
                         self.n1 = self.chmod1
                     else:
                         self.n1 = self.ronum
@@ -340,7 +340,7 @@ class Bot():
                 await tm.root(self.n1, obj=self)
             elif self.chosen == "vmul":  # check for counting mode option
                 if self.fvmul:  # define loop's from initial obj's vars
-                    if self.ch_chmod:
+                    if self.ch_cmod:
                         self.n1, self.n2 = self.chmod1, self.chmod2
                     else:
                         self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
@@ -358,7 +358,7 @@ class Bot():
                 await tm.vml(self.n1, self.n2, matrix=self.msize, obj=self)
             elif self.chosen == "mmul":  # check for counting mode option
                 if self.fmmul:  # define loop's from initial obj's vars
-                    if self.ch_chmod:
+                    if self.ch_cmod:
                         self.n1, self.n2 = self.chmod1, self.chmod2
                     else:
                         self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
