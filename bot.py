@@ -96,7 +96,7 @@ class Bot():
             await self.readmsg()
             if self.readlmsg == "/start" or self.restart_ch:
                 self.pdate = self.ldate  # set date for restart comparison
-                fmsg = "Started setting up! Type /start when want to restart!"
+                self.fmsg = "Started setting up! Type /start when want to restart!"
                 await self.sendmsg(self.fmsg)
                 if self.restart_ch:
                     self.restart_ch = False  # if restarted - change state
