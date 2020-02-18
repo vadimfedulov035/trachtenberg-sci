@@ -1,27 +1,17 @@
 #!/bin/sh
 
 cbot(){
-python3.7 start.py"
+./start.py
 }
 
 echo "Start of cbot"
-tgerr=true  # set as telegram error occured to activate bot immideately
-pdate=0000
 
 while true; do
-	if [ `ping api.telegram.org -q -c 1 | sed -n '4p' | cut -d' ' -f 4` = 1 ]; then
-		bdate=`date | cut -d" " -f 5`
-		if [ `echo $bdate | cut -d":" -f 2` = 00 ] || [ $tgerr = true ]; then
-			if [ $pdate != `echo $bdate | cut -d":" -f 1` ]; then
-				tgerr=false
-				pdate=`echo $bdate | cut -d":" -f 1`
-				killall python3
-				cbot
-			fi
-		fi
-	else
-		printf "\nConnection with api.telegram.org is lost! Trying to reconnect after 10 seconds."
-		tgerr=true
+	if [ `date | cut -d" " -f 5 | cut -d":" -f 2` = 00 ]; then
+			killall python3; cbot
+	elif [ -z `pgrep python3` ]; then
+		echo "Start of bout occured, whether it was connection error or first time of start!"
+		cbot
 	fi
 	sleep 10
 done
