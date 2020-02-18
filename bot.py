@@ -197,7 +197,7 @@ class Bot():
                 await self.restart()  # check for restart command
             elif self.readlmsg == "/0":  # check for continue command
                 await self.sendmsg(f"No changes to init mode were made!")
-                self.ch_chmod = False
+                self.ch_cmod = False
                 break
             """send method's msg"""
             if self.chmod_msg is False:
