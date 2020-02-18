@@ -48,7 +48,7 @@ class Bot():
         self.chmod_msg = False
         self.msized_msg = False
         self.restart_ch = False
-        self.ch_chmod = True
+        self.ch_cmod = True
         self.fmul = True
         self.fdiv = True
         self.fvmul = True
