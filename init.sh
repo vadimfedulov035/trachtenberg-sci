@@ -7,6 +7,10 @@ sh -c "$(./start.py)" &
 echo "Trying to termnite previous process of a script..."
 killall python3.7
 
+until [ `date | cut -d" " -f 4 | cut -d":" -f 3` = "00" ]; do
+	sleep 1
+done
+
 while true; do
 	if [ `date | cut -d" " -f 4 | cut -d":" -f 2` = "00" ]; then
 			killall python3.7; cbot
@@ -15,5 +19,5 @@ while true; do
 		cbot
 		echo "Start of bot occured, whether it was reconnection or first start"
 	fi
-	sleep 35
+	sleep 60
 done
