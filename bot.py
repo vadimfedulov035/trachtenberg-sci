@@ -73,7 +73,10 @@ class Bot():
 
     async def readmsg(self):
         """new reqest to get fresh json data"""
-        self.msgreq = urllib.request.urlopen(self.URLR)
+        try:
+            self.msgreq = urllib.request.urlopen(self.URLR)
+        except urllib.URLError:
+            await self.readmsg()
         self.rj = self.msgreq.read()
         self.j = json.loads(self.rj.decode("utf-8"))
         """loop through json to find last message by date"""
@@ -96,8 +99,10 @@ class Bot():
             await self.readmsg()
             if self.readlmsg == "/start" or self.restart_ch:
                 self.pdate = self.ldate  # set date for restart comparison
-                self.fmsg = "Started setting up! Type /start when want to restart!"
-                await self.sendmsg(self.fmsg)
+                m1 = "Started setting up! "
+                m2 = "Type /start when want to restart!"
+                fmsg = m1 + m2
+                await self.sendmsg(fmsg)
                 if self.restart_ch:
                     self.restart_ch = False  # if restarted - change state
                 self.count_msg = True
@@ -122,13 +127,13 @@ class Bot():
             if self.readlmsg == "/start" and self.ldate != self.pdate:
                 await self.restart()  # check for restart command, date
             if not self.choice_msg:
-                ch1 = "Do you want a linear algebra operations: "
-                ch2 = "matrix-matrix or vector-matrix multiplication; "
-                ch3 = "arithmetics operations: multiplication, "
-                ch4 = "division, squaring, taking square root? "
-                ch5 = "(/mmul, /vmul, /mul, /div, /sqr, /root):"
-                chmsg = ch1 + ch2 + ch3 + ch4 + ch5
-                await self.sendmsg(chmsg)
+                m1 = "Do you want a linear algebra operations: "
+                m2 = "matrix-matrix or vector-matrix multiplication; "
+                m3 = "arithmetics operations: multiplication, "
+                m4 = "division, squaring, taking square root? "
+                m5 = "(/mmul, /vmul, /mul, /div, /sqr, /root):"
+                fmsg = m1 + m2 + m3 + m4 + m5
+                await self.sendmsg(fmsg)
                 self.choice_msg = True  # change state; not to resend msg
             """compare latest msg with offered commands"""
             if self.readlmsg == "/mul":
@@ -168,10 +173,10 @@ class Bot():
                 await self.restart()  # check for restart command
             """send method's msg"""
             if not self.numb_msg:
-                it1 = "How many iterations do you want before increasing "
-                it2 = "difficulty? (/d[num]):"
-                self.itmsg = it1 + it2
-                await self.sendmsg(self.itmsg)
+                m1 = "How many iterations do you want before increasing "
+                m2 = "difficulty? (/d[num]):"
+                fmsg = m1 + m2
+                await self.sendmsg(fmsg)
                 self.numb_msg = True  # change state; not to resend msg
             """try to extract diff, restart if got msg and failed"""
             try:
@@ -203,12 +208,12 @@ class Bot():
                 break
             """send method's msg"""
             if self.chmod_msg is False:
-                chm1 = "Do you want to change initial difficulty? If yes type "
-                chm2 = "number if only one element is randomised and two "
-                chm3 = "numbers if two are. If you don't want to do that "
-                chm4 = "type /0!"
-                self.chmmsg = chm1 + chm2 + chm3 + chm4
-                await self.sendmsg(self.chmmsg)
+                m1 = "Do you want to change initial difficulty? If yes type "
+                m2 = "number if only one element is randomised and two "
+                m3 = "numbers if two are. If you don't want to do that "
+                m4 = "type /0!"
+                fmsg = m1 + m2 + m3 + m4
+                await self.sendmsg(fmsg)
                 self.chmod_msg = True
             """try to extract new parameters, restart if got msg and failed"""
             try:
@@ -249,11 +254,11 @@ class Bot():
                 self.restart()  # check for restart command
             """send method's msg"""
             if self.msized_msg is False:
-                ms1 = "How big the matrix should be? "
-                ms2 = "2 or 3 or 2.5 (4)? "
-                ms3 = "(/m2, /m3, /m4):"
-                self.msmsg = ms1 + ms2 + ms3
-                await self.sendmsg(self.msmsg)
+                m1 = "How big the matrix should be? "
+                m2 = "2 or 3 or 2.5 (4)? "
+                m3 = "(/m2, /m3, /m4):"
+                fmsg = m1 + m2 + m3
+                await self.sendmsg(fmsg)
                 self.msized_msg = True
             """try to extract msize, restart if got msg and failed"""
             try:  # to extract num from latest msg
