@@ -75,10 +75,13 @@ class Bot():
         """new reqest to get fresh json data"""
         try:
             self.msgreq = urllib.request.urlopen(self.URLR)
-        except urllib.URLError:
+        except urllib.error.URLError:
             await self.readmsg()
         self.rj = self.msgreq.read()
-        self.j = json.loads(self.rj.decode("utf-8"))
+        try:
+            self.j = json.loads(self.rj.decode("utf-8"))
+        except json.decoder.JSONDecodeError:
+            await self.readmsg()
         """loop through json to find last message by date"""
         for j in self.j["result"]:
             cid = j["message"]["chat"]["id"]
