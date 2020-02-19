@@ -1,4 +1,4 @@
-#!/usr/bin/python3.7
+#!/usr/bin/env python3.7
 import itertools
 import re
 import json
@@ -11,7 +11,7 @@ import tmath as tm
 if __name__ == "__main__":
     print("This is not a standalone program!")
 
-with open("token.conf", "r") as config:
+with open("tok.conf", "r") as config:
     token = config.read().split("|")[1]
 
 

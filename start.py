@@ -1,9 +1,9 @@
-#!/usr/bin/python3.7
+#!/usr/bin/env python3.7
 import asyncio
 from bot import Bot
 
 
-with open("token.conf", "r") as config:
+with open("tok.conf", "r") as config:
     token = config.read().split("|")[1]
 
 nbot = 0
