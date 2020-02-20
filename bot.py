@@ -234,7 +234,7 @@ class Bot():
                 continue
             """send state info based on counting mode"""
             if self.chosen != "sqr" and self.chosen != "root":
-                chm = f"have chosen [{self.chmod1}, {self.chmod2}] init mode"
+                chm = f"Have chosen [{self.chmod1}, {self.chmod2}] init mode"
                 await self.sendmsg(chm)
                 break
             else:
