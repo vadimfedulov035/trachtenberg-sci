@@ -4,10 +4,6 @@ cbot(){
 sh -c "$(./start.py)" &
 }
 
-until [ `date | cut -d" " -f 4 | cut -d":" -f 3` = "00" ]; do
-	sleep 1
-done
-
 while true; do
 	if [ `date | cut -d" " -f 4 | cut -d":" -f 1` = 23 ]; then
 			killall python3.7
@@ -18,5 +14,5 @@ while true; do
 		cbot
 		echo "Start of bot occured, whether it was reconnection or first start"
 	fi
-	sleep 60
+	sleep 30
 done

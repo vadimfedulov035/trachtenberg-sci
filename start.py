@@ -4395,7 +4395,7 @@ elif nbot == 83:
             pbot71.start(),
             pbot72.start(),
             pbot73.start(),
-            pbot74.start()
+            pbot74.start(),
             pbot75.start(),
             pbot76.start(),
             pbot77.start(),
@@ -4483,7 +4483,7 @@ elif nbot == 84:
             pbot71.start(),
             pbot72.start(),
             pbot73.start(),
-            pbot74.start()
+            pbot74.start(),
             pbot75.start(),
             pbot76.start(),
             pbot77.start(),
@@ -6055,4 +6055,4 @@ elif nbot == 100:
             pbot100.start()
             )
 
-syncio.run(main())
+asyncio.run(main())
