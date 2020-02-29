@@ -17,6 +17,5 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Make comments for understandability
 - [x] Put bot in alpha test
 - [x] Put bot in beta test
-- [x] Put bot at production
 - [x] Make a stable version after series of hotfixes
-- [ ] Make a stable version 2.0 to allow new users have instant counting
+- [x] Put bot at production, not changing anymore
