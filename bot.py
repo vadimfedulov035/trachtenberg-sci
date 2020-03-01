@@ -223,9 +223,9 @@ class Bot():
                 if self.readlmsg == self.prevmsg:
                     raise IndexError("Got no new messages!")
                 self.chmf = re.findall(r"([0-9]{1,6})", self.readlmsg)
-                self.chmod1 = int(self.chmod[0])
+                self.chmod1 = int(self.chmf[0])
                 if self.chosen != "sqr" and self.chosen != "root":
-                    self.chmod2 = int(self.chmod[1])
+                    self.chmod2 = int(self.chmf[1])
             except IndexError:
                 if self.readlmsg != self.prevmsg and self.readlmsg != "/0":
                     await self.sendmsg(self.ERROR)
