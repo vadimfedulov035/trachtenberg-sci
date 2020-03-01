@@ -6,7 +6,7 @@ sh -c "$(./start.py)" &
 
 killall python3.7
 
-until [ `date | cut -d" " -f 4 | cut -d":" -f 3` = 00 ]; do
+until [ `date | cut -d" " -f 5 | cut -d":" -f 3` = 00 ]; do
 	sleep 1
 done
 
