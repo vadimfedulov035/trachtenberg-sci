@@ -69,7 +69,6 @@ class Bot():
             except IndexError:
                 break
         self.CID = int(cids[self.NUMBER])  # we pick one cid based on num
-        print(f"{self.NUMBER}: {self.CID}")
 
     async def readmsg(self):
         """new reqest to get fresh json data"""
@@ -82,6 +81,13 @@ class Bot():
             self.j = json.loads(self.rj.decode("utf-8"))
         except json.decoder.JSONDecodeError:
             await self.readmsg()
+        """set offset for bulk deletion of old messages"""
+        if len(self.j["result"]) == 99:
+            self.upd_id = self.j["result"][99]["update_id"]
+            try:
+                urllib.request.urlopen(f"{self.URLR}?offset={self.upd_id}")
+            except usrllib.error.URLError:
+                await self.readmsg()
         """loop through json to find last message by date"""
         for j in self.j["result"]:
             cid = j["message"]["chat"]["id"]
@@ -90,6 +96,7 @@ class Bot():
                 if date >= self.date:
                     self.ldate = date  # update date, if later found
                     self.readlmsg = j["message"]["text"]  # latest msg
+        
 
     async def sendmsg(self, msg):
         """integrate cid and message into base url"""
