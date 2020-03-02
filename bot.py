@@ -86,7 +86,7 @@ class Bot():
             self.upd_id = self.j["result"][99]["update_id"]
             try:
                 urllib.request.urlopen(f"{self.URLR}?offset={self.upd_id}")
-            except usrllib.error.URLError:
+            except urllib.error.URLError:
                 await self.readmsg()
         """loop through json to find last message by date"""
         for j in self.j["result"]:
@@ -96,7 +96,6 @@ class Bot():
                 if date >= self.date:
                     self.ldate = date  # update date, if later found
                     self.readlmsg = j["message"]["text"]  # latest msg
-        
 
     async def sendmsg(self, msg):
         """integrate cid and message into base url"""
