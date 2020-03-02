@@ -91,17 +91,16 @@ class Bot():
         """loop through json to find last message by date"""
         for j in self.j["result"]:
             cid = j["message"]["chat"]["id"]
-            if cid == self.CID:  # check date only if CID in msg
+            if cid == self.CID:  # check date only if CID in msg matches
                 date = j["message"]["date"]
                 if date >= self.date:
                     self.ldate = date  # update date, if later found
-                    self.readlmsg = j["message"]["text"]  # latest msg
+                    self.readlmsg = j["message"]["text"]  # get latest msg
 
     async def sendmsg(self, msg):
         """integrate cid and message into base url"""
-        self.s = f"/sendmessage?text={msg}&chat_id={self.CID}"  # prepare link
-        self.urls = self.URL + self.s  # add to base url prepared link
-        requests.get(self.urls)  # make request
+        self.snd = f"{self.URL}/sendmessage?text={msg}&chat_id={self.CID}"
+        requests.get(self.snd)  # make request
 
     async def start(self):
         while True:
