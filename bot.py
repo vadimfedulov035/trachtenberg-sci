@@ -2,9 +2,9 @@
 import itertools
 import re
 import json
-import asyncio
 import urllib
 import requests
+import asyncio
 import tmath as tm
 
 
@@ -21,7 +21,7 @@ class Bot():
         """static variables are defined here for correct start up"""
         self.NUMBER = num  # num serves as enumerator of cid later
         self.TOKEN = tok  # token for connection to API
-        self.TIMEOUT = 0.5  # best timeout for not overloading API
+        self.TIMEOUT = 0.1
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
         self.ERROR = "Sorry, I didn't understand you, I will restart dialog!"
@@ -55,20 +55,6 @@ class Bot():
         self.fmmul = True
         self.fsqr = True
         self.froot = True
-        """first request for getting chat ids (cids) is done here"""
-        self.msgreq = urllib.request.urlopen(self.URLR)
-        self.rj = self.msgreq.read()
-        self.j = json.loads(self.rj.decode("utf-8"))
-        cids = []
-        """parsing loop through all cids"""
-        for n in itertools.count():
-            try:
-                cid = self.j["result"][n]["message"]["chat"]["id"]
-                if cid not in cids:
-                    cids.append(cid)
-            except IndexError:
-                break
-        self.CID = int(cids[self.NUMBER])  # we pick one cid based on num
 
     async def readmsg(self):
         """new reqest to get fresh json data"""
@@ -104,6 +90,29 @@ class Bot():
 
     async def start(self):
         while True:
+            """first request for getting chat ids (cids) is done here"""
+            try:
+                self.msgreq = urllib.request.urlopen(self.URLR)
+            except urllib.error.URLError:
+                continue
+            self.rj = self.msgreq.read()
+            self.j = json.loads(self.rj.decode("utf-8"))
+            cids = []
+            """parsing loop through all cids"""
+            for n in itertools.count():
+                try:
+                    cid = self.j["result"][n]["message"]["chat"]["id"]
+                    if cid not in cids:
+                        cids.append(cid)
+                except IndexError:
+                    break
+            try:
+                self.CID = int(cids[self.NUMBER])  # we pick one cid num-based
+                break
+            except IndexError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
+        while True:
             await self.readmsg()
             if self.readlmsg == "/start" or self.restart_ch:
                 self.pdate = self.ldate  # set date for restart comparison
@@ -115,7 +124,6 @@ class Bot():
                     self.restart_ch = False  # if restarted - change state
                 self.count_msg = True
                 break
-            await asyncio.sleep(self.TIMEOUT)
         await self.cmode()
 
     async def restart(self):

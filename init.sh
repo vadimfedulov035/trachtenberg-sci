@@ -1,17 +1,18 @@
+
 #!/bin/sh
 
 cbot(){
-sh -c "$(./start.py)" &
+sh -c "$(./start.py)"  &
 }
 
 killall python3.7
 
-until [ `date | cut -d" " -f 5 | cut -d":" -f 3` = 00 ]; do
-	sleep 1
-done
+#until [ `date | cut -d" " -f 5 | cut -d":" -f 3` = 00 ]; do
+#	sleep 1
+#done
 
 while true; do
-	if [ `date | cut -d" " -f 4 | cut -d":" -f 1` = 16 ] && [ `date | cut -d" " -f 4 | cut -d":" -f 2` = 00 ]; then
+	if [ `date | cut -d" " -f 5 | cut -d":" -f 1` = 12 ] && [ `date | cut -d" " -f 5 | cut -d":" -f 2` = 00 ]; then
 			killall python3.7
 			cbot
 			echo "Timebased restart of bot occured"

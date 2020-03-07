@@ -25,6 +25,8 @@ async def ml(multiplicand, multiplier, obj=None):
     y2 -= 1
     a = random.randint(x1, y1)
     b = random.randint(x2, y2)
+    if a in [0, 1, 2] or b in [0, 1, 2]:  # if got 0, 1, 2 to multiply - skip
+        await ml(multiplicand, multiplier, obj=obj)
     c = a * b
     if c == obj.c:  # if got the same answer restart
         await ml(multiplicand, multiplier, obj=obj)
