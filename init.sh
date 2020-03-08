@@ -1,8 +1,7 @@
-
 #!/bin/sh
 
 pbot(){
-sh -c "$(python3.7 start.py)"  &
+sh -c "$(./start.py)"  &
 }
 
 killall python3.7
