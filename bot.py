@@ -1,18 +1,13 @@
-#!/usr/bin/env python3.7
 import itertools
 import re
 import json
-import urllib
-import requests
+import urllib.error, urllib.request
 import asyncio
 import tmath as tm
 
 
 if __name__ == "__main__":
     print("This is not a standalone program!")
-
-with open("tok.conf", "r") as config:
-    token = config.read().split("|")[1]
 
 
 class Bot():
@@ -21,7 +16,7 @@ class Bot():
         """static variables are defined here for correct start up"""
         self.NUMBER = num  # num serves as enumerator of cid later
         self.TOKEN = tok  # token for connection to API
-        self.TIMEOUT = 0.1  # serves as placeholder for switching
+        self.TIMEOUT = 0  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
         self.ERROR = "Sorry, I didn't understand you, I will restart dialog!"
@@ -85,8 +80,9 @@ class Bot():
 
     async def sendmsg(self, msg):
         """integrate cid and message into base url"""
+        msg = msg.replace(" ", "%20")
         self.snd = f"{self.URL}/sendmessage?text={msg}&chat_id={self.CID}"
-        requests.get(self.snd)  # make request
+        urllib.request.urlopen(self.snd)  # make request
 
     async def start(self):
         while True:
@@ -94,6 +90,7 @@ class Bot():
             try:
                 self.msgreq = urllib.request.urlopen(self.URLR)
             except urllib.error.URLError:
+                await asyncio.sleep(self.TIMEOUT)
                 continue
             self.rj = self.msgreq.read()
             self.j = json.loads(self.rj.decode("utf-8"))

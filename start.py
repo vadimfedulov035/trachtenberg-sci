@@ -1,10 +1,9 @@
-#!/usr/bin/env python3.7
 import asyncio
 from bot import Bot
 
 
 with open("tok.conf", "r") as config:
-    token = config.read().split("|")[1]
+    token = config.read().rstrip()
 
 
 pbot0 = Bot(token, 0)
@@ -66,4 +65,5 @@ async def main():
         pbot25.start()
         )
 
-asyncio.run(main())
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
