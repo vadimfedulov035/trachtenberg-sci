@@ -1,7 +1,8 @@
 import itertools
 import re
 import json
-import urllib.error, urllib.request
+import urllib.error
+import urllib.request
 import asyncio
 import tmath as tm
 
@@ -55,23 +56,24 @@ class Bot():
         self.froot = True
 
     async def readmsg(self):
+        await asyncio.sleep(self.TIMEOUT)
         """new reqest to get fresh json data"""
         try:
             self.msgreq = urllib.request.urlopen(self.URLR)
-        except urllib.error.URLError:
-            await self.readmsg()
+        except (urllib.error.URLError, urllib.error.HTTPError) as e:
+            raise ConnectionError("Cannot send message!")
         self.rj = self.msgreq.read()
         try:
             self.j = json.loads(self.rj.decode("utf-8"))
         except json.decoder.JSONDecodeError:
-            await self.readmsg()
+            raise ConnectionError("Cannot decode JSON!")
         """set offset for bulk deletion of old messages"""
         if len(self.j["result"]) == 99:
             self.upd_id = self.j["result"][99]["update_id"]
             try:
                 urllib.request.urlopen(f"{self.URLR}?offset={self.upd_id}")
-            except urllib.error.URLError:
-                await self.readmsg()
+            except (urllib.error.URLError, urllib.error.HTTPError) as e:
+                raise ConnectionError("Cannot offset messages!")
         """loop through json to find last message by date"""
         for j in self.j["result"]:
             cid = j["message"]["chat"]["id"]
@@ -85,18 +87,25 @@ class Bot():
         """integrate cid and message into base url"""
         msg = msg.replace(" ", "%20")
         self.snd = f"{self.URL}/sendmessage?text={msg}&chat_id={self.CID}"
-        urllib.request.urlopen(self.snd)  # make request
+        try:
+            urllib.request.urlopen(self.snd)  # make request
+        except (urllib.error.URLError, urllib.error.HTTPError) as e:
+            raise ConnectionError("Cannot send message!")
 
     async def start(self):
         while True:
             """first request for getting chat ids (cids) is done here"""
             try:
                 self.msgreq = urllib.request.urlopen(self.URLR)
-            except urllib.error.URLError:
+            except (urllib.error.URLError, urllib.error.HTTPError):
                 await asyncio.sleep(self.TIMEOUT)
                 continue
             self.rj = self.msgreq.read()
-            self.j = json.loads(self.rj.decode("utf-8"))
+            try:
+                self.j = json.loads(self.rj.decode("utf-8"))
+            except json.decoder.JSONDecodeError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
             cids = []
             """parsing loop through all cids"""
             for n in itertools.count():
@@ -113,13 +122,21 @@ class Bot():
                 await asyncio.sleep(self.TIMEOUT)
                 continue
         while True:
-            await self.readmsg()
+            try:
+                await self.readmsg()
+            except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
             if self.readlmsg == "/start" or self.restart_ch:
                 self.pdate = self.ldate  # set date for restart comparison
                 m1 = "Started setting up! "
                 m2 = "Type /start when want to restart!"
                 fmsg = m1 + m2
-                await self.sendmsg(fmsg)
+                try:
+                    await self.sendmsg(fmsg)
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 if self.restart_ch:
                     self.restart_ch = False  # if restarted - change state
                 self.count_msg = True
@@ -134,7 +151,11 @@ class Bot():
     async def cmode(self):
         """Counting Mode: define operation"""
         while True:
-            await self.readmsg()  # get latest msg
+            try:
+                await self.readmsg()  # get latest msg
+            except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
             """check both last and recorded dates of /start,
             to check if /start command is new; otherwise
             bot will ignore newer command, thinking it is
@@ -149,31 +170,59 @@ class Bot():
                 m4 = "division, squaring, taking square root? "
                 m5 = "(/mmul, /vmul, /mul, /div, /sqr, /root):"
                 fmsg = m1 + m2 + m3 + m4 + m5
-                await self.sendmsg(fmsg)
+                try:
+                    await self.sendmsg(fmsg)
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 self.choice_msg = True  # change state; not to resend msg
             """compare latest msg with offered commands"""
             if self.readlmsg == "/mul":
-                await self.sendmsg("Multiplication is chosen")
+                try:
+                    await self.sendmsg("Multiplication is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 self.chosen = "mul"  # send state info and update choice var
                 break
             elif self.readlmsg == "/div":
-                await self.sendmsg("Division is chosen")
+                try:
+                    await self.sendmsg("Division is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 self.chosen = "div"  # send state info and update choice var
                 break
             elif self.readlmsg == "/vmul":
-                await self.sendmsg("Vector-matrix multiplication is chosen")
+                try:
+                    await self.sendmsg("Vector-matrix multiplication is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 self.chosen = "vmul"  # send state info and update choice var
                 break
             elif self.readlmsg == "/mmul":
-                await self.sendmsg("Matrix-matrix multiplication is chosen")
+                try:
+                    await self.sendmsg("Matrix-matrix multiplication is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 self.chosen = "mmul"  # send state info and update choice var
                 break
             elif self.readlmsg == "/sqr":
-                await self.sendmsg("Square taking is chosen")
+                try:
+                    await self.sendmsg("Square taking is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 self.chosen = "sqr"  # send state info and update choice var
                 break
             elif self.readlmsg == "/root":
-                await self.sendmsg("Square root taking is chosen")
+                try:
+                    await self.sendmsg("Square root taking is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
                 self.chosen = "root"  # send state info and update choice var
                 break
             await asyncio.sleep(self.TIMEOUT)
@@ -184,7 +233,10 @@ class Bot():
     async def diff(self):
         """Difficulty Speed"""
         while True:
-            await self.readmsg()  # read latest msg
+            try:
+                await self.readmsg()  # read latest msg
+            except ConnectionError:
+                continue
             if self.readlmsg == "/start":
                 await self.restart()  # check for restart command
             """send method's msg"""
@@ -192,7 +244,10 @@ class Bot():
                 m1 = "How many iterations do you want before increasing "
                 m2 = "difficulty? (/d[num]):"
                 fmsg = m1 + m2
-                await self.sendmsg(fmsg)
+                try:
+                    await self.sendmsg(fmsg)
+                except ConnectionError:
+                    continue
                 self.numb_msg = True  # change state; not to resend msg
             """try to extract diff, restart if got msg and failed"""
             try:
@@ -200,13 +255,18 @@ class Bot():
                 self.rpass = int(self.rpass[0])  # num is extracted here
             except IndexError:
                 if self.readlmsg != self.prevmsg:
-                    await self.sendmsg(self.ERROR)
+                    try:
+                        await self.sendmsg(self.ERROR)
+                    except ConnectionError:
+                        continue
                     await self.restart()
-                await asyncio.sleep(self.TIMEOUT)
                 continue
             """send state info"""
             if self.rpass:  # if num exist we send info about mode
-                await self.sendmsg(f"Have chosen {self.rpass} iterations mode")
+                try:
+                    await self.sendmsg(f"Have chosen {self.rpass} iterations mode")
+                except ConnectionError:
+                    continue
                 break
         """record previous msg and go to the next method"""
         self.prevmsg = self.readlmsg
@@ -215,11 +275,17 @@ class Bot():
     async def chmod(self):
         """Diff Init parameters"""
         while True:
-            await self.readmsg()  # read latest msg
+            try:
+                await self.readmsg()  # read latest msg
+            except ConnectionError:
+                continue
             if self.readlmsg == "/start":
                 await self.restart()  # check for restart command
             elif self.readlmsg == "/0":  # check for continue command
-                await self.sendmsg(f"No changes to init mode were made!")
+                try:
+                    await self.sendmsg(f"No changes to init mode were made!")
+                except ConnectionError:
+                    continue
                 self.ch_cmod = False
                 break
             """send method's msg"""
@@ -229,7 +295,10 @@ class Bot():
                 m3 = "numbers if two are. If you don't want to do that "
                 m4 = "type /0!"
                 fmsg = m1 + m2 + m3 + m4
-                await self.sendmsg(fmsg)
+                try:
+                    await self.sendmsg(fmsg)
+                except ConnectionError:
+                    continue
                 self.chmod_msg = True
             """try to extract new parameters, restart if got msg and failed"""
             try:
@@ -241,19 +310,26 @@ class Bot():
                     self.chmod2 = int(self.chmf[1])
             except IndexError:
                 if self.readlmsg != self.prevmsg and self.readlmsg != "/0":
-                    await self.sendmsg(self.ERROR)
+                    try:
+                        await self.sendmsg(self.ERROR)
+                    except ConnectionError:
+                        continue
                     await self.restart()
-                await asyncio.sleep(self.TIMEOUT)
                 continue
             """send state info based on counting mode"""
             if self.chosen != "sqr" and self.chosen != "root":
                 chm = f"Have chosen [{self.chmod1}, {self.chmod2}] init mode"
-                await self.sendmsg(chm)
+                try:
+                    await self.sendmsg(chm)
+                except ConnectionError:
+                    continue
                 break
             else:
                 chm = f"Have chosen {self.chmod1} init mode"
-                await self.sendmsg(chm)
-                break
+                try:
+                    await self.sendmsg(chm)
+                except ConnectionError:
+                    break
         """record previous msg and go to the next method
         based on counting mode"""
         self.prevmsg = self.readlmsg
@@ -265,7 +341,10 @@ class Bot():
     async def msize(self):
         """Matrix Size"""
         while True:
-            await self.readmsg()
+            try:
+                await self.readmsg()
+            except ConnectionError:
+                continue
             if self.readlmsg == "/start":
                 self.restart()  # check for restart command
             """send method's msg"""
@@ -274,7 +353,10 @@ class Bot():
                 m2 = "2 or 3 or 2.5 (4)? "
                 m3 = "(/m2, /m3, /m4):"
                 fmsg = m1 + m2 + m3
-                await self.sendmsg(fmsg)
+                try:
+                    await self.sendmsg(fmsg)
+                except ConnectionError:
+                    continue
                 self.msized_msg = True
             """try to extract msize, restart if got msg and failed"""
             try:  # to extract num from latest msg
@@ -282,9 +364,11 @@ class Bot():
                 self.smatr = int(self.smatr[0])
             except IndexError:
                 if self.readlmsg != self.prevmsg:
-                    await self.sendmsg(self.ERROR)
+                    try:
+                        await self.sendmsg(self.ERROR)
+                    except ConnectionError:
+                        continue
                     await self.restart()
-                await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.smatr == 4:  # 4th option is variation of 2 and 3
                 self.msize = 2.5  # so we set float to variable
