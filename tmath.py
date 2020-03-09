@@ -356,12 +356,13 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
         c1, c2, c3 = c[0], c[1], c[2]
         if c1 == obj.c1 or c2 == obj.c2 or c3 == obj.c3:
-            await mml(multiplicand, multiplier, obj=obj)
+            await mml(multiplicand, multiplier, matrix=matrix, obj=obj)
         obj.c1, obj.c2, obj.c3 = c1, c2, c3  # record answers
-	try:
-	    await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
-	except ConnectionError:
-	    continue
+        try:
+            await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
+        except ConnectionError:
+            await vml(multiplicand, multiplier, obj)
+        obj.c1, obj.c2 = c1, c2
         obj.prevmsg = obj.readlmsg
         while True:
             await asyncio.sleep(obj.TIMEOUT)
@@ -378,7 +379,10 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                     uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
                 except IndexError:
-                    await obj.sendmsg(obj.MISTYPE)
+                    try:
+                        await obj.sendmsg(obj.MISTYPE)
+                    except ConnectionError:
+                        continue
                     obj.prevmsg = obj.readlmsg
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
@@ -386,14 +390,14 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             obj.uc1, obj.uc2, obj.uc3 = uc1, uc2, uc3  # record user answer
             """compare user answers against right ones"""
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
-	        try:
-	            await obj.sendmsg("You're God Damn right!")
+                try:
+                    await obj.sendmsg("You're God Damn right!")
                 except ConnectionError:
                     continue
                 break
             else:
-	        try:
-	            await obj.sendmsg("No, right answer is\n{c}!")
+                try:
+                    await obj.sendmsg("No, right answer is\n{c}!")
                 except ConnectionError:
                     continue
                 break
@@ -473,20 +477,22 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
         c1, c2, c3, c4 = c[0, 0], c[0, 1], c[1, 0], c[1, 1]
         if c1 == obj.c1 or c2 == obj.c2:
-            await mml(multiplicand, multiplier, obj=obj)
+            await mml(multiplicand, multiplier, matrix=matrix, obj=obj)
         elif c3 == obj.c3 or c4 == obj.c4:
-            await mml(multiplicand, multiplier, obj=obj)
+            await mml(multiplicand, multiplier, matrix=matrix, obj=obj)
         obj.c1, obj.c2 = c1, c2
         obj.c3, obj.c4 = c3, c4
         try:
             await obj.sendmsg(f"{a}\n*****\n{b}\n=====\n?????")
         except ConnectionError:
-            await mml(multiplicand, multiplier, matrix, obj)
-#################################################################################################
+            await mml(multiplicand, multiplier, matrix=matrix, obj=obj)
         obj.prevmsg = obj.readlmsg
         while True:
             await asyncio.sleep(obj.TIMEOUT)
-            await obj.readmsg()
+            try:
+                await obj.readmsg()
+            except ConnectionError:
+                continue
             if obj.readlmsg == "/start":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:  # check for novelty
@@ -497,7 +503,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                     uc1, uc2 = int(uc[0]), int(uc[1])
                     uc3, uc4 = int(uc[2]), int(uc[3])
                 except IndexError:
-                    await obj.sendmsg(obj.MISTYPE)
+                    try:
+                        await obj.sendmsg(obj.MISTYPE)
+                    except ConnectionError:
+                        continue
                     obj.prevmsg = obj.readlmsg
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
@@ -508,19 +517,25 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             obj.uc3, obj.uc4 = uc3, uc4  # record user answers
             """compare user answers against right ones"""
             if uc1 == c1 and uc2 == c2 and uc3 == c3 and uc4 == c4:
-                await obj.sendmsg("You're God Damn right!")
+                try:
+                    await obj.sendmsg("You're God Damn right!")
+                except ConnectionError:
+                    continue
                 break
             else:
-                await obj.sendmsg(f"No, right answer is\n{c}")
+                try:
+                    await obj.sendmsg(f"No, right answer is\n{c}")
+                except ConnectionError:
+                    continue
                 break
     elif matrix == 3 or matrix == 2.5 and fch == "3x2":
         c1, c2, c3 = c[0, 0], c[0, 1], c[0, 2]
         c4, c5, c6 = c[1, 0], c[1, 1], c[1, 2]
         c7, c8, c9 = c[2, 1], c[2, 1], c[2, 2]
         if c1 == obj.c1 or c2 == obj.c2 or c3 == obj.c3:
-            await mml(multiplicand, multiplier, obj=obj)
+            await mml(multiplicand, multiplier, matrix=matrix, obj=obj)
         elif c4 == obj.c4 or c5 == obj.c5 or c6 == obj.c6:
-            await mml(multiplicand, multiplier, obj=obj)
+            await mml(multiplicand, multiplier, matrix=matrix, obj=obj)
         obj.c1, obj.c2, obj.c3 = c1, c2, c3  # record answers
         obj.c4, obj.c5, obj.c6 = c4, c5, c6  # record answers
         obj.c7, obj.c8, obj.c9 = c7, c8, c9  # record answers
@@ -528,7 +543,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         obj.prevmsg = obj.readlmsg
         while True:
             await asyncio.sleep(obj.TIMEOUT)
-            await obj.readmsg()
+            try:
+                await obj.readmsg()
+            except ConnectionError:
+                continue
             if obj.readlmsg == "/start":  # check for restart msg
                 await obj.restart()
             elif obj.readlmsg == obj.prevmsg:  # check for novelty
@@ -540,7 +558,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                     uc4, uc5, uc6 = int(uc[3]), int(uc[4]), int(uc[5])
                     uc7, uc8, uc9 = int(uc[6]), int(uc[7]), int(uc[8])
                 except IndexError:
-                    await obj.sendmsg(obj.MISTYPE)
+                    try:
+                        await obj.sendmsg(obj.MISTYPE)
+                    except ConnectionError:
+                        continue
                     obj.prevmsg = obj.readlmsg
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2 and uc3 == obj.uc3:
@@ -554,8 +575,14 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             obj.uc7, obj.uc8, obj.uc9 = uc7, uc8, uc9  # record user answers
             """compare user answers against right ones"""
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
-                await obj.sendmsg("You're God Damn right!")
+                try:
+                    await obj.sendmsg("You're God Damn right!")
+                except ConnectionError:
+                    continue
                 break
             else:
-                await obj.sendmsg(f"No, right answer is\n{c}")
+                try:
+                    await obj.sendmsg(f"No, right answer is\n{c}")
+                except ConnectionError:
+                    continue
                 break
