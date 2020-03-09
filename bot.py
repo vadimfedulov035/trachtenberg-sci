@@ -9,6 +9,9 @@ import tmath as tm
 if __name__ == "__main__":
     print("This is not a standalone program!")
 
+with open("tok.conf", "r") as config:
+    token = config.read().rstrip()
+
 
 class Bot():
 
@@ -16,7 +19,7 @@ class Bot():
         """static variables are defined here for correct start up"""
         self.NUMBER = num  # num serves as enumerator of cid later
         self.TOKEN = tok  # token for connection to API
-        self.TIMEOUT = 0  # serves as placeholder for switching
+        self.TIMEOUT = 0.01  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
         self.ERROR = "Sorry, I didn't understand you, I will restart dialog!"
