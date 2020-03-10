@@ -61,19 +61,19 @@ class Bot():
         try:
             self.msgreq = urllib.request.urlopen(self.URLR)
         except (urllib.error.URLError, urllib.error.HTTPError) as e:
-            raise ConnectionError("Cannot send message!")
+            raise ConnectionError("Cannot open URL!")
         self.rj = self.msgreq.read()
         try:
             self.j = json.loads(self.rj.decode("utf-8"))
         except json.decoder.JSONDecodeError:
             raise ConnectionError("Cannot decode JSON!")
         """set offset for bulk deletion of old messages"""
-        if len(self.j["result"]) == 99:
+        if len(self.j["result"]) == 100:
             self.upd_id = self.j["result"][99]["update_id"]
             try:
                 urllib.request.urlopen(f"{self.URLR}?offset={self.upd_id}")
             except (urllib.error.URLError, urllib.error.HTTPError) as e:
-                raise ConnectionError("Cannot offset messages!")
+                raise ConnectionError("Cannot open URL!")
         """loop through json to find last message by date"""
         for j in self.j["result"]:
             cid = j["message"]["chat"]["id"]
@@ -86,39 +86,50 @@ class Bot():
     async def sendmsg(self, msg):
         """integrate cid and message into base url"""
         msg = msg.replace(" ", "%20")
+        msg = msg.replace("\n", "%0A")
+        msg = msg.replace("*", "%2A")
+        msg = msg.replace("=", "%3D")
+        msg = msg.replace("/", "%2F")
+        msg = msg.replace("?", "%3F")
+        msg = msg.replace("!", "%21")
         self.snd = f"{self.URL}/sendmessage?text={msg}&chat_id={self.CID}"
         try:
             urllib.request.urlopen(self.snd)  # make request
         except (urllib.error.URLError, urllib.error.HTTPError) as e:
-            raise ConnectionError("Cannot send message!")
+            raise ConnectionError("Cannot open URL!")
+
+    async def freq(self):
+        """first request for getting chat ids (cids) is done here"""
+        try:
+            self.msgreq = urllib.request.urlopen(self.URLR)
+        except (urllib.error.URLError, urllib.error.HTTPError):
+            raise ConnectionError("Cannot open URL!")
+        self.rj = self.msgreq.read()
+        try:
+            self.j = json.loads(self.rj.decode("utf-8"))
+        except json.decoder.JSONDecodeError:
+            raise ConnectionError("Cannot decode JSON!")
+        cids = []
+        """parsing loop through all cids"""
+        for n in itertools.count():
+            try:
+                cid = self.j["result"][n]["message"]["chat"]["id"]
+                if cid not in cids:
+                    cids.append(cid)
+            except IndexError:
+                break
+        try:
+            self.CID = int(cids[self.NUMBER])  # we pick one cid num-based
+        except IndexError:
+            await asyncio.sleep(self.TIMEOUT)
+            raise RuntimeError("No such CID yet!")
 
     async def start(self):
         while True:
-            """first request for getting chat ids (cids) is done here"""
             try:
-                self.msgreq = urllib.request.urlopen(self.URLR)
-            except (urllib.error.URLError, urllib.error.HTTPError):
-                await asyncio.sleep(self.TIMEOUT)
-                continue
-            self.rj = self.msgreq.read()
-            try:
-                self.j = json.loads(self.rj.decode("utf-8"))
-            except json.decoder.JSONDecodeError:
-                await asyncio.sleep(self.TIMEOUT)
-                continue
-            cids = []
-            """parsing loop through all cids"""
-            for n in itertools.count():
-                try:
-                    cid = self.j["result"][n]["message"]["chat"]["id"]
-                    if cid not in cids:
-                        cids.append(cid)
-                except IndexError:
-                    break
-            try:
-                self.CID = int(cids[self.NUMBER])  # we pick one cid num-based
+                await self.freq() 
                 break
-            except IndexError:
+            except (ConnectionError, RuntimeError):
                 await asyncio.sleep(self.TIMEOUT)
                 continue
         while True:
@@ -225,7 +236,6 @@ class Bot():
                     continue
                 self.chosen = "root"  # send state info and update choice var
                 break
-            await asyncio.sleep(self.TIMEOUT)
         """record previous msg and go to the next method"""
         self.prevmsg = self.readlmsg
         await self.diff()
@@ -236,6 +246,7 @@ class Bot():
             try:
                 await self.readmsg()  # read latest msg
             except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.readlmsg == "/start":
                 await self.restart()  # check for restart command
@@ -247,6 +258,7 @@ class Bot():
                 try:
                     await self.sendmsg(fmsg)
                 except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.numb_msg = True  # change state; not to resend msg
             """try to extract diff, restart if got msg and failed"""
@@ -258,6 +270,7 @@ class Bot():
                     try:
                         await self.sendmsg(self.ERROR)
                     except ConnectionError:
+                        await asyncio.sleep(self.TIMEOUT)
                         continue
                     await self.restart()
                 continue
@@ -266,6 +279,7 @@ class Bot():
                 try:
                     await self.sendmsg(f"Have chosen {self.rpass} iterations mode")
                 except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
                     continue
                 break
         """record previous msg and go to the next method"""
@@ -278,6 +292,7 @@ class Bot():
             try:
                 await self.readmsg()  # read latest msg
             except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.readlmsg == "/start":
                 await self.restart()  # check for restart command
@@ -285,6 +300,7 @@ class Bot():
                 try:
                     await self.sendmsg(f"No changes to init mode were made!")
                 except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.ch_cmod = False
                 break
@@ -298,6 +314,7 @@ class Bot():
                 try:
                     await self.sendmsg(fmsg)
                 except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.chmod_msg = True
             """try to extract new parameters, restart if got msg and failed"""
@@ -313,6 +330,7 @@ class Bot():
                     try:
                         await self.sendmsg(self.ERROR)
                     except ConnectionError:
+                        await asyncio.sleep(self.TIMEOUT)
                         continue
                     await self.restart()
                 continue
@@ -322,6 +340,7 @@ class Bot():
                 try:
                     await self.sendmsg(chm)
                 except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
                     continue
                 break
             else:
@@ -329,7 +348,9 @@ class Bot():
                 try:
                     await self.sendmsg(chm)
                 except ConnectionError:
-                    break
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue 
+                break
         """record previous msg and go to the next method
         based on counting mode"""
         self.prevmsg = self.readlmsg
@@ -344,6 +365,7 @@ class Bot():
             try:
                 await self.readmsg()
             except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.readlmsg == "/start":
                 self.restart()  # check for restart command
@@ -356,6 +378,7 @@ class Bot():
                 try:
                     await self.sendmsg(fmsg)
                 except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.msized_msg = True
             """try to extract msize, restart if got msg and failed"""
@@ -367,6 +390,7 @@ class Bot():
                     try:
                         await self.sendmsg(self.ERROR)
                     except ConnectionError:
+                        await asyncio.sleep(self.TIMEOUT)
                         continue
                     await self.restart()
                 continue

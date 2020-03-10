@@ -18,6 +18,6 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Make bot work on PyPy to increase speed
 - [x] Make a stable version after series of hotfixes
 - [x] Put bot at production
-- [ ] Integrate asyncio waits and PyPy performance acceleration
+- [x] Integrate PyPy performance acceleration
 - [ ] Translate to Russian
 - [ ] Release 2.0
