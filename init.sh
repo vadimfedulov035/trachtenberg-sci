@@ -4,8 +4,6 @@ pbot(){
 sh -c "$(pypy3 start.py)"  &
 }
 
-killall pypy3
-
 until [ `date | cut -d" " -f 4 | cut -d":" -f 3` = 00 ]; do
 	sleep 1
 done

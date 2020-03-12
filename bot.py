@@ -1,5 +1,6 @@
 import itertools
 import re
+import gc
 import json
 import urllib.error
 import urllib.request
@@ -87,11 +88,6 @@ class Bot():
         """integrate cid and message into base url"""
         msg = msg.replace(" ", "%20")
         msg = msg.replace("\n", "%0A")
-        msg = msg.replace("*", "%2A")
-        msg = msg.replace("=", "%3D")
-        msg = msg.replace("/", "%2F")
-        msg = msg.replace("?", "%3F")
-        msg = msg.replace("!", "%21")
         self.snd = f"{self.URL}/sendmessage?text={msg}&chat_id={self.CID}"
         try:
             urllib.request.urlopen(self.snd)  # make request
@@ -355,11 +351,11 @@ class Bot():
         based on counting mode"""
         self.prevmsg = self.readlmsg
         if self.chosen == "vmul" or self.chosen == "mmul":
-            await self.msize()  # for matrix operations we need their size
+            await self.size()  # for matrix operations we need their size
         else:
             await self.count()  # for basic operation we start counting now
 
-    async def msize(self):
+    async def size(self):
         """Matrix Size"""
         while True:
             try:
