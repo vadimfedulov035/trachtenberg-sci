@@ -1,5 +1,6 @@
 import itertools
 import re
+import gc
 import json
 import urllib.error
 import urllib.request
@@ -56,6 +57,10 @@ class Bot():
         self.froot = True
 
     async def readmsg(self):
+        try:
+            gc.collect()
+        except TypeError:
+            pass
         await asyncio.sleep(self.TIMEOUT)
         """new reqest to get fresh json data"""
         try:
@@ -136,8 +141,9 @@ class Bot():
             if self.readlmsg == "/start" or self.restart_ch:
                 self.pdate = self.ldate  # set date for restart comparison
                 m1 = "Started setting up! "
-                m2 = "Type /start when want to restart!"
-                fmsg = m1 + m2
+                m2 = "Type /start when want to restart! "
+                m3 = "Please, choose language!"
+                fmsg = m1 + m2 + m3
                 try:
                     await self.sendmsg(fmsg)
                 except ConnectionError:
@@ -147,12 +153,37 @@ class Bot():
                     self.restart_ch = False  # if restarted - change state
                 self.count_msg = True
                 break
-        await self.cmode()
+        await self.lmode()
 
     async def restart(self):
         self.__init__(token, self.NUMBER)
         self.restart_ch = True
         await self.start()
+
+    async def lmode(self):
+        while True:
+            try:
+                await self.readmsg()
+            except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
+            if self.readlmsg == "/start" and self.ldate != self.pdate:
+                await self.restart()  # check for restart command, date
+            if self.readlmsg == "/en":
+                self.lang = "en"
+                try:
+                    await self.sendmsg("English is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
+            elif self.readlmsg == "/ru":
+                self.lang = "ru"
+                try:
+                    await self.sendmsg("PASS")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
+            
 
     async def cmode(self):
         """Counting Mode: define operation"""
