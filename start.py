@@ -1,8 +1,10 @@
 import asyncio
 from bot import Bot
 
+
 with open("tok.conf", "r") as config:
     token = config.read().rstrip()
+
 
 pbot0 = Bot(token, 0)
 pbot1 = Bot(token, 1)

@@ -13,11 +13,9 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Optimize code for high effeciency
 - [x] Optimize code for PEP-8 standards and improve readability
 - [x] Make comments for understandability
-- [x] Add ability to hold up to 25 conversations at once
+- [x] Add ability to hold up to 50 conversations at once
 - [x] Make bot able to have instant messaging with newcomers
 - [x] Make bot work on PyPy to increase speed
 - [x] Make a stable version after series of hotfixes
 - [x] Put bot at production
-- [x] Integrate PyPy performance acceleration
-- [ ] Translate to Russian
-- [ ] Release 2.0
+- [x] Release 2.0
