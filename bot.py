@@ -142,8 +142,7 @@ class Bot():
                 self.pdate = self.ldate  # set date for restart comparison
                 m1 = "Started setting up! "
                 m2 = "Type /start when want to restart! "
-                m3 = "Please, choose language!"
-                fmsg = m1 + m2 + m3
+                fmsg = m1 + m2
                 try:
                     await self.sndmsg(fmsg)
                 except ConnectionError:
@@ -153,36 +152,12 @@ class Bot():
                     self.restart_ch = False  # if restarted - change state
                 self.count_msg = True
                 break
-        await self.lmode()
+        await self.cmode()
 
     async def restart(self):
         self.__init__(token, self.NUMBER)
         self.restart_ch = True
         await self.start()
-
-    async def lmode(self):
-        while True:
-            try:
-                await self.readmsg()
-            except ConnectionError:
-                await asyncio.sleep(self.TIMEOUT)
-                continue
-            if self.readlmsg == "/start" and self.ldate != self.pdate:
-                await self.restart()  # check for restart command, date
-            if self.readlmsg == "/en":
-                self.lang = "en"
-                try:
-                    await self.sndmsg("English is chosen")
-                except ConnectionError:
-                    await asyncio.sleep(self.TIMEOUT)
-                    continue
-            elif self.readlmsg == "/ru":
-                self.lang = "ru"
-                try:
-                    await self.sndmsg("PASS")
-                except ConnectionError:
-                    await asyncio.sleep(self.TIMEOUT)
-                    continue
 
     async def cmode(self):
         """Counting Mode: define operation"""
