@@ -5,7 +5,7 @@
 
 If you have read the original book you will be able to test your knowledge easily by just chatting with bot in Telegram.
 
-If you want to, you can explore the source code of TrachtenbergBot in Telegram, it is written on its own micro-framework for work with Telegram API and library for working with math operations. Main file is init.sh, this is a shell script which starts start.py which assembles all functionality inside itself. Bot restarts at 20:00 MSK in case some users stopped using the bot and new bot are available for usage.
+If you want to, you can explore the source code of TrachtenbergBot in Telegram, it is written on its own micro-framework for work with Telegram API and library for working with math operations. Main file is init.sh, this is a shell script which starts start.py which assembles all functionality inside itself. Bot restarts at 21:00 MSK in case some users stopped using the bot and new bot are available for usage.
 
 - [x] Add Arithmetics operations
 - [x] Add Linear Algebra operations
@@ -18,4 +18,4 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Make bot work on PyPy to increase speed
 - [x] Make a stable version after series of hotfixes
 - [x] Put bot at production
-- [x] Release 2.0
+- [x] Make official release v2.0 :tada: :tada: :tada:
