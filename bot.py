@@ -1,6 +1,5 @@
 import itertools
 import re
-import gc
 import json
 import urllib.error
 import urllib.request
