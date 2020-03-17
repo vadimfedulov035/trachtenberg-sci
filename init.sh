@@ -1,7 +1,7 @@
 #!/bin/sh
 
 pbot(){
-sh -c "$(python3 start.py)" &
+sh -c "$(python3.8 start.py)" &
 }
 
 while [ `date | cut -d" " -f 4 | cut -d":" -f 3` != 00 ]; do
