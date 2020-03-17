@@ -57,10 +57,6 @@ class Bot():
         self.froot = True
 
     async def readmsg(self):
-        try:
-            gc.collect()
-        except TypeError:
-            pass
         await asyncio.sleep(self.TIMEOUT)
         """new reqest to get fresh json data"""
         try:

@@ -31,31 +31,6 @@ pbot21 = Bot(token, 21)
 pbot22 = Bot(token, 22)
 pbot23 = Bot(token, 23)
 pbot24 = Bot(token, 24)
-pbot25 = Bot(token, 25)
-pbot26 = Bot(token, 26)
-pbot27 = Bot(token, 27)
-pbot28 = Bot(token, 28)
-pbot29 = Bot(token, 29)
-pbot30 = Bot(token, 30)
-pbot31 = Bot(token, 31)
-pbot32 = Bot(token, 32)
-pbot33 = Bot(token, 33)
-pbot34 = Bot(token, 34)
-pbot35 = Bot(token, 35)
-pbot36 = Bot(token, 36)
-pbot37 = Bot(token, 37)
-pbot38 = Bot(token, 38)
-pbot39 = Bot(token, 39)
-pbot40 = Bot(token, 40)
-pbot41 = Bot(token, 41)
-pbot42 = Bot(token, 42)
-pbot43 = Bot(token, 43)
-pbot44 = Bot(token, 44)
-pbot45 = Bot(token, 45)
-pbot46 = Bot(token, 46)
-pbot47 = Bot(token, 47)
-pbot48 = Bot(token, 48)
-pbot49 = Bot(token, 49)
 
 
 async def main():
@@ -84,33 +59,7 @@ async def main():
         pbot21.start(),
         pbot22.start(),
         pbot23.start(),
-        pbot24.start(),
-        pbot25.start(),
-        pbot26.start(),
-        pbot27.start(),
-        pbot28.start(),
-        pbot29.start(),
-        pbot30.start(),
-        pbot31.start(),
-        pbot32.start(),
-        pbot33.start(),
-        pbot34.start(),
-        pbot35.start(),
-        pbot36.start(),
-        pbot37.start(),
-        pbot38.start(),
-        pbot39.start(),
-        pbot40.start(),
-        pbot41.start(),
-        pbot42.start(),
-        pbot43.start(),
-        pbot44.start(),
-        pbot45.start(),
-        pbot46.start(),
-        pbot47.start(),
-        pbot48.start(),
-        pbot49.start()
+        pbot24.start()
         )
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+asyncio.run(main())
