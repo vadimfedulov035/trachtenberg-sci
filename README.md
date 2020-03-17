@@ -16,5 +16,5 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Add ability to hold up to 25 conversations at once
 - [x] Make bot able to have instant messaging with newcomers
 - [x] Put bot at production
-- [x] Chose CPython realization of Python
+- [x] Choose CPython realization of Python
 - [x] Make official 2.1 release
