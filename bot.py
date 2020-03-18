@@ -45,7 +45,7 @@ class Bot():
         self.start_msg = False
         self.choice_msg = False
         self.numb_msg = False
-        self.chmod_msg = False
+        self.chm_msg = False
         self.msized_msg = False
         self.restart_ch = False
         self.ch_cmod = True
@@ -61,7 +61,7 @@ class Bot():
         """new reqest to get fresh json data"""
         try:
             self.msgreq = urllib.request.urlopen(self.URLR)
-        except (urllib.error.URLError, urllib.error.HTTPError):
+        except (urllib.error.URLError, urllib.error.HTTPError) as e:
             raise ConnectionError("Cannot open URL!")
         self.rj = self.msgreq.read()
         try:
@@ -73,7 +73,7 @@ class Bot():
             self.upd_id = self.j["result"][99]["update_id"]
             try:
                 urllib.request.urlopen(f"{self.URLR}?offset={self.upd_id}")
-            except (urllib.error.URLError, urllib.error.HTTPError):
+            except (urllib.error.URLError, urllib.error.HTTPError) as e:
                 raise ConnectionError("Cannot open URL!")
         """loop through json to find last message by date"""
         for j in self.j["result"]:
@@ -91,7 +91,7 @@ class Bot():
         self.snd = f"{self.URL}/sendmessage?text={msg}&chat_id={self.CID}"
         try:
             urllib.request.urlopen(self.snd)  # make request
-        except (urllib.error.URLError, urllib.error.HTTPError):
+        except (urllib.error.URLError, urllib.error.HTTPError) as e:
             raise ConnectionError("Cannot open URL!")
 
     async def freq(self):
@@ -123,7 +123,7 @@ class Bot():
     async def start(self):
         while True:
             try:
-                await self.freq()
+                await self.freq() 
                 break
             except (ConnectionError, RuntimeError):
                 await asyncio.sleep(self.TIMEOUT)
@@ -138,7 +138,8 @@ class Bot():
                 self.pdate = self.ldate  # set date for restart comparison
                 m1 = "Started setting up! "
                 m2 = "Type /start when want to restart! "
-                fmsg = m1 + m2
+                m3 = "Please, choose language!"
+                fmsg = m1 + m2 + m3
                 try:
                     await self.sndmsg(fmsg)
                 except ConnectionError:
@@ -148,12 +149,37 @@ class Bot():
                     self.restart_ch = False  # if restarted - change state
                 self.count_msg = True
                 break
-        await self.cmode()
+        await self.lmode()
 
     async def restart(self):
         self.__init__(token, self.NUMBER)
         self.restart_ch = True
         await self.start()
+
+    async def lmode(self):
+        while True:
+            try:
+                await self.readmsg()
+            except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
+            if self.readlmsg == "/start" and self.ldate != self.pdate:
+                await self.restart()  # check for restart command, date
+            if self.readlmsg == "/en":
+                self.lang = "en"
+                try:
+                    await self.sndmsg("English is chosen")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
+            elif self.readlmsg == "/ru":
+                self.lang = "ru"
+                try:
+                    await self.sndmsg("PASS")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
+            
 
     async def cmode(self):
         """Counting Mode: define operation"""
@@ -171,10 +197,16 @@ class Bot():
             if self.readlmsg == "/start" and self.ldate != self.pdate:
                 await self.restart()  # check for restart command, date
             if not self.choice_msg:
-                m1 = "Do you want a linear algebra operations: "
-                m2 = "matrix-matrix or vector-matrix multiplication; "
-                m3 = "arithmetics operations: multiplication, "
-                m4 = "division, squaring, taking square root? "
+                if self.lang == "en":
+                    m1 = "Do you want a linear algebra operations: "
+                    m2 = "matrix-matrix or vector-matrix multiplication; "
+                    m3 = "arithmetics operations: multiplication, "
+                    m4 = "division, squaring, taking square root? "
+                elif self.lang == "ru":
+                    m1 = "Вы хотите операции линейной алгебры: "
+                    m2 = "матрично-матричное или векторно-матричное умножение; "
+                    m3 = "арифметические операциии: умножение, "
+                    m4 = "деление, возведение в квадрат, взятие квадратного корня? "
                 m5 = "(/mmul, /vmul, /mul, /div, /sqr, /root):"
                 fmsg = m1 + m2 + m3 + m4 + m5
                 try:
@@ -186,7 +218,10 @@ class Bot():
             """compare latest msg with offered commands"""
             if self.readlmsg == "/mul":
                 try:
-                    await self.sndmsg("Multiplication is chosen")
+                    if self.lang == "en":
+                        await self.sndmsg("Multiplication is chosen")
+                    elif self.lang == "ru":
+                        await self.sndmsg("Выбрано умножение")
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -194,31 +229,21 @@ class Bot():
                 break
             elif self.readlmsg == "/div":
                 try:
-                    await self.sndmsg("Division is chosen")
+                    if self.lang == "en":
+                        await self.sndmsg("Division is chosen")
+                    elif self.lang == "ru":
+                        await self.sndmsg("Выбрано деление")
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.chosen = "div"  # send state info and update choice var
                 break
-            elif self.readlmsg == "/vmul":
-                try:
-                    await self.sndmsg("Vector-matrix multiplication is chosen")
-                except ConnectionError:
-                    await asyncio.sleep(self.TIMEOUT)
-                    continue
-                self.chosen = "vmul"  # send state info and update choice var
-                break
-            elif self.readlmsg == "/mmul":
-                try:
-                    await self.sndmsg("Matrix-matrix multiplication is chosen")
-                except ConnectionError:
-                    await asyncio.sleep(self.TIMEOUT)
-                    continue
-                self.chosen = "mmul"  # send state info and update choice var
-                break
             elif self.readlmsg == "/sqr":
                 try:
-                    await self.sndmsg("Square taking is chosen")
+                    if self.lang == "en":
+                        await self.sndmsg("Square taking is chosen")
+                    elif self.lang == "ru":
+                        await self.sndmsg("Выбрано возведение в квадрат")
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -226,11 +251,36 @@ class Bot():
                 break
             elif self.readlmsg == "/root":
                 try:
-                    await self.sndmsg("Square root taking is chosen")
+                    if self.lang == "en":
+                        await self.sndmsg("Square root taking is chosen")
+                    elif self.lang == "ru":
+                        await  self.sndmsg("Выбрано взятие квадратного корня")
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.chosen = "root"  # send state info and update choice var
+                break
+            elif self.readlmsg == "/vmul":
+                try:
+                    if self.lang == "en":
+                        await self.sndmsg("Vector-matrix multiplication is chosen")
+                    elif self.lang == "ru":
+                        await self.sndmsg("Выбрано векторно-матричное умножение")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
+                self.chosen = "vmul"  # send state info and update choice var
+                break
+            elif self.readlmsg == "/mmul":
+                try:
+                    if self.lang == "en":
+                        await self.sndmsg("Matrix-matrix multiplication is chosen")
+                    elif self.lang == "ru":
+                        await self.sndmsg("Выбрано матрично-матричное умножение")
+                except ConnectionError:
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
+                self.chosen = "mmul"  # send state info and update choice var
                 break
         """record previous msg and go to the next method"""
         self.prevmsg = self.readlmsg
@@ -248,8 +298,12 @@ class Bot():
                 await self.restart()  # check for restart command
             """send method's msg"""
             if not self.numb_msg:
-                m1 = "How many iterations do you want before increasing "
-                m2 = "difficulty? (/d[number]):"
+                if self.lang == "en":
+                    m1 = "How many iterations do you want before increasing "
+                    m2 = "difficulty? (/d[number]):"
+                elif self.lang == "ru":
+                    m1 = "Как много итераций прежде чем увеличить сложность? "
+                    m2 = "(/d[number])"
                 fmsg = m1 + m2
                 try:
                     await self.sndmsg(fmsg)
@@ -273,14 +327,19 @@ class Bot():
             """send state info"""
             if self.rpass:  # if num exist we send info about mode
                 try:
-                    await self.sndmsg(f"Have chosen {self.rpass} diff mode")
+                    if self.lang == "en":
+                        fmsg = "Have chosen {self.rpass} iterations mode" 
+                        await self.sndmsg(fmsg)
+                    elif self.lang == "ru":
+                        fmsg = "Выбрана {self.rpass} скорость усложнения" 
+                        await self.sndmsg(fmsg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 break
         """record previous msg and go to the next method"""
         self.prevmsg = self.readlmsg
-        await self.chmod()
+        await self.chm()
 
     async def chmod(self):
         """Diff Init parameters"""
@@ -294,33 +353,40 @@ class Bot():
                 await self.restart()  # check for restart command
             elif self.readlmsg == "/0":  # check for continue command
                 try:
-                    await self.sndmsg(f"No changes to init mode were made!")
+                    if self.lang == "en":
+                        await self.sndmsg("No changes to init mode were made!")
+                    elif self.lang == "ru":
+                        await self.sndmsg("Никаких изменений!")
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.ch_cmod = False
                 break
             """send method's msg"""
-            if self.chmod_msg is False:
-                m1 = "Do you want to change initial difficulty? If yes type "
-                m2 = "number if only one element is randomised and two "
-                m3 = "numbers if two are. If you don't want to do that "
-                m4 = "type /0!"
-                fmsg = m1 + m2 + m3 + m4
+            if self.chm_msg is False:
+                if self.lang == "en":
+                    m1 = "Do you want to change initial difficulty? If yes "
+                    m2 = "- number or numbers, depending on counting mode; "
+                    m3 = "if no - type /0"
+                elif self.lang == "ru":
+                    m1 = "Вы хотите изменить начальную сложность? Если да "
+                    m2 = "введите одно число или два в зависимости от мода "
+                    m3 = "счета; если не хотите менять - введите /0"
+                fmsg = m1 + m2 + m3 
                 try:
                     await self.sndmsg(fmsg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
-                self.chmod_msg = True
+                self.chm_msg = True
             """try to extract new parameters, restart if got msg and failed"""
             try:
                 if self.readlmsg == self.prevmsg:
                     raise IndexError("Got no new messages!")
                 self.chmf = re.findall(r"([0-9]{1,6})", self.readlmsg)
-                self.chmod1 = int(self.chmf[0])
+                self.chm1 = int(self.chmf[0])
                 if self.chosen != "sqr" and self.chosen != "root":
-                    self.chmod2 = int(self.chmf[1])
+                    self.chm2 = int(self.chmf[1])
             except IndexError:
                 if self.readlmsg != self.prevmsg and self.readlmsg != "/0":
                     try:
@@ -332,7 +398,10 @@ class Bot():
                 continue
             """send state info based on counting mode"""
             if self.chosen != "sqr" and self.chosen != "root":
-                chm = f"Have chosen [{self.chmod1}, {self.chmod2}] init mode"
+                if self.lang == "en":
+                    chm = f"Have chosen [{self.chm1}, {self.chm2}] init mode"
+                elif self.lang == "ru":
+                    chm = f"Выбран [{self.chm1}, {self.chm2}] стартовый мод"
                 try:
                     await self.sndmsg(chm)
                 except ConnectionError:
@@ -340,12 +409,15 @@ class Bot():
                     continue
                 break
             else:
-                chm = f"Have chosen {self.chmod1} init mode"
+                if self.lang == "en":
+                    chm = f"Have chosen {self.chm1} init mode"
+                elif self.lang == "ru":
+                    chm = f"Выбран {self.chm1} стартовый мод"
                 try:
                     await self.sndmsg(chm)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
-                    continue
+                    continue 
                 break
         """record previous msg and go to the next method
         based on counting mode"""
@@ -367,8 +439,12 @@ class Bot():
                 self.restart()  # check for restart command
             """send method's msg"""
             if self.msized_msg is False:
-                m1 = "How big the matrix should be? "
-                m2 = "2 or 3 or 2.5 (4)? "
+                if self.lang == "en":
+                    m1 = "How big the matrix should be? "
+                    m2 = "2 or 3 or 2/3 (4)? "
+                elif self.lang == "ru":
+                    m1 = "Каков должен быть размер матрицы "
+                    m2 = "2 или 3 или 2/3 (4)"
                 m3 = "(/m2, /m3, /m4):"
                 fmsg = m1 + m2 + m3
                 try:
@@ -404,7 +480,7 @@ class Bot():
             if self.chosen == "mul":  # check for counting mode option
                 if self.fmul:  # define loop's from initial obj's vars
                     if self.ch_cmod:
-                        self.n1, self.n2 = self.chmod1, self.chmod2
+                        self.n1, self.n2 = self.chm1, self.chm2
                     else:
                         self.n1, self.n2 = self.mnum[0], self.mnum[1]
                     self.fmul = False
@@ -422,7 +498,7 @@ class Bot():
             elif self.chosen == "div":  # check for counting mode option
                 if self.fdiv:  # define loop's from initial obj's vars
                     if self.ch_cmod:
-                        self.n1, self.n2 = self.chmod1, self.chmod2
+                        self.n1, self.n2 = self.chm1, self.chm2
                     else:
                         self.n1, self.n2 = self.dnum[0], self.dnum[1]
                     self.fdiv = False
@@ -440,7 +516,7 @@ class Bot():
             elif self.chosen == "sqr":  # check for counting mode option
                 if self.fsqr:  # define loop's from initial obj's vars
                     if self.ch_cmod:
-                        self.n1 = self.chmod1
+                        self.n1 = self.chm1
                     else:
                         self.n1 = self.sqnum
                     self.fsqr = False
@@ -454,7 +530,7 @@ class Bot():
             elif self.chosen == "root":  # check for counting mode option
                 if self.froot:  # define loop's from initial obj's vars
                     if self.ch_cmod:
-                        self.n1 = self.chmod1
+                        self.n1 = self.chm1
                     else:
                         self.n1 = self.ronum
                     self.froot = False
@@ -468,7 +544,7 @@ class Bot():
             elif self.chosen == "vmul":  # check for counting mode option
                 if self.fvmul:  # define loop's from initial obj's vars
                     if self.ch_cmod:
-                        self.n1, self.n2 = self.chmod1, self.chmod2
+                        self.n1, self.n2 = self.chm1, self.chm2
                     else:
                         self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
                     self.fvmul = False  # change state not to reconvert vars
@@ -486,7 +562,7 @@ class Bot():
             elif self.chosen == "mmul":  # check for counting mode option
                 if self.fmmul:  # define loop's from initial obj's vars
                     if self.ch_cmod:
-                        self.n1, self.n2 = self.chmod1, self.chmod2
+                        self.n1, self.n2 = self.chm1, self.chm2
                     else:
                         self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
                     self.fmmul = False

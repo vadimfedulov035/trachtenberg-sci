@@ -1,7 +1,7 @@
 #!/bin/sh
 
 pbot(){
-sh -c "$(./start.py)" &
+sh -c "$(python3 start.py)" &
 }
 
 while [ `date | cut -d" " -f 4 | cut -d":" -f 3` != 00 ]; do
@@ -9,8 +9,8 @@ while [ `date | cut -d" " -f 4 | cut -d":" -f 3` != 00 ]; do
 done
 
 while true; do
-	if [ `date | cut -d" " -f 4 | cut -d":" -f 1` = 18 ] && [ `date | cut -d" " -f 4 | cut -d":" -f 2` = 00 ]; then
-			killall python3
+	if [ `date | cut -d" " -f 4 | cut -d":" -f 1` = 14 ] && [ `date | cut -d" " -f 4 | cut -d":" -f 2` = 00 ]; then
+			killall pypy3
 			pbot
 			echo "Timebased restart of bot occured"
 	elif [ -z `pgrep python3` ]; then

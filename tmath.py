@@ -60,13 +60,19 @@ async def ml(multiplicand, multiplier, obj=None):
         """compare user answers against right ones"""
         if uc == c:
             try:
-                await obj.sndmsg("You're God Damn right!")
+                if obj.lang == "en":
+                    await obj.sndmsg("You're God Damn right!")
+                elif obj.lang == "ru":
+                    await obj.sndmsg("Вы чертовски правы!")
             except ConnectionError:
                 continue
             break
         elif uc != c:
             try:
-                await obj.sndmsg(f"No, right answer is {c}!")
+                if obj.lang == "en":
+                    await obj.sndmsg(f"No, right answer is {c}!")
+                elif obj.lang == "ru":
+                    await obj.sndmsg(f"Нет, правильный ответ {c}!")
             except ConnectionError:
                 continue
             break
@@ -122,14 +128,21 @@ async def dl(dividend, divider, obj=None):
         """compare user answers against right ones"""
         if uc1 == c1 and uc2 == c2:
             try:
-                await obj.sndmsg("You're God Damn right!")
+                if obj.lang == "en":
+                    await obj.sndmsg("You're God Damn right!")
+                elif obj.lang == "ru":
+                    await obj.sndmsg("Вы чертовски правы!")
             except ConnectionError:
                 continue
             break
         else:
-            msg1 = f"No, right answer is {c1} "
-            msg2 = f"with residual of {c2}!"
-            msg = msg1 + msg2
+            if obj.lang == "en":
+                m1 = f"No, right answer is {c1} "
+                m2 = f"with residual of {c2}!"
+            elif obj.lang == "ru":
+                m1 = f"Нет, правильный ответ это {c1} "
+                m2 = f"с остатком {c2}!"
+            msg = m1 + m2
             try:
                 await obj.sndmsg(msg)
             except ConnectionError:
@@ -182,13 +195,19 @@ async def sqr(sqrn, obj=None):
         """compare user answers against right ones"""
         if uc == c:
             try:
-                await obj.sndmsg("You're God Damn right!")
+                if obj.lang == "en":
+                    await obj.sndmsg("You're God Damn right!")
+                elif obj.lang == "ru":
+                    await obj.sndmsg("Вы чертовски правы!")
             except ConnectionError:
                 continue
             break
         elif uc != c:
             try:
-                await obj.sndmsg(f"No, right answer is {c}!")
+                if obj.lang == "en":
+                    await obj.sndmsg(f"No, right answer is {c}!")
+                elif obj.lang == "ru":
+                    await obj.sndmsg(f"Нет, правильный ответ {c}!")
             except ConnectionError:
                 continue
             break
@@ -237,13 +256,19 @@ async def root(root, obj=None):
         """compare user answers against right ones"""
         if uc == c:
             try:
-                await obj.sndmsg("You're God Damn right!")
+                if obj.lang == "en":
+                    await obj.sndmsg("You're God Damn right!")
+                elif obj.lang == "ru":
+                    await obj.sndmsg("Вы чертовски правы!")
             except ConnectionError:
                 continue
             break
         elif uc != c:
             try:
-                await obj.sndmsg(f"No, right answer is {int(c)}!")
+                if obj.lang == "en":
+                    await obj.sndmsg(f"No, right answer is {int(c)}!")
+                elif obj.lang == "ru":
+                    await obj.sndmsg(f"Нет, правильный ответ {int(c)}!")
             except ConnectionError:
                 continue
             break
@@ -344,13 +369,19 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             """compare user answers against right ones"""
             if uc1 == c1 and uc2 == c2:
                 try:
-                    await obj.sndmsg("You're God Damn right!")
+                    if obj.lang == "en":
+                        await obj.sndmsg("You're God Damn right!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg("Вы чертовски правы!")
                 except ConnectionError:
                     continue
                 break
             else:
                 try:
-                    await obj.sndmsg(f"No, right answer is\n{c}!")
+                    if obj.lang == "en":
+                        await obj.sndmsg(f"No, right answer is\n{c}!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg(f"Нет, правильный ответ\n{c}!")
                 except ConnectionError:
                     continue
                 break
@@ -392,13 +423,19 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             """compare user answers against right ones"""
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
                 try:
-                    await obj.sndmsg("You're God Damn right!")
+                    if obj.lang == "en":
+                        await obj.sndmsg("You're God Damn right!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg("Вы чертовски правы!")
                 except ConnectionError:
                     continue
                 break
             else:
                 try:
-                    await obj.sndmsg("No, right answer is\n{c}!")
+                    if obj.lang == "en":
+                        await obj.sndmsg(f"No, right answer is\n{c}!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg(f"Нет, правильный ответ\n{c}!")
                 except ConnectionError:
                     continue
                 break
@@ -519,13 +556,19 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             """compare user answers against right ones"""
             if uc1 == c1 and uc2 == c2 and uc3 == c3 and uc4 == c4:
                 try:
-                    await obj.sndmsg("You're God Damn right!")
+                    if obj.lang == "en":
+                        await obj.sndmsg("You're God Damn right!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg("Вы чертовски правы!")
                 except ConnectionError:
                     continue
                 break
             else:
                 try:
-                    await obj.sndmsg(f"No, right answer is\n{c}")
+                    if obj.lang == "en":
+                        await obj.sndmsg(f"No, right answer is\n{c}!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg(f"Нет, правильный ответ\n{c}!")
                 except ConnectionError:
                     continue
                 break
@@ -577,13 +620,19 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             """compare user answers against right ones"""
             if uc1 == c1 and uc2 == c2 and uc3 == c3:
                 try:
-                    await obj.sndmsg("You're God Damn right!")
+                    if obj.lang == "en":
+                        await obj.sndmsg("You're God Damn right!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg("Вы чертовски правы!")
                 except ConnectionError:
                     continue
                 break
             else:
                 try:
-                    await obj.sndmsg(f"No, right answer is\n{c}")
+                    if obj.lang == "en":
+                        await obj.sndmsg(f"No, right answer is\n{c}!")
+                    elif obj.lang == "ru":
+                        await obj.sndmsg(f"Нет, правильный ответ\n{c}!")
                 except ConnectionError:
                     continue
                 break
