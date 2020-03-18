@@ -51,7 +51,10 @@ async def ml(multiplicand, multiplier, obj=None):
                 uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                 uc = int(uc[0])
             except IndexError:
-                await obj.sndmsg(obj.MISTYPE)
+                if obj.lang == "en":
+                    await obj.sndmsg(obj.MISTYPE_EN)
+                elif obj.lang == "ru":
+                    await obj.sndmsg(obj.MISTYPE_RU)
                 obj.prevmsg = obj.readlmsg
                 continue
         if uc == obj.uc:
@@ -119,7 +122,10 @@ async def dl(dividend, divider, obj=None):
                 uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                 uc1, uc2 = int(uc[0]), int(uc[1])
             except IndexError:
-                await obj.sndmsg(obj.MISTYPE)
+                if obj.lang == "en":
+                    await obj.sndmsg(obj.MISTYPE_EN)
+                elif obj.lang == "ru":
+                    await obj.sndmsg(obj.MISTYPE_RU)
                 obj.prevmsg = obj.readlmsg
                 continue
         if uc1 == obj.uc1 and uc2 == obj.uc2:
@@ -184,7 +190,10 @@ async def sqr(sqrn, obj=None):
                 uc = int(uc[0])
             except IndexError:
                 try:
-                    await obj.sndmsg(obj.MISTYPE)
+                    if obj.lang == "en":
+                        await obj.sndmsg(obj.MISTYPE_EN)
+                    elif obj.lang == "ru":
+                        await obj.sndmsg(obj.MISTYPE_RU)
                 except ConnectionError:
                     continue
                 obj.prevmsg = obj.readlmsg
@@ -245,7 +254,10 @@ async def root(root, obj=None):
                 uc = int(uc[0])
             except IndexError:
                 try:
-                    await obj.sndmsg(obj.MISTYPE)
+                    if obj.lang == "en":
+                        await obj.sndmsg(obj.MISTYPE_EN)
+                    elif obj.lang == "ru":
+                        await obj.sndmsg(pbj.MISTYPE_RU)
                 except ConnectionError:
                     continue
                 obj.prevmsg = obj.readlmsg
@@ -360,7 +372,10 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     uc = re.findall(r"([0-9]{1,10})", obj.readlmsg)
                     uc1, uc2 = int(uc[0]), int(uc[1])
                 except IndexError:
-                    await obj.sndmsg(obj.MISTYPE)
+                    if obj.lang == "en":
+                        await obj.sndmsg(obj.MISTYPE_EN)
+                    elif obj.lang == "ru":
+                        await obj.sndmsg(obj.MISTYPE_RU)
                     obj.prevmsg = obj.readlmsg
                     continue
             if uc1 == obj.uc1 and uc2 == obj.uc2:
@@ -412,7 +427,10 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
                     uc1, uc2, uc3 = int(uc[0]), int(uc[1]), int(uc[2])
                 except IndexError:
                     try:
-                        await obj.sndmsg(obj.MISTYPE)
+                        if obj.lang == "en":
+                            await obj.sndmsg(obj.MISTYPE_EN)
+                        elif obj.lang == "ru":
+                            await obj.sndmsg(obj.MISTYPE_RU)
                     except ConnectionError:
                         continue
                     obj.prevmsg = obj.readlmsg
@@ -542,7 +560,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                     uc3, uc4 = int(uc[2]), int(uc[3])
                 except IndexError:
                     try:
-                        await obj.sndmsg(obj.MISTYPE)
+                        if obj.lang == "en":
+                            await obj.sndmsg(obj.MISTYPE_EN)
+                        elif obj.lang == "ru":
+                            await obj.sndmsg(obj.MISTYPE_RU)
                     except ConnectionError:
                         continue
                     obj.prevmsg = obj.readlmsg
@@ -603,7 +624,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
                     uc7, uc8, uc9 = int(uc[6]), int(uc[7]), int(uc[8])
                 except IndexError:
                     try:
-                        await obj.sndmsg(obj.MISTYPE)
+                        if obj.lang == "en":
+                            await obj.sndmsg(obj.MISTYPE_EN)
+                        elif obj.lang == "ru":
+                            await obj.sndmsg(obj.MISTYPE_RU)
                     except ConnectionError:
                         continue
                     obj.prevmsg = obj.readlmsg

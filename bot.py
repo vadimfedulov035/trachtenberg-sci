@@ -23,8 +23,10 @@ class Bot():
         self.TIMEOUT = 0.01  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
-        self.ERROR = "Sorry, I didn't understand you, I will restart dialog!"
-        self.MISTYPE = "Sorry, I didn't understand you, type more clearly!"
+        self.ERROR_EN = "Sorry, I don't understand you, I will restart dialog!"
+        self.ERROR_RU = "Извините, я не понимаю вас, я начну диалог с начала!"
+        self.MISTYPE_EN = "Sorry, I didn't understand you, type more clearly!"
+        self.MISTYPE_RU = "Извините, я не понимаю вас, печатайте чётче!"
         """non-static variables are defined here for further work"""
         self.date = 0  # date set to zero will serve in expression as starter
         self.prevmsg = None
@@ -48,8 +50,7 @@ class Bot():
         self.msized_msg = False
         self.restart_ch = False
         self.ch_cmod = True
-        self.fmul = True
-        self.fdiv = True
+        self.fmul = True self.fdiv = True
         self.fvmul = True
         self.fmmul = True
         self.fsqr = True
@@ -315,7 +316,10 @@ class Bot():
             except IndexError:
                 if self.readlmsg != self.prevmsg:
                     try:
-                        await self.sndmsg(self.ERROR)
+                        if self.lang == "en":
+                            await self.sndmsg(self.ERROR_EN)
+                        elif self.lang == "ru":
+                            await self.sndmsg(self.ERROR_RU)
                     except ConnectionError:
                         await asyncio.sleep(self.TIMEOUT)
                         continue
@@ -387,7 +391,10 @@ class Bot():
             except IndexError:
                 if self.readlmsg != self.prevmsg and self.readlmsg != "/0":
                     try:
-                        await self.sndmsg(self.ERROR)
+                        if self.lang == "en":
+                            await self.sndmsg(self.ERROR_EN)
+                        elif self.lang == "ru":
+                            await self.sndmsg(self.ERROR_RU)
                     except ConnectionError:
                         await asyncio.sleep(self.TIMEOUT)
                         continue
@@ -457,7 +464,10 @@ class Bot():
             except IndexError:
                 if self.readlmsg != self.prevmsg:
                     try:
-                        await self.sndmsg(self.ERROR)
+                        if self.lang == "en":
+                            await self.sndmsg(self.ERROR_EN)
+                        elif self.lang == "ru":
+                            await self.sndmsg(self.ERROR_RU)
                     except ConnectionError:
                         await asyncio.sleep(self.TIMEOUT)
                         continue
