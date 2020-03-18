@@ -2,8 +2,7 @@
 import itertools
 import re
 import json
-import urllib.error
-import urllib.request
+import urllib.error, urllib.request, urllib.parse
 import asyncio
 import tmath as tm
 
@@ -38,8 +37,8 @@ class Bot():
         self.uc7, self.uc8, self.uc9 = None, None, None
         self.mnum = [2, 1]
         self.dnum = [4, 2]
-        self.vmnum = [1, 2]
-        self.mmnum = [1, 2]
+        self.vmnum = [1, 1]
+        self.mmnum = [1, 1]
         self.sqnum = 2
         self.ronum = 2
         self.start_msg = False
@@ -61,20 +60,20 @@ class Bot():
         """new reqest to get fresh json data"""
         try:
             self.msgreq = urllib.request.urlopen(self.URLR)
-        except (urllib.error.URLError, urllib.error.HTTPError) as e:
-            raise ConnectionError("Cannot open URL!")
+        except (urllib.error.URLError, urllib.error.HTTPError):
+            raise ConnectionError
         self.rj = self.msgreq.read()
         try:
             self.j = json.loads(self.rj.decode("utf-8"))
         except json.decoder.JSONDecodeError:
-            raise ConnectionError("Cannot decode JSON!")
+            raise ConnectionError
         """set offset for bulk deletion of old messages"""
         if len(self.j["result"]) == 100:
             self.upd_id = self.j["result"][99]["update_id"]
             try:
                 urllib.request.urlopen(f"{self.URLR}?offset={self.upd_id}")
-            except (urllib.error.URLError, urllib.error.HTTPError) as e:
-                raise ConnectionError("Cannot open URL!")
+            except (urllib.error.URLError, urllib.error.HTTPError):
+                raise ConnectionError
         """loop through json to find last message by date"""
         for j in self.j["result"]:
             cid = j["message"]["chat"]["id"]
@@ -86,25 +85,24 @@ class Bot():
 
     async def sndmsg(self, msg):
         """integrate cid and message into base url"""
-        msg = msg.replace(" ", "%20")
-        msg = msg.replace("\n", "%0A")
+        msg = urllib.parse.quote_plus(msg)
         self.snd = f"{self.URL}/sendmessage?text={msg}&chat_id={self.CID}"
         try:
             urllib.request.urlopen(self.snd)  # make request
-        except (urllib.error.URLError, urllib.error.HTTPError) as e:
-            raise ConnectionError("Cannot open URL!")
+        except (urllib.error.URLError, urllib.error.HTTPError):
+            raise ConnectionError
 
     async def freq(self):
         """first request for getting chat ids (cids) is done here"""
         try:
             self.msgreq = urllib.request.urlopen(self.URLR)
         except (urllib.error.URLError, urllib.error.HTTPError):
-            raise ConnectionError("Cannot open URL!")
+            raise ConnectionError
         self.rj = self.msgreq.read()
         try:
             self.j = json.loads(self.rj.decode("utf-8"))
         except json.decoder.JSONDecodeError:
-            raise ConnectionError("Cannot decode JSON!")
+            raise ConnectionError
         cids = []
         """parsing loop through all cids"""
         for n in itertools.count():
@@ -118,14 +116,14 @@ class Bot():
             self.CID = int(cids[self.NUMBER])  # we pick one cid num-based
         except IndexError:
             await asyncio.sleep(self.TIMEOUT)
-            raise RuntimeError("No such CID yet!")
+            raise ConnectionError
 
     async def start(self):
         while True:
             try:
                 await self.freq() 
                 break
-            except (ConnectionError, RuntimeError):
+            except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
         while True:
@@ -135,13 +133,12 @@ class Bot():
                 await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.readlmsg == "/start" or self.restart_ch:
-                self.pdate = self.ldate  # set date for restart comparison
                 m1 = "Started setting up! "
                 m2 = "Type /start when want to restart! "
-                m3 = "Please, choose language!"
-                fmsg = m1 + m2 + m3
+                m3 = "Please, choose language! (/en, /ru)"
+                msg = m1 + m2 + m3
                 try:
-                    await self.sndmsg(fmsg)
+                    await self.sndmsg(msg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -163,23 +160,23 @@ class Bot():
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            if self.readlmsg == "/start" and self.ldate != self.pdate:
-                await self.restart()  # check for restart command, date
             if self.readlmsg == "/en":
                 self.lang = "en"
                 try:
                     await self.sndmsg("English is chosen")
+                    break
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
             elif self.readlmsg == "/ru":
                 self.lang = "ru"
                 try:
-                    await self.sndmsg("PASS")
+                    await self.sndmsg("Выбран русский")
+                    break
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
-            
+        await self.cmode()      
 
     async def cmode(self):
         """Counting Mode: define operation"""
@@ -194,8 +191,8 @@ class Bot():
             bot will ignore newer command, thinking it is
             the same message, this can happen only during
             restart after not making any choices"""
-            if self.readlmsg == "/start" and self.ldate != self.pdate:
-                await self.restart()  # check for restart command, date
+            if self.readlmsg == "/start":
+                await self.restart()  # check for restart command
             if not self.choice_msg:
                 if self.lang == "en":
                     m1 = "Do you want a linear algebra operations: "
@@ -208,9 +205,9 @@ class Bot():
                     m3 = "арифметические операциии: умножение, "
                     m4 = "деление, возведение в квадрат, взятие квадратного корня? "
                 m5 = "(/mmul, /vmul, /mul, /div, /sqr, /root):"
-                fmsg = m1 + m2 + m3 + m4 + m5
+                msg = m1 + m2 + m3 + m4 + m5
                 try:
-                    await self.sndmsg(fmsg)
+                    await self.sndmsg(msg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -304,9 +301,9 @@ class Bot():
                 elif self.lang == "ru":
                     m1 = "Как много итераций прежде чем увеличить сложность? "
                     m2 = "(/d[number])"
-                fmsg = m1 + m2
+                msg = m1 + m2
                 try:
-                    await self.sndmsg(fmsg)
+                    await self.sndmsg(msg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -328,18 +325,18 @@ class Bot():
             if self.rpass:  # if num exist we send info about mode
                 try:
                     if self.lang == "en":
-                        fmsg = "Have chosen {self.rpass} iterations mode" 
-                        await self.sndmsg(fmsg)
+                        msg = f"Have chosen {self.rpass} iterations mode" 
+                        await self.sndmsg(msg)
                     elif self.lang == "ru":
-                        fmsg = "Выбрана {self.rpass} скорость усложнения" 
-                        await self.sndmsg(fmsg)
+                        msg = f"Выбрана {self.rpass} скорость усложнения" 
+                        await self.sndmsg(msg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 break
         """record previous msg and go to the next method"""
         self.prevmsg = self.readlmsg
-        await self.chm()
+        await self.chmod()
 
     async def chmod(self):
         """Diff Init parameters"""
@@ -372,9 +369,9 @@ class Bot():
                     m1 = "Вы хотите изменить начальную сложность? Если да "
                     m2 = "введите одно число или два в зависимости от мода "
                     m3 = "счета; если не хотите менять - введите /0"
-                fmsg = m1 + m2 + m3 
+                msg = m1 + m2 + m3 
                 try:
-                    await self.sndmsg(fmsg)
+                    await self.sndmsg(msg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -444,11 +441,11 @@ class Bot():
                     m2 = "2 or 3 or 2/3 (4)? "
                 elif self.lang == "ru":
                     m1 = "Каков должен быть размер матрицы "
-                    m2 = "2 или 3 или 2/3 (4)"
+                    m2 = "2 или 3 или 2? "
                 m3 = "(/m2, /m3, /m4):"
-                fmsg = m1 + m2 + m3
+                msg = m1 + m2 + m3
                 try:
-                    await self.sndmsg(fmsg)
+                    await self.sndmsg(msg)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue

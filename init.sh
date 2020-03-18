@@ -10,7 +10,7 @@ done
 
 while true; do
 	if [ `date | cut -d" " -f 4 | cut -d":" -f 1` = 14 ] && [ `date | cut -d" " -f 4 | cut -d":" -f 2` = 00 ]; then
-			killall pypy3
+			killall python3
 			pbot
 			echo "Timebased restart of bot occured"
 	elif [ -z `pgrep python3` ]; then

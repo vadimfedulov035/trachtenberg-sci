@@ -297,10 +297,10 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
     l1 = random.randint(x2, y2)
     l2 = random.randint(x2, y2)
     if matrix == 2:  # here we don't need to specify more vars
-        a = np.matrix([[a1, b1],
-                       [a2, b2]])
-        b = np.matrix([[l1],
-                       [l2]])
+        a = np.array([[a1, b1],
+                      [a2, b2]])
+        b = np.array([[l1],
+                      [l2]])
     elif matrix == 3:  # here we need to specify more vars
         c1 = random.randint(x1, y1)
         c2 = random.randint(x1, y1)
@@ -308,12 +308,12 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
         b3 = random.randint(x1, y1)
         c3 = random.randint(x1, y1)
         l3 = random.randint(x2, y2)
-        a = np.matrix([[a1, b1, c1],
-                       [a2, b2, c2],
-                       [a3, b3, c3]])
-        b = np.matrix([[l1],
-                       [l2],
-                       [l3]])
+        a = np.array([[a1, b1, c1],
+                      [a2, b2, c2],
+                      [a3, b3, c3]])
+        b = np.array([[l1],
+                      [l2],
+                      [l3]])
     elif matrix == 2.5:  # here we specify more vars depending on choice
         choices = ["2x3", "3x2"]
         fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
@@ -321,19 +321,19 @@ async def vml(multiplicand, multiplier, matrix=2, obj=None):
             c1 = random.randint(x1, y1)
             c2 = random.randint(x1, y1)
             l3 = random.randint(x2, y2)
-            a = np.matrix([[a1, b1, c1],
-                           [a2, b2, c2]])
-            b = np.matrix([[l1],
-                           [l2],
-                           [l3]])
+            a = np.array([[a1, b1, c1],
+                          [a2, b2, c2]])
+            b = np.array([[l1],
+                          [l2],
+                          [l3]])
         elif matrix == 2.5 and fch == "3x2":
             a3 = random.randint(x1, y1)
             b3 = random.randint(x1, y1)
-            a = np.matrix([[a1, b1],
-                           [a2, b2],
-                           [a3, b3]])
-            b = np.matrix([[l1],
-                           [l2]])
+            a = np.array([[a1, b1],
+                          [a2, b2],
+                          [a3, b3]])
+            b = np.array([[l1],
+                          [l2]])
     c = np.matmul(a, b)
     """COUNTING BLOCK"""
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
@@ -466,10 +466,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
     q1 = random.randint(x2, y2)
     q2 = random.randint(x2, y2)
     if matrix == 2:  # here we don't need to specify more vars
-        a = np.matrix([[a1, b1],
-                       [a2, b2]])
-        b = np.matrix([[l1, q1],
-                       [l2, q2]])
+        a = np.array([[a1, b1],
+                      [a2, b2]])
+        b = np.array([[l1, q1],
+                      [l2, q2]])
     elif matrix == 3:  # here we need to specify more vars
         c1 = random.randint(x1, y1)
         c2 = random.randint(x1, y1)
@@ -481,10 +481,10 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
         l3 = random.randint(x2, y2)
         q3 = random.randint(x2, y2)
         s3 = random.randint(x2, y2)
-        a = np.matrix([[a1, b1, c1],
-                       [a2, b2, c2],
-                       [a3, b3, c3]])
-        b = np.matrix([[l1, q1, s1],
+        a = np.array([[a1, b1, c1],
+                      [a2, b2, c2],
+                      [a3, b3, c3]])
+        b = np.array([[l1, q1, s1],
                        [l2, q2, s2],
                        [l3, q3, s3]])
     elif matrix == 2.5:  # here we specify more vars depending on choice
@@ -495,21 +495,21 @@ async def mml(multiplicand, multiplier, matrix=2, obj=None):
             c2 = random.randint(x2, y2)
             l3 = random.randint(x2, y2)
             q3 = random.randint(x2, y2)
-            a = np.matrix([[a1, b1, c1],
-                           [a2, b2, c2]])
-            b = np.matrix([[l1, q1],
-                           [l2, q2],
-                           [l3, q3]])
+            a = np.array([[a1, b1, c1],
+                          [a2, b2, c2]])
+            b = np.array([[l1, q1],
+                          [l2, q2],
+                          [l3, q3]])
         elif matrix == 2.5 and fch == "3x2":
             a3 = random.randint(x1, y1)
             b3 = random.randint(x1, y1)
             s1 = random.randint(x2, y2)
             s2 = random.randint(x2, y2)
-            a = np.matrix([[a1, b1],
-                           [a2, b2],
-                           [a3, b3]])
-            b = np.matrix([[l1, q1, s1],
-                           [l2, q2, s2]])
+            a = np.array([[a1, b1],
+                          [a2, b2],
+                          [a3, b3]])
+            b = np.array([[l1, q1, s1],
+                          [l2, q2, s2]])
     c = np.matmul(a, b)
     """COUNTING BLOCK"""
     if matrix == 2 or matrix == 2.5 and fch == "2x3":
