@@ -5,11 +5,11 @@ sh -c "$(./start.py)" &
 }
 
 while [ `date | cut -d" " -f 4 | cut -d":" -f 3` != 00 ]; do
-	sleep 1
+	sleep 0.1
 done
 
 while true; do
-	if [ `date | cut -d" " -f 4 | cut -d":" -f 1` = 14 ] && [ `date | cut -d" " -f 4 | cut -d":" -f 2` = 00 ]; then
+	if [ `date | cut -d" " -f 4 | cut -d":" -f 1` = 21 ] && [ `date | cut -d" " -f 4 | cut -d":" -f 2` = 00 ]; then
 			killall python3
 			pbot
 			echo "Timebased restart of bot occured"
