@@ -50,7 +50,8 @@ class Bot():
         self.msized_msg = False
         self.restart_ch = False
         self.ch_cmod = True
-        self.fmul = True self.fdiv = True
+        self.fmul = True
+        self.fdiv = True
         self.fvmul = True
         self.fmmul = True
         self.fsqr = True
