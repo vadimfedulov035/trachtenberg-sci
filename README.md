@@ -19,4 +19,4 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Write server shell-script for handling restarts of bot
 - [x] Choose CPython realization of Python programming language
 - [x] Translate to Russian
-- [x] Make release 2.0 :tada:
+- [x] Make official release v2.2 :tada:
