@@ -1,5 +1,5 @@
 # TrachtenbergBot
-## Asynchronous telegram bot source code and book itself
+## Asynchronous telegram bot source code
 
 ![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.jpg)
 
