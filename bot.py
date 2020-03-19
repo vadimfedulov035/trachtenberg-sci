@@ -141,6 +141,7 @@ class Bot():
                 msg = m1 + m2 + m3
                 try:
                     await self.sndmsg(msg)
+                    self.pdate = self.ldate
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -162,6 +163,8 @@ class Bot():
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
+            if self.readlmsg == "/start" and self.ldate != self.pdate:
+                await self.restart()  # check for restart command, date
             """compare latest msg with offered commands"""
             if self.readlmsg == "/en":
                 self.lang = "en"
