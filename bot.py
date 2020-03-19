@@ -161,6 +161,7 @@ class Bot():
                 await self.readmsg()
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
+            """compare latest msg with offered commands"""
                 continue
             if self.readlmsg == "/en":
                 self.lang = "en"
@@ -188,11 +189,6 @@ class Bot():
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            """check both last and recorded dates of /start,
-            to check if /start command is new; otherwise
-            bot will ignore newer command, thinking it is
-            the same message, this can happen only during
-            restart after not making any choices"""
             if self.readlmsg == "/start":
                 await self.restart()  # check for restart command
             if not self.choice_msg:
