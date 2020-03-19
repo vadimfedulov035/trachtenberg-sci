@@ -161,8 +161,8 @@ class Bot():
                 await self.readmsg()
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
-            """compare latest msg with offered commands"""
                 continue
+            """compare latest msg with offered commands"""
             if self.readlmsg == "/en":
                 self.lang = "en"
                 try:
