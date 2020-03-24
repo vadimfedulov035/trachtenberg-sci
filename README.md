@@ -13,10 +13,10 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Optimize code for high effeciency
 - [x] Optimize code for PEP-8 standards and improve readability
 - [x] Make comments for understandability
-- [x] Add ability to hold up to 25 conversations at once (for now)
+- [x] Add ability to hold up to 25 conversations at once
 - [x] Make bot able to have instant messaging with newcomers
 - [x] Write server-backend (shell-script for handling restarts of bot)
-- [x] Choose CPython realization of Python programming language (for now)
-- [x] Translate to Russian (buggy)
+- [x] Translate to Russian
+- [ ] Switch to lxml instead of urllib to make code cleaner
 - [ ] Wait until release of Cython 3.0.0 for Unicode support and implement it on it
 - [ ] Make a real stable version (still implementing new ideas and fixing bugs)
