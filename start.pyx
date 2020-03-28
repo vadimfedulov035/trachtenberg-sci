@@ -689,7 +689,7 @@ cdef class Bot():
         """static variables are defined here for correct start up"""
         self.TOKEN = tok  # token for connection to API
         self.NUMBER = num  # num serves as enumerator of cid later
-        self.TIMEOUT = 0.01  # serves as placeholder for switching
+        self.TIMEOUT = 0.0001  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
         self.ERROR_EN = "Sorry, I don't understand you, I will restart dialog!"
@@ -1327,7 +1327,32 @@ async def main():
         pbot21.start(),
         pbot22.start(),
         pbot23.start(),
-        pbot24.start()
+        pbot25.start(),
+        pbot26.start(),
+        pbot27.start(),
+        pbot28.start(),
+        pbot29.start(),
+        pbot30.start(),
+        pbot31.start(),
+        pbot32.start(),
+        pbot33.start(),
+        pbot34.start(),
+        pbot35.start(),
+        pbot36.start(),
+        pbot37.start(),
+        pbot38.start(),
+        pbot39.start(),
+        pbot40.start(),
+        pbot41.start(),
+        pbot42.start(),
+        pbot43.start(),
+        pbot44.start(),
+        pbot45.start(),
+        pbot46.start(),
+        pbot47.start(),
+        pbot48.start(),
+        pbot49.start()
         )
+
 
 asyncio.run(main())
