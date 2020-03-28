@@ -13,7 +13,7 @@ with open("token.conf", "r") as config:
     token = config.read().rstrip()
 
 
-async def ml(multiplicand, multiplier, obj=0):
+async def ml(multiplicand, multiplier, obj):
     """Arithmetics operation: Multiplication"""
     x1, y1 = 1, 1
     x2, y2 = 1, 1
@@ -169,9 +169,11 @@ async def sqr(sqrn, obj):
         y1 *= 10
     y1 -= 1
     a = random.randint(x1, y1)
+    if a in {0, 1, 2}:  # if got 0, 1, 2 to multiply - skip
+        await sqr(sqrn, obj=obj)
     c = a ** 2
     if c == obj.c:
-        await sqr(sqrn, obj)
+        await sqr(sqrn, obj=obj)
     obj.c = c
     try:
         await obj.sndmsg(f"{a} ** 2 = ?")
@@ -226,12 +228,12 @@ async def sqr(sqrn, obj):
             break
 
 
-async def root(rootn, obj=0):
+async def root(rootn, obj):
     """Arithmetics operation: Square Root taking"""
     x1, y1 = 1, 1
-    for i in range(rootn - 1):
+    for i in range(root - 1):
         x1 *= 10
-    for i in range(rootn):
+    for i in range(root):
         y1 *= 10
     y1 -= 1
     a = random.randint(x1, y1)
@@ -333,7 +335,7 @@ async def vml(multiplicand, multiplier, mx, obj):
     elif mx == 4:  # here we specify more vars depending on choice
         choices = ["2x3", "3x2"]
         fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
-        if mx == 4 and fch == "2x3":
+        if fch == "2x3":
             c1 = random.randint(x1, y1)
             c2 = random.randint(x1, y1)
             l3 = random.randint(x2, y2)
@@ -342,7 +344,7 @@ async def vml(multiplicand, multiplier, mx, obj):
             b = np.array([[l1],
                           [l2],
                           [l3]])
-        elif mx == 4 and fch == "3x2":
+        elif fch == "3x2":
             a3 = random.randint(x1, y1)
             b3 = random.randint(x1, y1)
             a = np.array([[a1, b1],
@@ -463,8 +465,8 @@ async def vml(multiplicand, multiplier, mx, obj):
                 break
 
 
-async def mml(multiplicand, multiplier, mx=2, obj=0):
-    """Linear Algebra operation: mx-mx multiplication"""
+async def mml(multiplicand, multiplier, matrix, obj):
+    """Linear Algebra operation: matrix-matrix multiplication"""
     x1, y1 = 1, 1
     x2, y2 = 1, 1
     for i in range(multiplicand - 1):
@@ -512,7 +514,7 @@ async def mml(multiplicand, multiplier, mx=2, obj=0):
     elif mx == 4:  # here we specify more vars depending on choice
         choices = ["2x3", "3x2"]
         fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
-        if mx == 4 and fch == "2x3":
+        if fch == "2x3":
             c1 = random.randint(x2, y2)
             c2 = random.randint(x2, y2)
             l3 = random.randint(x2, y2)
@@ -522,7 +524,7 @@ async def mml(multiplicand, multiplier, mx=2, obj=0):
             b = np.array([[l1, q1],
                           [l2, q2],
                           [l3, q3]])
-        elif mx == 4 and fch == "3x2":
+        elif fch == "3x2":
             a3 = random.randint(x1, y1)
             b3 = random.randint(x1, y1)
             s1 = random.randint(x2, y2)
@@ -685,8 +687,8 @@ cdef class Bot():
 
     def __init__(self, tok, num):
         """static variables are defined here for correct start up"""
-        self.NUMBER = num  # num serves as enumerator of cid later
         self.TOKEN = tok  # token for connection to API
+        self.NUMBER = num  # num serves as enumerator of cid later
         self.TIMEOUT = 0.01  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
@@ -715,8 +717,8 @@ cdef class Bot():
         self.numb_msg = False
         self.chm_msg = False
         self.msized_msg = False
-        self.restart_ch = False
         self.ch_cmod = True
+        self.restart_ch = False
         self.fmul = True
         self.fdiv = True
         self.fvmul = True
@@ -967,7 +969,7 @@ cdef class Bot():
                     m2 = "difficulty? (/d[number]):"
                 elif self.lang == "ru":
                     m1 = "Как много итераций прежде чем увеличить сложность? "
-                    m2 = "(/d[number])"
+                    m2 = "(/d[число])"
                 msg = m1 + m2
                 try:
                     await self.sndmsg(msg)
@@ -1272,6 +1274,31 @@ pbot21 = Bot(token, 21)
 pbot22 = Bot(token, 22)
 pbot23 = Bot(token, 23)
 pbot24 = Bot(token, 24)
+pbot25 = Bot(token, 25)
+pbot26 = Bot(token, 26)
+pbot27 = Bot(token, 27)
+pbot28 = Bot(token, 28)
+pbot29 = Bot(token, 29)
+pbot30 = Bot(token, 30)
+pbot31 = Bot(token, 31)
+pbot32 = Bot(token, 32)
+pbot33 = Bot(token, 33)
+pbot34 = Bot(token, 34)
+pbot35 = Bot(token, 35)
+pbot36 = Bot(token, 36)
+pbot37 = Bot(token, 37)
+pbot38 = Bot(token, 38)
+pbot39 = Bot(token, 39)
+pbot40 = Bot(token, 40)
+pbot41 = Bot(token, 41)
+pbot42 = Bot(token, 42)
+pbot43 = Bot(token, 43)
+pbot44 = Bot(token, 44)
+pbot45 = Bot(token, 45)
+pbot46 = Bot(token, 46)
+pbot47 = Bot(token, 47)
+pbot48 = Bot(token, 48)
+pbot49 = Bot(token, 49)
 
 
 async def main():
