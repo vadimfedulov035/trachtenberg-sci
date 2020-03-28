@@ -231,9 +231,9 @@ async def sqr(sqrn, obj):
 async def root(rootn, obj):
     """Arithmetics operation: Square Root taking"""
     x1, y1 = 1, 1
-    for i in range(root - 1):
+    for i in range(rootn - 1):
         x1 *= 10
-    for i in range(root):
+    for i in range(rootn):
         y1 *= 10
     y1 -= 1
     a = random.randint(x1, y1)
@@ -465,7 +465,7 @@ async def vml(multiplicand, multiplier, mx, obj):
                 break
 
 
-async def mml(multiplicand, multiplier, matrix, obj):
+async def mml(multiplicand, multiplier, mx, obj):
     """Linear Algebra operation: matrix-matrix multiplication"""
     x1, y1 = 1, 1
     x2, y2 = 1, 1
