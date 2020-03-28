@@ -1,2 +1,5 @@
 __pycache__
+build
 token.conf
+start.c
+start.cpython-38d-x86_64-linux-gnu.so
