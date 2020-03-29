@@ -10,13 +10,11 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Add Arithmetics operations
 - [x] Add Linear Algebra operations
 - [x] Add asyncio functionality and make code asynchronous
-- [x] Optimize code for high effeciency
-- [x] Optimize code for PEP-8 standards and improve readability
-- [x] Make comments for understandability
-- [x] Add ability to hold up to 25 conversations at once
+- [x] Optimize code for PEP-8 standards and make readable comments
 - [x] Make bot able to have instant messaging with newcomers
-- [x] Write server-backend (shell-script for handling restarts of bot)
 - [x] Translate to Russian via unicode support
 - [x] Port code from CPython to Cython and learn how to compile executable
-- [x] Add ability to hould up to 50 conversations at once via static typing
-- [ ] Make a real stable version (still implementing new ideas and fixing bugs)
+- [x] Cythonize code as much as possible for speeding up and decreasing load on CPU
+- [ ] Compile 10 executables for handling up to 100 conversations
+- [ ] Write server-backend for handling execution of bot instances
+- [ ] Release 2.5 version
