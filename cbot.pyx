@@ -690,7 +690,8 @@ cdef class Bot():
     cdef public list mnum, dnum, vmnum, mmnum
     cdef public int sqnum, ronum
     cdef public str lang, chosen
-    cdef public int rpass, ms
+    cdef public int ms
+    cdef public int rpass
 
     def __init__(self, tok, num):
         """static variables are defined here for correct start up"""
