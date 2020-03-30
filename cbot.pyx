@@ -4,7 +4,7 @@ import asyncio
 import itertools
 import json
 import math
-import urllib.error, urllib.request, urllib.parse
+import urllib.request, urllib.parse, urllib.error
 import asyncio
 import numpy as np
 
@@ -30,7 +30,7 @@ async def ml(multiplicand, multiplier, obj):
     y2 -= 1
     a = random.randint(x1, y1)
     b = random.randint(x2, y2)
-    if a in {0, 1, 2} or b in {0, 1, 2}:  # if got 0, 1, 2 to multiply - skip
+    if a in [0, 1, 2] or b in [0, 1, 2]:  # if got 0, 1, 2 to multiply - skip
         await ml(multiplicand, multiplier, obj)
     c = a * b
     if c == obj.c:  # if got the same answer restart
@@ -171,8 +171,6 @@ async def sqr(sqrn, obj):
         y1 *= 10
     y1 -= 1
     a = random.randint(x1, y1)
-    if a in {0, 1, 2}:  # if got 0, 1, 2 to multiply - skip
-        await sqr(sqrn, obj=obj)
     c = a ** 2
     if c == obj.c:
         await sqr(sqrn, obj=obj)
@@ -515,8 +513,8 @@ async def mml(multiplicand, multiplier, mx, obj):
                       [a2, b2, c2],
                       [a3, b3, c3]])
         b = np.array([[l1, q1, s1],
-                       [l2, q2, s2],
-                       [l3, q3, s3]])
+                      [l2, q2, s2],
+                      [l3, q3, s3]])
     elif mx == 4:  # here we specify more vars depending on choice
         choices = ["2x3", "3x2"]
         fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
@@ -675,15 +673,20 @@ async def mml(multiplicand, multiplier, mx, obj):
 
 
 cdef class Bot():
+    """define main variables"""
     cdef public str TOKEN
     cdef public int NUMBER
     cdef public int CID
     cdef public double TIMEOUT
+    """define message urls and message variables"""
     cdef public str URL, URLR, ERROR_EN, ERROR_RU, MISTYPE_EN, MISTYPE_RU
+    """define right answers and user-supplied ones"""
     cdef public int c, c1, c2, c3, c4, c5, c6, c7, c8, c9
     cdef public int uc, uc1, uc2, uc3, uc4, uc5, uc6, uc7, uc8, uc9
+    """define all messages sent without an error"""
     cdef public str m1, m2, m3, m4, m5, m
     cdef public str prevm, readlm
+    """define all boolean variables of first message sender"""
     cdef public int start_m, choice_m, numb_m, chm_m, msized_m, ch_cmod
     cdef public int restart_ch, fmul, fdiv, fvmul, fmmul, fsqr, froot
     cdef public int pdate, ldate, date
@@ -770,36 +773,27 @@ cdef class Bot():
         except (urllib.error.URLError, urllib.error.HTTPError):
             raise ConnectionError
 
-    async def freq(self):
-        """first request for getting chat ids (cids) is done here"""
-        try:
-            mreq = urllib.request.urlopen(self.URLR)
-        except (urllib.error.URLError, urllib.error.HTTPError):
-            raise ConnectionError
-        rj = mreq.read()
-        try:
-            js = json.loads(rj.decode("utf-8"))
-        except json.decoder.JSONDecodeError:
-            raise ConnectionError
-        cids = []
-        """parsing loop through all cids"""
-        for n in itertools.count():
+    async def readf(self):
+        with open("cids.log", "r") as f:
+            cids = f.read().split("\n")
             try:
-                cid = js["result"][n]["message"]["chat"]["id"]
-                if cid not in cids:
-                    cids.append(cid)
+                cids[self.NUMBER] = self.CID
             except IndexError:
-                break
+                pass
+
+    async def error(self):
         try:
-            self.CID = int(cids[self.NUMBER])  # we pick one cid num-based
-        except IndexError:
+            if self.lang == "en":
+                await self.sndm(self.ERROR_EN)
+            elif self.lang == "ru":
+                await self.sndm(self.ERROR_RU)
+        except ConnectionError:
             await asyncio.sleep(self.TIMEOUT)
-            raise ConnectionError
 
     async def start(self):
         while True:
             try:
-                await self.freq() 
+                await self.readf()
                 break
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
@@ -857,7 +851,7 @@ cdef class Bot():
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
-        await self.cmode()      
+        await self.cmode()
 
     async def cmode(self):
         """Counting Mode: define operation"""
@@ -927,7 +921,7 @@ cdef class Bot():
                     if self.lang == "en":
                         await self.sndm("Square root taking is chosen")
                     elif self.lang == "ru":
-                        await  self.sndm("Выбрано взятие квадратного корня")
+                        await self.sndm("Выбрано взятие квадратного корня")
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
@@ -973,10 +967,10 @@ cdef class Bot():
             if not self.numb_m:
                 if self.lang == "en":
                     self.m1 = "How many iterations do you want before increasing "
-                    self.m2 = "difficulty? (/d[number]):"
+                    self.m2 = "difficulty? (/d1, /d3, /d5, /d10, /d15):"
                 elif self.lang == "ru":
                     self.m1 = "Как много итераций прежде чем увеличить сложность? "
-                    self.m2 = "(/d[число])"
+                    self.m2 = "(/d1, /d3, /d5, /d10, /d15):"
                 self.m = self.m1 + self.m2
                 try:
                     await self.sndm(self.m)
@@ -988,26 +982,22 @@ cdef class Bot():
             try:
                 rpass = re.findall(r"^\/d([0-9]{1,6})", self.readlm)
                 self.rpass = int(rpass[0])  # num is extracted here
+                if self.rpass not in (1, 3, 5, 10, 15):
+                    self.error()
+                    await self.restart()
             except IndexError:
                 if self.readlm != self.prevm:
-                    try:
-                        if self.lang == "en":
-                            await self.sndm(self.ERROR_EN)
-                        elif self.lang == "ru":
-                            await self.sndm(self.ERROR_RU)
-                    except ConnectionError:
-                        await asyncio.sleep(self.TIMEOUT)
-                        continue
+                    self.error()
                     await self.restart()
                 continue
             """send state info"""
             if self.rpass:  # if num exist we send info about mode
                 try:
                     if self.lang == "en":
-                        self.m = f"Have chosen {self.rpass} iterations mode" 
+                        self.m = f"Have chosen {self.rpass} iterations mode"
                         await self.sndm(self.m)
                     elif self.lang == "ru":
-                        self.m = f"Выбрана {self.rpass} скорость усложнения" 
+                        self.m = f"Выбрана {self.rpass} скорость усложнения"
                         await self.sndm(self.m)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
@@ -1048,7 +1038,7 @@ cdef class Bot():
                     self.m1 = "Вы хотите изменить начальную сложность? Если да "
                     self.m2 = "введите одно число или два в зависимости от мода "
                     self.m3 = "счета; если не хотите менять - введите /0"
-                self.m = self.m1 + self.m2 + self.m3 
+                self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
                 except ConnectionError:
@@ -1059,20 +1049,13 @@ cdef class Bot():
             try:
                 if self.readlm == self.prevm:
                     raise IndexError("Got no new messages!")
-                self.chmf = re.findall(r"([0-9]{1,6})", self.readlm)
-                self.chm1 = int(self.chmf[0])
+                self.chm = re.findall(r"([0-9]{1,6})", self.readlm)
+                self.chm1 = int(self.chm[0])
                 if self.chosen != "sqr" and self.chosen != "root":
-                    self.chm2 = int(self.chmf[1])
+                    self.chm2 = int(self.chm[1])
             except IndexError:
                 if self.readlm != self.prevm and self.readlm != "/0":
-                    try:
-                        if self.lang == "en":
-                            await self.sndm(self.ERROR_EN)
-                        elif self.lang == "ru":
-                            await self.sndm(self.ERROR_RU)
-                    except ConnectionError:
-                        await asyncio.sleep(self.TIMEOUT)
-                        continue
+                    self.error()
                     await self.restart()
                 continue
             """send state info based on counting mode"""
@@ -1096,7 +1079,7 @@ cdef class Bot():
                     await self.sndm(self.m)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
-                    continue 
+                    continue
                 break
         """record previous m and go to the next method
         based on counting mode"""
@@ -1136,18 +1119,24 @@ cdef class Bot():
             try:  # to extract num from latest m
                 ms = re.findall(r"^\/m([2-4])", self.readlm)
                 self.ms = int(ms[0])
-            except IndexError:
-                if self.readlm != self.prevm:
-                    try:
-                        if self.lang == "en":
-                            await self.sndm(self.ERROR_EN)
-                        elif self.lang == "ru":
-                            await self.sndm(self.ERROR_RU)
-                    except ConnectionError:
-                        await asyncio.sleep(self.TIMEOUT)
-                        continue
+                try:
+                    if self.lang == "en":
+                        if self.ms == 4:
+                            self.m = "Matrix size 2/3 is chosen"
+                        else:
+                            self.m = f"Matrix size {self.ms} is chosen"
+                    elif self.lang == "ru":
+                        if self.ms == 4:
+                            self.m = "Размер матрицы 2/3 выбран"
+                        else:
+                            self.m = f"Размер матрицы {self.ms} выбран"
+                    self.sndm(self.m)
+                except ConnectionError:
+                    self.error()
                     await self.restart()
-                continue
+            except IndexError:
+                self.error()
+                await self.restart()
             break
         await self.count()  # start counting now
 
@@ -1266,6 +1255,46 @@ pbot6 = Bot(token, 6)
 pbot7 = Bot(token, 7)
 pbot8 = Bot(token, 8)
 pbot9 = Bot(token, 9)
+pbot10 = Bot(token, 10)
+pbot11 = Bot(token, 11)
+pbot12 = Bot(token, 12)
+pbot13 = Bot(token, 13)
+pbot14 = Bot(token, 14)
+pbot15 = Bot(token, 15)
+pbot16 = Bot(token, 16)
+pbot17 = Bot(token, 17)
+pbot18 = Bot(token, 18)
+pbot19 = Bot(token, 19)
+pbot20 = Bot(token, 10)
+pbot21 = Bot(token, 21)
+pbot22 = Bot(token, 22)
+pbot23 = Bot(token, 23)
+pbot24 = Bot(token, 24)
+pbot25 = Bot(token, 25)
+pbot26 = Bot(token, 26)
+pbot27 = Bot(token, 27)
+pbot28 = Bot(token, 28)
+pbot29 = Bot(token, 29)
+pbot30 = Bot(token, 30)
+pbot31 = Bot(token, 31)
+pbot32 = Bot(token, 32)
+pbot33 = Bot(token, 33)
+pbot34 = Bot(token, 34)
+pbot35 = Bot(token, 35)
+pbot36 = Bot(token, 36)
+pbot37 = Bot(token, 37)
+pbot38 = Bot(token, 38)
+pbot39 = Bot(token, 39)
+pbot40 = Bot(token, 40)
+pbot41 = Bot(token, 41)
+pbot42 = Bot(token, 42)
+pbot43 = Bot(token, 43)
+pbot44 = Bot(token, 44)
+pbot45 = Bot(token, 45)
+pbot46 = Bot(token, 46)
+pbot47 = Bot(token, 47)
+pbot48 = Bot(token, 48)
+pbot49 = Bot(token, 49)
 
 
 async def main():
@@ -1279,8 +1308,47 @@ async def main():
         pbot6.start(),
         pbot7.start(),
         pbot8.start(),
-        pbot9.start()
+        pbot9.start(),
+        pbot10.start(),
+        pbot11.start(),
+        pbot12.start(),
+        pbot13.start(),
+        pbot14.start(),
+        pbot15.start(),
+        pbot16.start(),
+        pbot17.start(),
+        pbot18.start(),
+        pbot19.start(),
+        pbot20.start(),
+        pbot21.start(),
+        pbot22.start(),
+        pbot23.start(),
+        pbot24.start(),
+        pbot25.start(),
+        pbot26.start(),
+        pbot27.start(),
+        pbot28.start(),
+        pbot29.start(),
+        pbot30.start(),
+        pbot31.start(),
+        pbot32.start(),
+        pbot33.start(),
+        pbot34.start(),
+        pbot35.start(),
+        pbot36.start(),
+        pbot37.start(),
+        pbot38.start(),
+        pbot39.start(),
+        pbot40.start(),
+        pbot41.start(),
+        pbot42.start(),
+        pbot43.start(),
+        pbot44.start(),
+        pbot45.start(),
+        pbot46.start(),
+        pbot47.start(),
+        pbot48.start(),
+        pbot49.start()
         )
-
 
 asyncio.run(main())
