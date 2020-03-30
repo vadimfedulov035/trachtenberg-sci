@@ -5,7 +5,7 @@ import json
 
 
 try:
-    os.mknod("tmp_cids.log")
+    os.mknod("cids.log")
 except FileExistsError:
     pass
 

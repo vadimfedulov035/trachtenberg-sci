@@ -676,7 +676,7 @@ cdef class Bot():
     """define main variables"""
     cdef public str TOKEN
     cdef public int NUMBER
-    cdef public str CID
+    cdef public int CID
     cdef public double TIMEOUT
     """define message urls and message variables"""
     cdef public str URL, URLR, ERROR_EN, ERROR_RU, MISTYPE_EN, MISTYPE_RU
@@ -759,7 +759,7 @@ cdef class Bot():
         """loop through json to find last message by date"""
         for j in js["result"]:
             cid = j["message"]["chat"]["id"]
-            if str(cid) == self.CID:  # check date only if CID in m matches
+            if cid == self.CID:  # check date only if CID in m matches
                 date = j["message"]["date"]
                 if date >= self.date:
                     self.ldate = date  # update date, if later found
@@ -775,15 +775,12 @@ cdef class Bot():
             raise ConnectionError
 
     async def readf(self):
-        while True:
-            with open("cids.log", "r") as f:
-                cids = f.read().rstrip().split("\n")
-                try:
-                    self.CID = cids[self.NUMBER]
-                    break
-                except IndexError:
-                   await asyncio.sleep(self.TIMEOUT) 
-                   continue
+        with open("cids.log", "r") as f:
+            cids = f.read().split("\n")
+            try:
+                cids[self.NUMBER] = self.CID
+            except IndexError:
+                pass
 
     async def error(self):
         try:
@@ -987,11 +984,11 @@ cdef class Bot():
                 rpass = re.findall(r"^\/d([0-9]{1,6})", self.readlm)
                 self.rpass = int(rpass[0])  # num is extracted here
                 if self.rpass not in (1, 3, 5, 10, 15):
-                    await self.error()
+                    self.error()
                     await self.restart()
             except IndexError:
                 if self.readlm != self.prevm:
-                    await self.error()
+                    self.error()
                     await self.restart()
                 continue
             """send state info"""
@@ -1059,7 +1056,7 @@ cdef class Bot():
                     self.chm2 = int(self.chm[1])
             except IndexError:
                 if self.readlm != self.prevm and self.readlm != "/0":
-                    await self.error()
+                    self.error()
                     await self.restart()
                 continue
             """send state info based on counting mode"""
@@ -1121,8 +1118,6 @@ cdef class Bot():
                 self.msized_m = True
             """try to extract msize, restart if got m and failed"""
             try:  # to extract num from latest m
-                if self.readlm == self.prevm:
-                    raise IndexError("Got no new messages!")
                 ms = re.findall(r"^\/m([2-4])", self.readlm)
                 self.ms = int(ms[0])
                 try:
@@ -1136,15 +1131,13 @@ cdef class Bot():
                             self.m = "Размер матрицы 2/3 выбран"
                         else:
                             self.m = f"Размер матрицы {self.ms} выбран"
-                    await self.sndm(self.m)
+                    self.sndm(self.m)
                 except ConnectionError:
-                    await self.error()
+                    self.error()
                     await self.restart()
             except IndexError:
-                if self.readlm != self.prevm and self.readlm != "/0":
-                    await self.error()
-                    await self.restart()
-                continue
+                self.error()
+                await self.restart()
             break
         await self.count()  # start counting now
 
