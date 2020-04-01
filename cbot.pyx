@@ -61,10 +61,13 @@ async def ml(multiplicand, multiplier, o):
                         o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
                         u = int(o.rf[0])
                     except IndexError:
-                        if o.lang == "en":
-                            await o.sndm(o.MISTYPE_EN)
-                        elif o.lang == "ru":
-                            await o.sndm(o.MISTYPE_RU)
+                        try:
+                            if o.lang == "en":
+                                await o.sndm(o.MISTYPE_EN)
+                            elif o.lang == "ru":
+                                await o.sndm(o.MISTYPE_RU)
+                        except ConnectionError:
+                            continue
                         o.prevm = o.readlm
                         continue
                 if u == o.u:
@@ -79,7 +82,6 @@ async def ml(multiplicand, multiplier, o):
                             await o.sndm("Вы чертовски правы!")
                     except ConnectionError:
                         continue
-                    raise GetOut
                 elif u != c:
                     try:
                         if o.lang == "en":
@@ -88,7 +90,7 @@ async def ml(multiplicand, multiplier, o):
                             await o.sndm(f"Нет, правильный ответ {c}!")
                     except ConnectionError:
                         continue
-                    raise GetOut
+                raise GetOut
     except GetOut:
         pass
 
@@ -116,7 +118,10 @@ async def dl(dividend, divider, o):
             if c1 == o.c1 or c2 == o.c2:  # if got the same answer restart
                 continue
             o.c1, o.c2 = c1, c2  # record answers
-            await o.sndm(f"{a} // | % {b} = ?")
+            try:
+                await o.sndm(f"{a} // | % {b} = ?")
+            except ConnectionError:
+                continue
             o.prevm = o.readlm
             while True:
                 try:
@@ -150,7 +155,6 @@ async def dl(dividend, divider, o):
                             await o.sndm("Вы чертовски правы!")
                     except ConnectionError:
                         continue
-                    raise GetOut
                 else:
                     if o.lang == "en":
                         m1 = f"No, right answer is {c1} "
@@ -163,7 +167,7 @@ async def dl(dividend, divider, o):
                         await o.sndm(m)
                     except ConnectionError:
                         continue
-                    raise GetOut
+                raise GetOut
     except GetOut:
         pass
 
@@ -190,7 +194,6 @@ async def sqr(sqrn, o):
                 continue
             o.prevm = o.readlm
             while True:
-                await asyncio.sleep(o.TIMEOUT)
                 try:
                     await o.readm()
                 except ConnectionError:
@@ -225,7 +228,6 @@ async def sqr(sqrn, o):
                             await o.sndm("Вы чертовски правы!")
                     except ConnectionError:
                         continue
-                    raise GetOut
                 elif u != c:
                     try:
                         if o.lang == "en":
@@ -234,7 +236,7 @@ async def sqr(sqrn, o):
                             await o.sndm(f"Нет, правильный ответ {c}!")
                     except ConnectionError:
                         continue
-                    raise GetOut
+                raise GetOut
     except GetOut:
         pass
 
@@ -262,8 +264,10 @@ async def root(rootn, o):
                 continue
             o.prevm = o.readlm
             while True:
-                await asyncio.sleep(o.TIMEOUT)
-                await o.readm()
+                try:
+                    await o.readm()
+                except ConnectionError:
+                    continue
                 if o.readlm == "/start":  # check for restart m
                     await o.restart()
                 elif o.readlm == o.prevm:  # check for novelty
@@ -294,7 +298,6 @@ async def root(rootn, o):
                             await o.sndm("Вы чертовски правы!")
                     except ConnectionError:
                         continue
-                    raise GetOut
                 elif u != c:
                     try:
                         if o.lang == "en":
@@ -303,9 +306,9 @@ async def root(rootn, o):
                             await o.sndm(f"Нет, правильный ответ {int(c)}!")
                     except ConnectionError:
                         continue
-                    raise GetOut
+                raise GetOut
     except GetOut:
-        pass
+        print("Get Out!")
 
 
 async def vml(multiplicand, multiplier, mx, o):
@@ -397,10 +400,13 @@ async def vml(multiplicand, multiplier, mx, o):
                             o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
                             u1, u2 = int(o.rf[0]), int(o.rf[1])
                         except IndexError:
-                            if o.lang == "en":
-                                await o.sndm(o.MISTYPE_EN)
-                            elif o.lang == "ru":
-                                await o.sndm(o.MISTYPE_RU)
+                            try:
+                                if o.lang == "en":
+                                    await o.sndm(o.MISTYPE_EN)
+                                elif o.lang == "ru":
+                                    await o.sndm(o.MISTYPE_RU)
+                            except ConnectionError:
+                                continue
                             o.prevm = o.readlm
                             continue
                     if u1 == o.u1 and u2 == o.u2:
@@ -415,7 +421,6 @@ async def vml(multiplicand, multiplier, mx, o):
                                 await o.sndm("Вы чертовски правы!")
                         except ConnectionError:
                             continue
-                        break
                     else:
                         try:
                             if o.lang == "en":
@@ -424,7 +429,7 @@ async def vml(multiplicand, multiplier, mx, o):
                                 await o.sndm(f"Нет, правильный ответ\n{c}!")
                         except ConnectionError:
                             continue
-                        break
+                    raise GetOut
             elif mx == 3 or mx == 4 and fch == "3x2":
                 c1, c2, c3 = c[0], c[1], c[2]
                 if c1 == o.c1 or c2 == o.c2 or c3 == o.c3:
@@ -437,7 +442,6 @@ async def vml(multiplicand, multiplier, mx, o):
                 o.c1, o.c2 = c1, c2
                 o.prevm = o.readlm
                 while True:
-                    await asyncio.sleep(o.TIMEOUT)
                     try:
                         await o.readm()
                     except ConnectionError:
@@ -472,7 +476,6 @@ async def vml(multiplicand, multiplier, mx, o):
                                 await o.sndm("Вы чертовски правы!")
                         except ConnectionError:
                             continue
-                        raise GetOut
                     else:
                         try:
                             if o.lang == "en":
@@ -481,7 +484,8 @@ async def vml(multiplicand, multiplier, mx, o):
                                 await o.sndm(f"Нет, правильный ответ\n{c}!")
                         except ConnectionError:
                             continue
-                        raise GetOut
+                    raise GetOut
+
     except GetOut:
         pass
 
@@ -614,7 +618,6 @@ async def mml(multiplicand, multiplier, mx, o):
                                 await o.sndm("Вы чертовски правы!")
                         except ConnectionError:
                             continue
-                        break
                     else:
                         try:
                             if o.lang == "en":
@@ -623,7 +626,7 @@ async def mml(multiplicand, multiplier, mx, o):
                                 await o.sndm(f"Нет, правильный ответ\n{c}!")
                         except ConnectionError:
                             continue
-                        break
+                    raise GetOut
             elif mx == 3 or mx == 4 and fch == "3x2":
                 c1, c2, c3 = c[0, 0], c[0, 1], c[0, 2]
                 c4, c5, c6 = c[1, 0], c[1, 1], c[1, 2]
@@ -635,7 +638,10 @@ async def mml(multiplicand, multiplier, mx, o):
                 o.c1, o.c2, o.c3 = c1, c2, c3  # record answers
                 o.c4, o.c5, o.c6 = c4, c5, c6  # record answers
                 o.c7, o.c8, o.c9 = c7, c8, c9  # record answers
-                await o.sndm(f"{a}\n*****\n{b}\n=====\n?????")
+                try:
+                    await o.sndm(f"{a}\n*****\n{b}\n=====\n?????")
+                except ConnectionError:
+                    continue
                 o.prevm = o.readlm
                 while True:
                     await asyncio.sleep(o.TIMEOUT)
@@ -681,7 +687,6 @@ async def mml(multiplicand, multiplier, mx, o):
                                 await o.sndm("Вы чертовски правы!")
                         except ConnectionError:
                             continue
-                        raise GetOut
                     else:
                         try:
                             if o.lang == "en":
@@ -690,7 +695,7 @@ async def mml(multiplicand, multiplier, mx, o):
                                 await o.sndm(f"Нет, правильный ответ\n{c}!")
                         except ConnectionError:
                             continue
-                        raise GetOut
+                    raise GetOut
     except GetOut:
         pass
 
@@ -1156,19 +1161,20 @@ cdef class Bot():
             if self.chosen == "mul":  # check for counting mode option
                 if self.fmul:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.mnum[0], self.mnum[1]
-                    if self.diffch:
-                        for itr in range(self.s * self.d):
-                            if self.s == 1:
-                                if itr % 2 == 1 and itr != 1:
-                                    self.n1 += 1
-                                elif itr % 2 == 0 and itr != 1:
-                                    self.n2 += 1
-                            else:
-                                if itr % (self.s * 2) == 1 and itr != 1:
-                                    self.n1 += 1
-                                elif itr % self.s == 1 and itr != 1:
-                                    self.n2 += 1
                     self.fmul = False
+                if self.diffch:
+                    self.diffch = False
+                    for itr in range(self.s * self.d):
+                        if self.s == 1:
+                            if itr % 2 == 1 and itr != 1:
+                                self.n1 += 1
+                            elif itr % 2 == 0 and itr != 1:
+                                self.n2 += 1
+                        else:
+                            if itr % (self.s * 2) == 1 and itr != 1:
+                                self.n1 += 1
+                            elif itr % self.s == 1 and itr != 1:
+                                self.n2 += 1
                 if self.s == 1:  # special case
                     if i % 2 == 1 and i != self.st:
                         self.n1 += 1  # every 2nd pass increase 1st num
@@ -1183,19 +1189,20 @@ cdef class Bot():
             elif self.chosen == "div":  # check for counting mode option
                 if self.fdiv:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.dnum[0], self.dnum[1]
-                    if self.diffch:
-                        for itr in range(1, (self.s * self.d) + 1):
-                            if self.s == 1:
-                                if itr % 2 == 1 and itr != 1:
-                                    self.n2 += 1
-                                elif itr % 2 == 0 and itr != 1:
-                                    self.n1 += 1
-                            else:
-                                if itr % (self.s * 2) == 1 and itr != 1:
-                                    self.n2 += 1
-                                elif itr % self.s == 1 and itr != 1:
-                                    self.n1 += 1
                     self.fdiv = False
+                if self.diffch:
+                    self.diffch = False
+                    for itr in range(self.s * self.d):
+                        if self.s == 1:
+                            if itr % 2 == 1 and itr != 1:
+                                self.n2 += 1
+                            elif itr % 2 == 0 and itr != 1:
+                                self.n1 += 1
+                        else:
+                            if itr % (self.s * 2) == 1 and itr != 1:
+                                self.n2 += 1
+                            elif itr % self.s == 1 and itr != 1:
+                                self.n1 += 1
                 if self.s == 1:  # special case
                     if i % 2 == 1 and i != self.st:
                         self.n2 += 1  # every 2nd pass increase 2nd num
@@ -1210,15 +1217,16 @@ cdef class Bot():
             elif self.chosen == "sqr":  # check for counting mode option
                 if self.fsqr:  # define loop's from initial o's vars
                     self.n1 = self.sqnum
-                    if self.diffch:
-                        for itr in range(self.s * self.d):
-                            if self.s == 1:
-                                if itr != 1:
-                                    self.n1 += 1
-                            else:
-                                if itr % self.s == 1 and itr != 1:
-                                    self.n1 += 1
                     self.fsqr = False
+                if self.diffch:
+                    self.diffch = False
+                    for itr in range(self.s * self.d):
+                        if self.s == 1:
+                            if itr != 1:
+                                self.n1 += 1
+                        else:
+                            if itr % self.s == 1 and itr != 1:
+                                self.n1 += 1
                 if self.s == 1:  # special case
                     if i != 1:
                         self.n1 += 1  # every pass increase num
@@ -1229,15 +1237,16 @@ cdef class Bot():
             elif self.chosen == "root":  # check for counting mode option
                 if self.froot:  # define loop's from initial o's vars
                     self.n1 = self.ronum
-                    if self.diffch:
-                        for itr in range(self.s * self.d):
-                            if self.s == 1:
-                                if itr != 1:
-                                    self.n1 += 1
-                            else:
-                                if itr % self.s == 1 and itr != 1:
-                                    self.n1 += 1
                     self.froot = False
+                if self.diffch:
+                    self.diffch = False
+                    for itr in range(self.s * self.d):
+                        if self.s == 1:
+                            if itr != 1:
+                                self.n1 += 1
+                        else:
+                            if itr % self.s == 1 and itr != 1:
+                                self.n1 += 1
                 if self.s == 1:  # special case
                     if i != 1:
                         self.n1 += 1  # every pass increase num
@@ -1248,56 +1257,58 @@ cdef class Bot():
             elif self.chosen == "vmul":  # check for counting mode option
                 if self.fvmul:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
-                    if self.diffch:
-                        for itr in range(1, (self.s * self.d) + 1):
-                            if self.s == 1:
-                                if itr % 2 == 1 and itr != 1:
-                                    self.n2 += 1
-                                elif itr % 2 == 0 and itr != 1:
-                                    self.n1 += 1
-                            else:
-                                if itr % (self.s * 2) == 1 and itr != 1:
-                                    self.n2 += 1
-                                elif itr % self.s == 1 and itr != 1:
-                                    self.n1 += 1
                     self.fvmul = False  # change state not to reconvert vars
+                if self.diffch:
+                    self.diffch = False
+                    for itr in range(self.s * self.d):
+                        if self.s == 1:
+                            if itr % 2 == 1 and itr != 1:
+                                self.n2 += 1
+                            elif itr % 2 == 0 and itr != 1:
+                                self.n1 += 1
+                        else:
+                            if itr % (self.s * 2) == 1 and itr != 1:
+                                self.n2 += 1
+                            elif itr % self.s == 1 and itr != 1:
+                                self.n1 += 1
                 if self.s == 1:  # special case
                     if i % 2 == 1 and i != self.st:
-                        self.n2 += 1  # every 2nd pass increase 2nd num
+                        self.n2 += 1  # every 2nd pass increase 1st num
                     elif i % 2 == 0 and i != self.st:
-                        self.n1 += 1  # every 1st pass increase 1st num
-                else:  # usual approach
+                        self.n1 += 1  # every 1st pass increase 2nd num
+                else:  # for other vars we use usual approach
                     if i % (self.s * 2) == 1 and i != self.st:
-                        self.n2 += 1  # every 2nd pass increase 2nd num
+                        self.n2 += 1  # every 2nd pass increase 1st num
                     elif i % self.s == 1 and i != self.st:
-                        self.n1 += 1  # every 1st pass increase 1st num
+                        self.n1 += 1  # every 1st pass increase 2nd num
                 await vml(self.n1, self.n2, self.ms, self)
             elif self.chosen == "mmul":  # check for counting mode option
                 if self.fmmul:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
-                    if self.diffch:
-                        for itr in range(self.s * self.d):
-                            if self.s == 1:
-                                if itr % 2 == 1 and itr != 1:
-                                    self.n2 += 1
-                                elif itr % 2 == 0 and itr != 1:
-                                    self.n1 += 1
-                            else:
-                                if itr % (self.s * 2) == 1 and itr != 1:
-                                    self.n2 += 1
-                                elif itr % self.s == 1 and itr != 1:
-                                    self.n1 += 1
-                    self.fmmul = False
+                    self.fmmul = False  # change state not to reconvert vars
+                if self.diffch:
+                    self.diffch = False
+                    for itr in range(self.s * self.d):
+                        if self.s == 1:
+                            if itr % 2 == 1 and itr != 1:
+                                self.n2 += 1
+                            elif itr % 2 == 0 and itr != 1:
+                                self.n1 += 1
+                        else:
+                            if itr % (self.s * 2) == 1 and itr != 1:
+                                self.n2 += 1
+                            elif itr % self.s == 1 and itr != 1:
+                                self.n1 += 1
                 if self.s == 1:  # special case
                     if i % 2 == 1 and i != self.st:
-                        self.n2 += 1  # every 1st pass increase 2nd num
+                        self.n2 += 1  # every 2nd pass increase 1st num
                     elif i % 2 == 0 and i != self.st:
-                        self.n1 += 1  # every 2nd pass increase 1st num
-                else:  # usual approach
+                        self.n1 += 1  # every 1st pass increase 2nd num
+                else:  # for other vars we use usual approach
                     if i % (self.s * 2) == 1 and i != self.st:
-                        self.n2 += 1  # every 1st pass increase 2nd num
+                        self.n2 += 1  # every 2nd pass increase 1st num
                     elif i % self.s == 1 and i != self.st:
-                        self.n1 += 1  # every 2nd pass increase 1st num
+                        self.n1 += 1  # every 1st pass increase 2nd num
                 await mml(self.n1, self.n2, self.ms, self)
 
 
