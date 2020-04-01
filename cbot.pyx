@@ -705,19 +705,18 @@ cdef class Bot():
     """define right answers and user-supplied ones"""
     cdef public int c, c1, c2, c3, c4, c5, c6, c7, c8, c9
     cdef public int u, u1, u2, u3, u4, u5, u6, u7, u8, u9
-    """define all messages sent without an error"""
+    """define all messages and message related variables"""
     cdef public str m, m1, m2, m3, m4, m5
     cdef public str prevm, readlm
-    """define all boolean variables of first message sender"""
     cdef public int sm, tm, fm, om, diffch  # (s)econd(m)essage..(o)ptional(m)
-    cdef public int resch, fmul, fdiv, fsqr, froot, fvmul, fmmul # (f)ormat
-    cdef public int date, pdate, ldate
+    """define all mode and mode of count related variables"""
+    cdef public int resch, fmul, fdiv, fsqr, froot, fvmul, fmmul # (res)tart, (f)ormat
+    cdef public int date, pdate, ldate  # define
     cdef public list rf, mnum, dnum, vmnum, mmnum
     cdef public int sqnum, ronum
     cdef public str lang, chosen
     cdef public int n1, n2
-    cdef public int ms
-    cdef public int diffs
+    cdef public int st, s, d, ms
 
     def __init__(self, tok, num):
         """static variables are defined here for correct start up"""
@@ -731,7 +730,7 @@ cdef class Bot():
         self.MISTYPE_EN = "Sorry, I didn't understand you, type more clearly!"
         self.MISTYPE_RU = "Извините, я не понимаю вас, печатайте чётче!"
         """non-static variables are defined here for further work"""
-        self.date = 0  # date set to zero will serve in expression as starter
+        self.date = 0  # date set to zero will serve in expression as start var
         self.prevm = "None"
         self.c, self.u = 0, 0
         self.c1, self.c2, self.c3 = 0, 0, 0
@@ -746,6 +745,7 @@ cdef class Bot():
         self.mmnum = [1, 1]
         self.sqnum = 2
         self.ronum = 2
+        self.sm = False
         self.tm = False
         self.fm = False
         self.om = False
@@ -757,6 +757,19 @@ cdef class Bot():
         self.fmmul = True
         self.fsqr = True
         self.froot = True
+        self.s = 0
+        self.d = 0
+
+    async def readf(self):
+        while True:
+            with open("cids.log", "r") as f:
+                cids = f.read().rstrip().split("\n")
+                try:
+                    self.CID = cids[self.NUMBER]
+                    break
+                except IndexError:
+                   await asyncio.sleep(self.TIMEOUT)
+                   continue
 
     async def readm(self):
         await asyncio.sleep(self.TIMEOUT)
@@ -794,17 +807,6 @@ cdef class Bot():
             urllib.request.urlopen(snd)  # make request
         except (urllib.error.URLError, urllib.error.HTTPError):
             raise ConnectionError
-
-    async def readf(self):
-        while True:
-            with open("cids.log", "r") as f:
-                cids = f.read().rstrip().split("\n")
-                try:
-                    self.CID = cids[self.NUMBER]
-                    break
-                except IndexError:
-                   await asyncio.sleep(self.TIMEOUT) 
-                   continue
 
     async def error(self):
         try:
@@ -906,8 +908,8 @@ cdef class Bot():
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
-                self.sm = True  # change state; not to resend m
-            """compare latest m with offered commands"""
+                self.sm = True  # change state; not to resend message
+            """compare latest message with offered commands"""
             if self.readlm == "/mul":
                 try:
                     if self.lang == "en":
@@ -982,53 +984,48 @@ cdef class Bot():
         """Difficulty Speed"""
         while True:
             try:
-                await self.readm()  # read latest m
+                await self.readm()  # read latest message
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.readlm == "/start":
                 await self.restart()  # check for restart command
-            """send method's m"""
             if not self.tm:
                 if self.lang == "en":
                     self.m1 = "How many iterations do you want before increasing "
-                    self.m2 = "difficulty? (/d1, /d3, /d5, /d10, /d15):"
+                    self.m2 = "difficulty? (/s1, /s3, /s5, /s10, /s15, "
+                    self.m3 = "/s25, /s[number]):"
                 elif self.lang == "ru":
                     self.m1 = "Как много итераций прежде чем увеличить сложность? "
-                    self.m2 = "(/d1, /d3, /d5, /d10, /d15):"
-                self.m = self.m1 + self.m2
+                    self.m2 = "(/s1, /s3, /s5, /s10, /s15, "
+                    self.m3 = "/s25, /s[число]):"
+                self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
-                self.tm = True  # change state; not to resend m
-            """try to extract diff, restart if got m and failed"""
+                self.tm = True  # change state; not to resend message
             try:
-                self.rf = re.findall(r"^\/d([0-9]{1,6})", self.readlm)
-                self.diffs = int(self.rf[0])  # num is extracted here
-                if self.diffs not in (1, 3, 5, 10, 15):
-                    await self.error()
-                    await self.restart()
+                self.rf = re.findall(r"^\/s([0-9]{1,6})", self.readlm)
+                self.s = int(self.rf[0])  # num is extracted here
             except IndexError:
                 if self.readlm != self.prevm:
                     await self.error()
                     await self.restart()
                 continue
-            """send state info"""
-            if self.diffs:  # if num exist we send info about mode
+            if self.s:  # if num exist we send info about mode
                 try:
                     if self.lang == "en":
-                        self.m = f"Have chosen {self.diffs} iterations mode"
+                        self.m = f"Have chosen {self.s} iterations mode"
                         await self.sndm(self.m)
                     elif self.lang == "ru":
-                        self.m = f"Выбрана {self.diffs} скорость усложнения"
+                        self.m = f"Выбрана {self.s} скорость усложнения"
                         await self.sndm(self.m)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 break
-        """record previous m and go to the next method"""
         self.prevm = self.readlm
         await self.chmod()
 
@@ -1036,7 +1033,7 @@ cdef class Bot():
         """Diff Init parameters"""
         while True:
             try:
-                await self.readm()  # read latest m
+                await self.readm()  # read latest message
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
@@ -1053,16 +1050,15 @@ cdef class Bot():
                     continue
                 self.diffch = False
                 break
-            """send method's m"""
-            if self.fm is False:
+            if not self.fm:
                 if self.lang == "en":
-                    self.m1 = "Do you want to change initial difficulty? If yes "
-                    self.m2 = "- number or numbers, depending on counting mode; "
-                    self.m3 = "if no - type /0"
+                    self.m1 = "Do you want to change initial difficulty? Set "
+                    self.m2 = "it right to second or further mode (/d2, /d3, "
+                    self.m3 = "/d4, /d5, /d[number]), /0 - if don't set new"
                 elif self.lang == "ru":
-                    self.m1 = "Вы хотите изменить начальную сложность? Если да "
-                    self.m2 = "введите одно число или два в зависимости от мода "
-                    self.m3 = "счета; если не хотите менять - введите /0"
+                    self.m1 = "Вы хотите изменить начальную сложность? Ставьте "
+                    self.m2 = "сразу ко второму или дальнейшему моду (/d2, /d3, "
+                    self.m3 = "/d4, /d5 /d[число]), /0 - если не хотите ставить"
                 self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
@@ -1070,47 +1066,29 @@ cdef class Bot():
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.fm = True
-            """try to extract new parameters, restart if got m and failed"""
-            try:
+            try:  # to extract number from latest message
                 if self.readlm == self.prevm:
                     raise IndexError("Got no new messages!")
-                self.self.rf = re.findall(r"([0-9]{1,6})", self.readlm)
-                self.chm1 = int(self.self.rf[0])
-                if self.chosen != "sqr" and self.chosen != "root":
-                    self.chm2 = int(self.chm[1])
+                self.rf = re.findall(r"([0-9]{1,6})", self.readlm)
+                self.d = int(self.rf[0])
             except IndexError:
                 if self.readlm != self.prevm and self.readlm != "/0":
                     await self.error()
                     await self.restart()
                 continue
-            """send state info based on counting mode"""
-            if self.chosen != "sqr" and self.chosen != "root":
-                if self.lang == "en":
-                    self.m = f"Have chosen [{self.chm1}, {self.chm2}] init mode"
-                elif self.lang == "ru":
-                    self.m = f"Выбран [{self.chm1}, {self.chm2}] стартовый мод"
-                try:
-                    await self.sndm(self.m)
-                except ConnectionError:
-                    await asyncio.sleep(self.TIMEOUT)
-                    continue
-                break
-            else:
-                if self.lang == "en":
-                    self.m = f"Have chosen {self.chm1} init mode"
-                elif self.lang == "ru":
-                    self.m = f"Выбран {self.chm1} стартовый мод"
-                try:
-                    await self.sndm(self.m)
-                except ConnectionError:
-                    await asyncio.sleep(self.TIMEOUT)
-                    continue
-                break
-        """record previous m and go to the next method
-        based on counting mode"""
+            if self.lang == "en":
+                self.m = f"Have chosen {self.d} init mode"
+            elif self.lang == "ru":
+                self.m = f"Выбран {self.d} стартовый мод"
+            try:
+                await self.sndm(self.m)
+            except ConnectionError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
+            break
         self.prevm = self.readlm
         if self.chosen == "vmul" or self.chosen == "mmul":
-            await self.msize()  # for mx operations we need their size
+            await self.msize()  # for matrix operations we need their size
         else:
             await self.count()  # for basic operation we start counting now
 
@@ -1124,7 +1102,6 @@ cdef class Bot():
                 continue
             if self.readlm == "/start":
                 self.restart()  # check for restart command
-            """send method's m"""
             if not self.om:
                 if self.lang == "en":
                     self.m1 = "How big the matrix should be? "
@@ -1140,8 +1117,7 @@ cdef class Bot():
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.om = True
-            """try to extract msize, restart if got m and failed"""
-            try:  # to extract num from latest m
+            try:  # to extract number from latest message
                 if self.readlm == self.prevm:
                     raise IndexError("Got no new messages!")
                 self.rf = re.findall(r"^\/m([2-4])", self.readlm)
@@ -1171,105 +1147,155 @@ cdef class Bot():
 
     async def count(self):
         """Counting endless loop"""
-        for i in itertools.count(start=1, step=1):  # specially defined loop
+        if self.diffch:
+            self.st = (self.s * self.d) - (self.s - 1)
+        else:
+            self.st = 1
+        for i in itertools.count(start=self.st, step=1):  # specially defined loop
             if self.chosen == "mul":  # check for counting mode option
                 if self.fmul:  # define loop's from initial o's vars
+                    self.n1, self.n2 = self.mnum[0], self.mnum[1]
                     if self.diffch:
-                        self.n1, self.n2 = self.chm1, self.chm2
-                    else:
-                        self.n1, self.n2 = self.mnum[0], self.mnum[1]
+                        for itr in range(self.s * self.d):
+                            if self.s == 1:
+                                if itr % 2 == 1 and itr != 1:
+                                    self.n1 += 1
+                                elif itr % 2 == 0 and itr != 1:
+                                    self.n2 += 1
+                            else:
+                                if itr % (self.s * 2) == 1 and itr != 1:
+                                    self.n1 += 1
+                                elif itr % self.s == 1 and itr != 1:
+                                    self.n2 += 1
                     self.fmul = False
-                if self.diffs == 1:  # special case
-                    if i % 2 == 1 and i != 1:
+                if self.s == 1:  # special case
+                    if i % 2 == 1 and i != self.st:
                         self.n1 += 1  # every 2nd pass increase 1st num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0 and i != self.st:
                         self.n2 += 1  # every 1st pass increase 2nd num
                 else:  # for other vars we use usual approach
-                    if i % (self.diffs * 2) == 1 and i != 1:
+                    if i % (self.s * 2) == 1 and i != self.st:
                         self.n1 += 1  # every 2nd pass increase 1st num
-                    elif i % self.diffs == 1 and i != 1:
+                    elif i % self.s == 1 and i != self.st:
                         self.n2 += 1  # every 1st pass increase 2nd num
                 await ml(self.n1, self.n2, self)
             elif self.chosen == "div":  # check for counting mode option
                 if self.fdiv:  # define loop's from initial o's vars
+                    self.n1, self.n2 = self.dnum[0], self.dnum[1]
                     if self.diffch:
-                        self.n1, self.n2 = self.chm1, self.chm2
-                    else:
-                        self.n1, self.n2 = self.dnum[0], self.dnum[1]
+                        for itr in range(1, (self.s * self.d) + 1):
+                            if self.s == 1:
+                                if itr % 2 == 1 and itr != 1:
+                                    self.n2 += 1
+                                elif itr % 2 == 0 and itr != 1:
+                                    self.n1 += 1
+                            else:
+                                if itr % (self.s * 2) == 1 and itr != 1:
+                                    self.n2 += 1
+                                elif itr % self.s == 1 and itr != 1:
+                                    self.n1 += 1
                     self.fdiv = False
-                if self.diffs == 1:  # special case
-                    if i % 2 == 1 and i != 1:
+                if self.s == 1:  # special case
+                    if i % 2 == 1 and i != self.st:
                         self.n2 += 1  # every 2nd pass increase 2nd num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1st num
                 else:  # for other vars we use usual approach
-                    if i % (self.diffs * 2) == 1 and i != 1:
+                    if i % (self.s * 2) == 1 and i != self.st:
                         self.n2 += 1  # every 2nd pass increase 2nd num
-                    elif i % self.diffs == 1 and i != 1:
+                    elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1st num
                 await dl(self.n1, self.n2, self)
             elif self.chosen == "sqr":  # check for counting mode option
                 if self.fsqr:  # define loop's from initial o's vars
+                    self.n1 = self.sqnum
                     if self.diffch:
-                        self.n1 = self.chm1
-                    else:
-                        self.n1 = self.sqnum
+                        for itr in range(self.s * self.d):
+                            if self.s == 1:
+                                if itr != 1:
+                                    self.n1 += 1
+                            else:
+                                if itr % self.s == 1 and itr != 1:
+                                    self.n1 += 1
                     self.fsqr = False
-                if self.diffs == 1:  # special case
+                if self.s == 1:  # special case
                     if i != 1:
                         self.n1 += 1  # every pass increase num
                 else:  # usual approach
-                    if i % self.diffs == 1 and i != 1:
+                    if i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every pass increase num
-                await sqr(self.n1, o=self)
+                await sqr(self.n1, self)
             elif self.chosen == "root":  # check for counting mode option
                 if self.froot:  # define loop's from initial o's vars
+                    self.n1 = self.ronum
                     if self.diffch:
-                        self.n1 = self.chm1
-                    else:
-                        self.n1 = self.ronum
+                        for itr in range(self.s * self.d):
+                            if self.s == 1:
+                                if itr != 1:
+                                    self.n1 += 1
+                            else:
+                                if itr % self.s == 1 and itr != 1:
+                                    self.n1 += 1
                     self.froot = False
-                if self.diffs == 1:  # special case
+                if self.s == 1:  # special case
                     if i != 1:
                         self.n1 += 1  # every pass increase num
                 else:  # usual approach
-                    if i % self.diffs == 1 and i != 1:
+                    if i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every pass increase num
                 await root(self.n1, self)
             elif self.chosen == "vmul":  # check for counting mode option
                 if self.fvmul:  # define loop's from initial o's vars
+                    self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
                     if self.diffch:
-                        self.n1, self.n2 = self.chm1, self.chm2
-                    else:
-                        self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
+                        for itr in range(1, (self.s * self.d) + 1):
+                            if self.s == 1:
+                                if itr % 2 == 1 and itr != 1:
+                                    self.n2 += 1
+                                elif itr % 2 == 0 and itr != 1:
+                                    self.n1 += 1
+                            else:
+                                if itr % (self.s * 2) == 1 and itr != 1:
+                                    self.n2 += 1
+                                elif itr % self.s == 1 and itr != 1:
+                                    self.n1 += 1
                     self.fvmul = False  # change state not to reconvert vars
-                if self.diffs == 1:  # special case
-                    if i % 2 == 1 and i != 1:
+                if self.s == 1:  # special case
+                    if i % 2 == 1 and i != self.st:
                         self.n2 += 1  # every 2nd pass increase 2nd num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1st num
                 else:  # usual approach
-                    if i % (self.diffs * 2) == 1 and i != 1:
+                    if i % (self.s * 2) == 1 and i != self.st:
                         self.n2 += 1  # every 2nd pass increase 2nd num
-                    elif i % self.diffs == 1 and i != 1:
+                    elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1st num
                 await vml(self.n1, self.n2, self.ms, self)
             elif self.chosen == "mmul":  # check for counting mode option
                 if self.fmmul:  # define loop's from initial o's vars
+                    self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
                     if self.diffch:
-                        self.n1, self.n2 = self.chm1, self.chm2
-                    else:
-                        self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
+                        for itr in range(self.s * self.d):
+                            if self.s == 1:
+                                if itr % 2 == 1 and itr != 1:
+                                    self.n2 += 1
+                                elif itr % 2 == 0 and itr != 1:
+                                    self.n1 += 1
+                            else:
+                                if itr % (self.s * 2) == 1 and itr != 1:
+                                    self.n2 += 1
+                                elif itr % self.s == 1 and itr != 1:
+                                    self.n1 += 1
                     self.fmmul = False
-                if self.diffs == 1:  # special case
-                    if i % 2 == 1 and i != 1:
+                if self.s == 1:  # special case
+                    if i % 2 == 1 and i != self.st:
                         self.n2 += 1  # every 1st pass increase 2nd num
-                    elif i % 2 == 0 and i != 1:
+                    elif i % 2 == 0 and i != self.st:
                         self.n1 += 1  # every 2nd pass increase 1st num
                 else:  # usual approach
-                    if i % (self.diffs * 2) == 1 and i != 1:
+                    if i % (self.s * 2) == 1 and i != self.st:
                         self.n2 += 1  # every 1st pass increase 2nd num
-                    elif i % self.diffs == 1 and i != 1:
+                    elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 2nd pass increase 1st num
                 await mml(self.n1, self.n2, self.ms, self)
 
