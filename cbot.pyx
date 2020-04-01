@@ -12,6 +12,7 @@ import numpy as np
 with open("token.conf", "r") as config:
     token = config.read().rstrip()
 
+
 class GetOut(Exception):
     pass
 
@@ -710,7 +711,7 @@ cdef class Bot():
     cdef public str prevm, readlm
     cdef public int sm, tm, fm, om, diffch  # (s)econd(m)essage..(o)ptional(m)
     """define all mode and mode of count related variables"""
-    cdef public int resch, fmul, fdiv, fsqr, froot, fvmul, fmmul # (res)tart, (f)ormat
+    cdef public int resch, fmul, fdiv, fsqr, froot, fvmul, fmmul  # (res)tart, (f)ormat
     cdef public int date, pdate, ldate  # define
     cdef public list rf, mnum, dnum, vmnum, mmnum
     cdef public int sqnum, ronum
@@ -768,8 +769,8 @@ cdef class Bot():
                     self.CID = cids[self.NUMBER]
                     break
                 except IndexError:
-                   await asyncio.sleep(self.TIMEOUT)
-                   continue
+                    await asyncio.sleep(self.TIMEOUT)
+                    continue
 
     async def readm(self):
         await asyncio.sleep(self.TIMEOUT)
