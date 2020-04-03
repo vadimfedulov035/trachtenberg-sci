@@ -9,10 +9,10 @@ import numpy as np
 
 
 with open("token.conf", "r") as config:
-    token = config.read().rstrip()
+    token = config.read().rstrip()  # read config for token info
 
 
-class GetOut(Exception):
+class GetOut(Exception):  # define error for getting out of two loops
     pass
 
 
@@ -577,7 +577,6 @@ async def mml(object o):
                     continue
                 o.prevm = o.rdlm  # record latest message for check
                 while True:
-                    await asyncio.sleep(o.TIMEOUT)
                     try:
                         await o.rdm()
                     except ConnectionError:
@@ -641,7 +640,6 @@ async def mml(object o):
                     continue
                 o.prevm = o.rdlm  # record latest message for check
                 while True:
-                    await asyncio.sleep(o.TIMEOUT)
                     try:
                         await o.rdm()
                     except ConnectionError:
@@ -812,13 +810,15 @@ cdef class Bot():
             raise ConnectionError  # define ConnectionError as combination
 
     async def error(object self):
-        try:
-            if self.lang == "en":
-                await self.sndm(self.ERROR_EN)
-            elif self.lang == "ru":
-                await self.sndm(self.ERROR_RU)
-        except ConnectionError:
-            await asyncio.sleep(self.TIMEOUT)
+        while True:
+            try:
+                if self.lang == "en":
+                    await self.sndm(self.ERROR_EN)
+                elif self.lang == "ru":
+                    await self.sndm(self.ERROR_RU)
+                break
+            except ConnectionError:
+                continue
 
     async def start(object self):
         while True:
@@ -857,7 +857,6 @@ cdef class Bot():
             try:
                 await self.rdm()  # read latest message
             except ConnectionError:
-                await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.rdlm == "/start" and self.ldate != self.pdate:
                 await self.restart()  # check for restart command, date
@@ -1020,7 +1019,6 @@ cdef class Bot():
             try:
                 await self.rdm()  # read latest message
             except ConnectionError:
-                await asyncio.sleep(self.TIMEOUT)
                 continue
             if self.rdlm == "/start":
                 await self.restart()  # check for restart command
@@ -1031,7 +1029,6 @@ cdef class Bot():
                     elif self.lang == "ru":
                         await self.sndm("Никаких изменений!")
                 except ConnectionError:
-                    await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.diffch = False
                 break
@@ -1127,16 +1124,16 @@ cdef class Bot():
 
     async def count(object self):
         """counting loop"""
-        if self.diffch:
+        if self.diffch:  # put bot through default loop  # define starting position
             self.st = (self.s * self.d) - (self.s - 1)
         else:
             self.st = 1
         for i in itertools.count(start=self.st, step=1):  # special loop
             if self.mode == "mul":  # check for counting mode option
-                if self.cmul:  # define loop's from initial o's vars
+                if self.cmul:  # convert initial numbers to usable for loop
                     self.n1, self.n2 = self.mnum[0], self.mnum[1]
                     self.cmul = False
-                if self.diffch:
+                if self.diffch:  # put bot through default loop
                     self.diffch = False
                     for itr in range(self.s * self.d):
                         if self.s == 1:
@@ -1154,17 +1151,17 @@ cdef class Bot():
                         self.n1 += 1  # every 2nd pass increase 1st num
                     elif i % 2 == 0 and i != self.st:
                         self.n2 += 1  # every 1st pass increase 2nd num
-                else:  # for other vars we use usual approach
+                else:  # for other values we use usual approach
                     if i % (self.s * 2) == 1 and i != self.st:
                         self.n1 += 1  # every 2nd pass increase 1st num
                     elif i % self.s == 1 and i != self.st:
                         self.n2 += 1  # every 1st pass increase 2nd num
                 await ml(self)
             elif self.mode == "div":  # check for counting mode option
-                if self.cdiv:  # define loop's from initial o's vars
+                if self.cdiv:  # convert initial numbers to usable for loop
                     self.n1, self.n2 = self.dnum[0], self.dnum[1]
                     self.cdiv = False
-                if self.diffch:
+                if self.diffch:  # put bot through default loop
                     self.diffch = False
                     for itr in range(self.s * self.d):
                         if self.s == 1:
@@ -1182,17 +1179,17 @@ cdef class Bot():
                         self.n2 += 1  # every 2nd pass increase 2nd num
                     elif i % 2 == 0 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1st num
-                else:  # for other vars we use usual approach
+                else:  # for other values we use usual approach
                     if i % (self.s * 2) == 1 and i != self.st:
                         self.n2 += 1  # every 2nd pass increase 2nd num
                     elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1st num
                 await dl(self)
             elif self.mode == "sqr":  # check for counting mode option
-                if self.csqr:  # define loop's from initial o's vars
+                if self.csqr:  # convert initial numbers to usable for loop
                     self.n1 = self.sqnum
                     self.csqr = False
-                if self.diffch:
+                if self.diffch:  # put bot through default loop
                     self.diffch = False
                     for itr in range(self.s * self.d):
                         if self.s == 1:
@@ -1209,10 +1206,10 @@ cdef class Bot():
                         self.n1 += 1  # every pass increase num
                 await sqr(self)
             elif self.mode == "root":  # check for counting mode option
-                if self.croot:  # define loop's from initial o's vars
+                if self.croot:  # convert initial numbers to usable for loop
                     self.n1 = self.ronum
                     self.croot = False
-                if self.diffch:
+                if self.diffch:  # put bot through default loop
                     self.diffch = False
                     for itr in range(self.s * self.d):
                         if self.s == 1:
@@ -1229,10 +1226,10 @@ cdef class Bot():
                         self.n1 += 1  # every pass increase num
                 await root(self)
             elif self.mode == "vmul":  # check for counting mode option
-                if self.cvmul:  # define loop's from initial o's vars
+                if self.cvmul:  # convert initial numbers to usable for loop
                     self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
                     self.cvmul = False  # change state not to reconvert vars
-                if self.diffch:
+                if self.diffch:  # put bot through default loop
                     self.diffch = False
                     for itr in range(self.s * self.d):
                         if self.s == 1:
@@ -1247,20 +1244,20 @@ cdef class Bot():
                                 self.n1 += 1
                 if self.s == 1:  # special case
                     if i % 2 == 1 and i != self.st:
-                        self.n2 += 1  # every 2nd pass increase 1st num
+                        self.n2 += 1  # every 2nd pass increase 2st num
                     elif i % 2 == 0 and i != self.st:
-                        self.n1 += 1  # every 1st pass increase 2nd num
-                else:  # for other vars we use usual approach
+                        self.n1 += 1  # every 1st pass increase 1nd num
+                else:  # for other values we use usual approach
                     if i % (self.s * 2) == 1 and i != self.st:
-                        self.n2 += 1  # every 2nd pass increase 1st num
+                        self.n2 += 1  # every 2nd pass increase 2st num
                     elif i % self.s == 1 and i != self.st:
-                        self.n1 += 1  # every 1st pass increase 2nd num
+                        self.n1 += 1  # every 1st pass increase 1nd num
                 await vml(self)
             elif self.mode == "mmul":  # check for counting mode option
-                if self.cmmul:  # define loop's from initial o's vars
+                if self.cmmul:  # convert initial numbers to usable for loop
                     self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
                     self.cmmul = False  # change state not to reconvert vars
-                if self.diffch:
+                if self.diffch:  # put bot through default loop
                     self.diffch = False
                     for itr in range(self.s * self.d):
                         if self.s == 1:
@@ -1275,121 +1272,121 @@ cdef class Bot():
                                 self.n1 += 1
                 if self.s == 1:  # special case
                     if i % 2 == 1 and i != self.st:
-                        self.n2 += 1  # every 2nd pass increase 1st num
+                        self.n2 += 1  # every 2nd pass increase 2st num
                     elif i % 2 == 0 and i != self.st:
-                        self.n1 += 1  # every 1st pass increase 2nd num
-                else:  # for other vars we use usual approach
+                        self.n1 += 1  # every 1st pass increase 1nd num
+                else:  # for other values we use usual approach
                     if i % (self.s * 2) == 1 and i != self.st:
-                        self.n2 += 1  # every 2nd pass increase 1st num
+                        self.n2 += 1  # every 2nd pass increase 2st num
                     elif i % self.s == 1 and i != self.st:
-                        self.n1 += 1  # every 1st pass increase 2nd num
+                        self.n1 += 1  # every 1st pass increase 1nd num
                 await mml(self)
 
 
-pbot0 = Bot(token, 0)
-pbot1 = Bot(token, 1)
-pbot2 = Bot(token, 2)
-pbot3 = Bot(token, 3)
-pbot4 = Bot(token, 4)
-pbot5 = Bot(token, 5)
-pbot6 = Bot(token, 6)
-pbot7 = Bot(token, 7)
-pbot8 = Bot(token, 8)
-pbot9 = Bot(token, 9)
-pbot10 = Bot(token, 10)
-pbot11 = Bot(token, 11)
-pbot12 = Bot(token, 12)
-pbot13 = Bot(token, 13)
-pbot14 = Bot(token, 14)
-pbot15 = Bot(token, 15)
-pbot16 = Bot(token, 16)
-pbot17 = Bot(token, 17)
-pbot18 = Bot(token, 18)
-pbot19 = Bot(token, 19)
-pbot20 = Bot(token, 10)
-pbot21 = Bot(token, 21)
-pbot22 = Bot(token, 22)
-pbot23 = Bot(token, 23)
-pbot24 = Bot(token, 24)
-pbot25 = Bot(token, 25)
-pbot26 = Bot(token, 26)
-pbot27 = Bot(token, 27)
-pbot28 = Bot(token, 28)
-pbot29 = Bot(token, 29)
-pbot30 = Bot(token, 30)
-pbot31 = Bot(token, 31)
-pbot32 = Bot(token, 32)
-pbot33 = Bot(token, 33)
-pbot34 = Bot(token, 34)
-pbot35 = Bot(token, 35)
-pbot36 = Bot(token, 36)
-pbot37 = Bot(token, 37)
-pbot38 = Bot(token, 38)
-pbot39 = Bot(token, 39)
-pbot40 = Bot(token, 40)
-pbot41 = Bot(token, 41)
-pbot42 = Bot(token, 42)
-pbot43 = Bot(token, 43)
-pbot44 = Bot(token, 44)
-pbot45 = Bot(token, 45)
-pbot46 = Bot(token, 46)
-pbot47 = Bot(token, 47)
-pbot48 = Bot(token, 48)
-pbot49 = Bot(token, 49)
+pbot200 = Bot(token, 200)
+pbot201 = Bot(token, 201)
+pbot202 = Bot(token, 202)
+pbot203 = Bot(token, 203)
+pbot204 = Bot(token, 204)
+pbot205 = Bot(token, 205)
+pbot206 = Bot(token, 206)
+pbot207 = Bot(token, 207)
+pbot208 = Bot(token, 208)
+pbot209 = Bot(token, 209)
+pbot210 = Bot(token, 210)
+pbot211 = Bot(token, 211)
+pbot212 = Bot(token, 212)
+pbot213 = Bot(token, 213)
+pbot214 = Bot(token, 214)
+pbot215 = Bot(token, 215)
+pbot216 = Bot(token, 216)
+pbot217 = Bot(token, 217)
+pbot218 = Bot(token, 218)
+pbot219 = Bot(token, 219)
+pbot220 = Bot(token, 220)
+pbot221 = Bot(token, 221)
+pbot222 = Bot(token, 222)
+pbot223 = Bot(token, 223)
+pbot224 = Bot(token, 224)
+pbot225 = Bot(token, 225)
+pbot226 = Bot(token, 226)
+pbot227 = Bot(token, 227)
+pbot228 = Bot(token, 228)
+pbot229 = Bot(token, 229)
+pbot230 = Bot(token, 230)
+pbot231 = Bot(token, 231)
+pbot232 = Bot(token, 232)
+pbot233 = Bot(token, 233)
+pbot234 = Bot(token, 234)
+pbot235 = Bot(token, 235)
+pbot236 = Bot(token, 236)
+pbot237 = Bot(token, 237)
+pbot238 = Bot(token, 238)
+pbot239 = Bot(token, 239)
+pbot240 = Bot(token, 240)
+pbot241 = Bot(token, 241)
+pbot242 = Bot(token, 242)
+pbot243 = Bot(token, 243)
+pbot244 = Bot(token, 244)
+pbot245 = Bot(token, 245)
+pbot246 = Bot(token, 246)
+pbot247 = Bot(token, 247)
+pbot248 = Bot(token, 248)
+pbot249 = Bot(token, 249)
 
 
 async def main():
     await asyncio.gather(
-        pbot0.start(),
-        pbot1.start(),
-        pbot2.start(),
-        pbot3.start(),
-        pbot4.start(),
-        pbot5.start(),
-        pbot6.start(),
-        pbot7.start(),
-        pbot8.start(),
-        pbot9.start(),
-        pbot10.start(),
-        pbot11.start(),
-        pbot12.start(),
-        pbot13.start(),
-        pbot14.start(),
-        pbot15.start(),
-        pbot16.start(),
-        pbot17.start(),
-        pbot18.start(),
-        pbot19.start(),
-        pbot20.start(),
-        pbot21.start(),
-        pbot22.start(),
-        pbot23.start(),
-        pbot24.start(),
-        pbot25.start(),
-        pbot26.start(),
-        pbot27.start(),
-        pbot28.start(),
-        pbot29.start(),
-        pbot30.start(),
-        pbot31.start(),
-        pbot32.start(),
-        pbot33.start(),
-        pbot34.start(),
-        pbot35.start(),
-        pbot36.start(),
-        pbot37.start(),
-        pbot38.start(),
-        pbot39.start(),
-        pbot40.start(),
-        pbot41.start(),
-        pbot42.start(),
-        pbot43.start(),
-        pbot44.start(),
-        pbot45.start(),
-        pbot46.start(),
-        pbot47.start(),
-        pbot48.start(),
-        pbot49.start()
+        pbot200.start(),
+        pbot201.start(),
+        pbot202.start(),
+        pbot203.start(),
+        pbot204.start(),
+        pbot205.start(),
+        pbot206.start(),
+        pbot207.start(),
+        pbot208.start(),
+        pbot209.start(),
+        pbot210.start(),
+        pbot211.start(),
+        pbot212.start(),
+        pbot213.start(),
+        pbot214.start(),
+        pbot215.start(),
+        pbot216.start(),
+        pbot217.start(),
+        pbot218.start(),
+        pbot219.start(),
+        pbot220.start(),
+        pbot221.start(),
+        pbot222.start(),
+        pbot223.start(),
+        pbot224.start(),
+        pbot225.start(),
+        pbot226.start(),
+        pbot227.start(),
+        pbot228.start(),
+        pbot229.start(),
+        pbot230.start(),
+        pbot231.start(),
+        pbot232.start(),
+        pbot233.start(),
+        pbot234.start(),
+        pbot235.start(),
+        pbot236.start(),
+        pbot237.start(),
+        pbot238.start(),
+        pbot239.start(),
+        pbot240.start(),
+        pbot241.start(),
+        pbot242.start(),
+        pbot243.start(),
+        pbot244.start(),
+        pbot245.start(),
+        pbot246.start(),
+        pbot247.start(),
+        pbot248.start(),
+        pbot249.start()
         )
 
 

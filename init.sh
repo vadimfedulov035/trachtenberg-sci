@@ -25,6 +25,7 @@ while true; do
 	if [ `date | cut -d" " -f 4 | cut -d":" --fields 1,2` = 21:00 ]; then
 		killall cidc.exe
 		killall cbot.exe
+        rm cids.log
 		cidc
 		sleep 1
 		cbot

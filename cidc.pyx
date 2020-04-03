@@ -6,7 +6,7 @@ import json
 
 
 try:
-    os.mknod("cids.log")
+    os.mknod("cids.log")  # create cids.log file
 except FileExistsError:
     pass
 
@@ -24,12 +24,12 @@ while True:
     try:
         mreq = urllib.request.urlopen(URL)
     except (urllib.error.URLError, urllib.error.HTTPError):
-        raise ConnectionError
+        continue
     rj = mreq.read()
     try:
         js = json.loads(rj.decode("utf-8"))
     except json.decoder.JSONDecodeError:
-        raise ConnectionError
+        continue
 
     """parsing loop through all cids"""
     for n in itertools.count():
