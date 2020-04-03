@@ -1,6 +1,33 @@
 #!/bin/sh
 
+echo "Cleaning everything up..."
 rm -f *.c *.exe
+echo "Cleaning process is done!"
+
+if [ `which python3.8 | grep "not found"` ]; then
+	echo "Python3.8 is not installed, started the process of installation!"
+	apt install zlib1g-dev libbz2-dev libncurses5-dev libgdbm-dev libssl-dev libnss3-dev libreadline-dev libffi-dev tk-dev libsqlite3-dev -y
+	wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
+	tar xvf Python-3.8.2.tar.xz
+	cd Python-3.8.2
+	./configure --prefix=/usr --enable-loadable-sqlite-extensions --enable-shared --enable-optimizations --with-lto --enable-ipv6 --with-pydebug
+	make -j$(nproc)
+	make install
+	cd ..
+	rm -rf Python-3.8.2*
+	if [ `which python3.8 | /usr/bin/python3.8` ]; then
+		echo "Python installation went successful"
+		wget https://bootstrap.pypa.io/get-pip.py
+		python3.8 get-pip.py
+		python3.8 -m pip install -r requirements.txt
+		echo "Requirements should be installed successfully!"
+	else
+		echo "Python installation went wront..."
+		exit
+else
+	echo "Python3.8 is already installed! Skipping step of installation!\n"
+fi
+
 
 echo "Started Cythonization of code..."
 python3.8 -m cython -3 --embed cidc.pyx
