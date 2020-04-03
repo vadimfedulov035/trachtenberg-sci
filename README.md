@@ -10,7 +10,7 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Add Arithmetics operations
 - [x] Add Linear Algebra operations
 - [x] Add asyncio functionality and make code asynchronous
-- [ ] Optimize code for PEP-8 standards and make readable comments
+- [x] Optimize code for PEP-8 standards and make readable comments
 - [x] Make bot able to have instant messaging with newcomers
 - [x] Translate to Russian via unicode support
 - [x] Port code from CPython to Cython and learn how to compile executable (-02)
