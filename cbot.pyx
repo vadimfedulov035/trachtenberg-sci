@@ -1,5 +1,4 @@
 import re
-import random
 import json
 import itertools
 import urllib.request
@@ -17,18 +16,17 @@ class GetOut(Exception):
     pass
 
 
-async def ml(multiplicand, multiplier, o):
+async def ml(object o):
     """Arithmetics operation: Multiplication"""
-    cdef int x1, x2, y1, y2, a, b, c
-    cdef int u
+    cdef int x1, x2, y1, y2, a, b, c, u
     x1, x2, y1, y2 = 1, 1, 1, 1
-    for i in range(multiplicand - 1):
+    for i in range(o.n1 - 1):
         x1 *= 10
-    for i in range(multiplicand):
+    for i in range(o.n1):
         y1 *= 10
-    for i in range(multiplier - 1):
+    for i in range(o.n2 - 1):
         x2 *= 10
-    for i in range(multiplier):
+    for i in range(o.n2):
         y2 *= 10
     if x2 == 1:
         x2 = 3
@@ -36,30 +34,31 @@ async def ml(multiplicand, multiplier, o):
     y2 -= 1
     try:
         while True:
-            a = random.randint(x1, y1)
-            b = random.randint(x2, y2)
+            a = np.random.randint(x1, y1)
+            b = np.random.randint(x2, y2)
             c = a * b
             if c == o.c:  # if got the same answer restart
                 continue
             o.c = c  # record answer
+            o.m = f"{a} * {b} = ?"
             try:
-                await o.sndm(f"{a} * {b} = ?")
+                await o.sndm(o.m)
             except ConnectionError:
                 continue
-            o.prevm = o.readlm
+            o.prevm = o.rdlm
             while True:
                 try:
-                    await o.readm()
+                    await o.rdm()
                 except ConnectionError:
                     continue
-                if o.readlm == "/start":  # check for restart m
+                if o.rdlm == "/start":  # check for restart m
                     await o.restart()
-                elif o.readlm == o.prevm:  # check for novelty
+                elif o.rdlm == o.prevm:  # check for novelty
                     continue
                 else:
                     try:  # to extract num from latest m
-                        o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                        u = int(o.rf[0])
+                        o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                        u = int(o.r[0])
                     except IndexError:
                         try:
                             if o.lang == "en":
@@ -68,144 +67,144 @@ async def ml(multiplicand, multiplier, o):
                                 await o.sndm(o.MISTYPE_RU)
                         except ConnectionError:
                             continue
-                        o.prevm = o.readlm
+                        o.prevm = o.rdlm
                         continue
                 if u == o.u:
                     continue  # if got old m try again
                 o.u = u  # record user answer
                 """compare user answers against right ones"""
                 if u == c:
-                    try:
-                        if o.lang == "en":
-                            await o.sndm("You're God Damn right!")
-                        elif o.lang == "ru":
-                            await o.sndm("Вы чертовски правы!")
-                    except ConnectionError:
-                        continue
-                elif u != c:
-                    try:
-                        if o.lang == "en":
-                            await o.sndm(f"No, right answer is {c}!")
-                        elif o.lang == "ru":
-                            await o.sndm(f"Нет, правильный ответ {c}!")
-                    except ConnectionError:
-                        continue
+                    if o.lang == "en":
+                        o.m = "You're God Damn right!"
+                    elif o.lang == "ru":
+                        o.m = "Вы чертовски правы!"
+                else:
+                    if o.lang == "en":
+                        o.m = f"No, right answer is {c}!"
+                    elif o.lang == "ru":
+                        o.m = f"Нет, правильный ответ {c}!"
+                try:
+                    await o.sndm(o.m)
+                except ConnectionError:
+                    continue
                 raise GetOut
     except GetOut:
         pass
 
 
-async def dl(dividend, divider, o):
+async def dl(object o):
     """Arithmetics operation: Division"""
-    cdef int x1, x2, y1, y2, a, b, c1, c2
+    cdef int x1, x2, y1, y2, a, b, c1, c2, u
     x1, x2, y1, y2 = 1, 1, 1, 1
-    for i in range(dividend - 1):
+    for i in range(o.n1 - 1):
         x1 *= 10
-    for i in range(dividend):
+    for i in range(o.n1):
         y1 *= 10
-    for i in range(divider - 1):
+    for i in range(o.n2 - 1):
         x2 *= 10
-    for i in range(divider):
+    for i in range(o.n2):
         y2 *= 10
     y1 -= 1
     y2 -= 1
     try:
         while True:
-            a = random.randint(x1, y1)
-            b = random.randint(x2, y2)
+            a = np.random.randint(x1, y1)
+            b = np.random.randint(x2, y2)
             c1 = a // b
             c2 = a % b
             if c1 == o.c1 or c2 == o.c2:  # if got the same answer restart
                 continue
             o.c1, o.c2 = c1, c2  # record answers
+            o.m = f"{a} // | % {b} = ?"
             try:
-                await o.sndm(f"{a} // | % {b} = ?")
+                await o.sndm(o.m)
             except ConnectionError:
                 continue
-            o.prevm = o.readlm
+            o.prevm = o.rdlm
             while True:
                 try:
-                    await o.readm()
+                    await o.rdm()
                 except ConnectionError:
                     continue
-                if o.readlm == "/start":  # check for restart m
+                if o.rdlm == "/start":  # check for restart m
                     await o.restart()
-                elif o.readlm == o.prevm:  # check for novelty
+                elif o.rdlm == o.prevm:  # check for novelty
                     continue
                 else:
                     try:  # to extract nums from latest m
-                        o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                        u1, u2 = int(o.rf[0]), int(o.rf[1])
+                        o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                        u1, u2 = int(o.r[0]), int(o.r[1])
                     except IndexError:
-                        if o.lang == "en":
-                            await o.sndm(o.MISTYPE_EN)
-                        elif o.lang == "ru":
-                            await o.sndm(o.MISTYPE_RU)
-                        o.prevm = o.readlm
+                        try:
+                            if o.lang == "en":
+                                await o.sndm(o.MISTYPE_EN)
+                            elif o.lang == "ru":
+                                await o.sndm(o.MISTYPE_RU)
+                        except ConnectionError:
+                            continue
+                        o.prevm = o.rdlm
                         continue
                 if u1 == o.u1 and u2 == o.u2:
                     continue  # if got old m try again
                 o.u1, o.u2 = u1, u2  # record user answers
                 """compare user answers against right ones"""
                 if u1 == c1 and u2 == c2:
-                    try:
-                        if o.lang == "en":
-                            await o.sndm("You're God Damn right!")
-                        elif o.lang == "ru":
-                            await o.sndm("Вы чертовски правы!")
-                    except ConnectionError:
-                        continue
+                    if o.lang == "en":
+                        o.m = "You're God Damn right!"
+                    elif o.lang == "ru":
+                        o.m = "Вы чертовски правы!"
                 else:
                     if o.lang == "en":
-                        m1 = f"No, right answer is {c1} "
-                        m2 = f"with residual of {c2}!"
+                        o.m1 = f"No, right answer is {c1} "
+                        o.m2 = f"with residual of {c2}!"
                     elif o.lang == "ru":
-                        m1 = f"Нет, правильный ответ это {c1} "
-                        m2 = f"с остатком {c2}!"
-                    m = m1 + m2
-                    try:
-                        await o.sndm(m)
-                    except ConnectionError:
-                        continue
+                        o.m1 = f"Нет, правильный ответ это {c1} "
+                        o.m2 = f"с остатком {c2}!"
+                    o.m = o.m1 + o.m2
+                try:
+                    await o.sndm(o.m)
+                except ConnectionError:
+                    continue
                 raise GetOut
     except GetOut:
         pass
 
 
-async def sqr(sqrn, o):
+async def sqr(object o):
     """Arithmetics operation: Squaring"""
-    cdef int x1, y1, a, c
+    cdef int x1, y1, a, c, u
     x1, y1 = 1, 1
-    for i in range(sqrn - 1):
+    for i in range(o.n1 - 1):
         x1 *= 10
-    for i in range(sqrn):
+    for i in range(o.n1):
         y1 *= 10
     y1 -= 1
     try:
         while True:
-            a = random.randint(x1, y1)
+            a = np.random.randint(x1, y1)
             c = a ** 2
             if c == o.c:
                 continue
             o.c = c
+            o.m = f"{a} ** 2 = ?"
             try:
-                await o.sndm(f"{a} ** 2 = ?")
+                await o.sndm(o.m)
             except ConnectionError:
                 continue
-            o.prevm = o.readlm
+            o.prevm = o.rdlm
             while True:
                 try:
-                    await o.readm()
+                    await o.rdm()
                 except ConnectionError:
                     continue
-                if o.readlm == "/start":  # check for restart m
+                if o.rdlm == "/start":  # check for restart m
                     await o.restart()
-                elif o.readlm == o.prevm:  # check for novelty
+                elif o.rdlm == o.prevm:  # check for novelty
                     continue
                 else:
                     try:  # to extract num from latest m
-                        o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                        u = int(o.rf[0])
+                        o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                        u = int(o.r[0])
                     except IndexError:
                         try:
                             if o.lang == "en":
@@ -214,68 +213,67 @@ async def sqr(sqrn, o):
                                 await o.sndm(o.MISTYPE_RU)
                         except ConnectionError:
                             continue
-                        o.prevm = o.readlm
+                        o.prevm = o.rdlm
                         continue
                 if u == o.u:
                     continue  # if got old m try again
                 o.u = u  # record user answer
                 """compare user answers against right ones"""
                 if u == c:
-                    try:
-                        if o.lang == "en":
-                            await o.sndm("You're God Damn right!")
-                        elif o.lang == "ru":
-                            await o.sndm("Вы чертовски правы!")
-                    except ConnectionError:
-                        continue
-                elif u != c:
-                    try:
-                        if o.lang == "en":
-                            await o.sndm(f"No, right answer is {c}!")
-                        elif o.lang == "ru":
-                            await o.sndm(f"Нет, правильный ответ {c}!")
-                    except ConnectionError:
-                        continue
+                    if o.lang == "en":
+                        o.m = "You're God Damn right!"
+                    elif o.lang == "ru":
+                        o.m = "Вы чертовски правы!"
+                else:
+                    if o.lang == "en":
+                        o.m = f"No, right answer is {c}!"
+                    elif o.lang == "ru":
+                        o.m = f"Нет, правильный ответ {c}!"
+                try:
+                    await o.sndm(o.m)
+                except ConnectionError:
+                    continue
                 raise GetOut
     except GetOut:
         pass
 
 
-async def root(rootn, o):
+async def root(object o):
     """Arithmetics operation: Square Root taking"""
-    cdef int x1, y1, a, b, c
+    cdef int x1, y1, a, b, c, u
     x1, y1 = 1, 1
-    for i in range(rootn - 1):
+    for i in range(o.n1 - 1):
         x1 *= 10
-    for i in range(rootn):
+    for i in range(o.n1):
         y1 *= 10
     y1 -= 1
     try:
         while True:
-            a = random.randint(x1, y1)
+            a = np.random.randint(x1, y1)
             b = a ** 2
             c = int(np.sqrt(b))
             if c == o.c:
                 continue
             o.c = c
+            o.m = f"{b} ** 0.5 = ?"
             try:
-                await o.sndm(f"{b} ** 0.5 = ?")
+                await o.sndm(o.m)
             except ConnectionError:
                 continue
-            o.prevm = o.readlm
+            o.prevm = o.rdlm
             while True:
                 try:
-                    await o.readm()
+                    await o.rdm()
                 except ConnectionError:
                     continue
-                if o.readlm == "/start":  # check for restart m
+                if o.rdlm == "/start":  # check for restart m
                     await o.restart()
-                elif o.readlm == o.prevm:  # check for novelty
+                elif o.rdlm == o.prevm:  # check for novelty
                     continue
                 else:
                     try:  # to extract nums from latest m
-                        o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                        u = int(o.rf[0])
+                        o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                        u = int(o.r[0])
                     except IndexError:
                         try:
                             if o.lang == "en":
@@ -284,45 +282,42 @@ async def root(rootn, o):
                                 await o.sndm(o.MISTYPE_RU)
                         except ConnectionError:
                             continue
-                        o.prevm = o.readlm
+                        o.prevm = o.rdlm
                         continue
                 if u == o.u:
                     continue  # if got old m try again
                 o.u = u  # record user answer
                 """compare user answers against right ones"""
                 if u == c:
-                    try:
-                        if o.lang == "en":
-                            await o.sndm("You're God Damn right!")
-                        elif o.lang == "ru":
-                            await o.sndm("Вы чертовски правы!")
-                    except ConnectionError:
-                        continue
-                elif u != c:
-                    try:
-                        if o.lang == "en":
-                            await o.sndm(f"No, right answer is {int(c)}!")
-                        elif o.lang == "ru":
-                            await o.sndm(f"Нет, правильный ответ {int(c)}!")
-                    except ConnectionError:
-                        continue
+                    if o.lang == "en":
+                        o.m = "You're God Damn right!"
+                    elif o.lang == "ru":
+                        o.m = "Вы чертовски правы!"
+                else:
+                    if o.lang == "en":
+                        o.m = f"No, right answer is {int(c)}!"
+                    elif o.lang == "ru":
+                        o.m = f"Нет, правильный ответ {int(c)}!"
+                try:
+                    await o.sndm(o.m)
+                except ConnectionError:
+                    continue
                 raise GetOut
     except GetOut:
         print("Get Out!")
 
 
-async def vml(multiplicand, multiplier, mx, o):
+async def vml(object o):
     """Linear Algebra operation: vector-matrix multiplication"""
-    cdef int a1, a2, a3, b1, b2, b3, c1, c2, c3
-    cdef int l1, l2, l3
+    cdef int a1, a2, a3, b1, b2, b3, c1, c2, c3, l1, l2, l3, u
     x1, x2, y1, y2 = 1, 1, 1, 1
-    for i in range(multiplicand - 1):
+    for i in range(o.n1 - 1):
         x1 *= 10
-    for i in range(multiplicand):
+    for i in range(o.n1):
         y1 *= 10
-    for i in range(multiplier - 1):
+    for i in range(o.n2 - 1):
         x2 *= 10
-    for i in range(multiplier):
+    for i in range(o.n2):
         y2 *= 10
     y1 -= 1
     y2 -= 1
@@ -330,45 +325,45 @@ async def vml(multiplicand, multiplier, mx, o):
         while True:
             """SPECIFICATION BLOCK"""
             """non-static vars for basic matricies specification"""
-            a1 = random.randint(x1, y1)
-            a2 = random.randint(x1, y1)
-            b1 = random.randint(x1, y1)
-            b2 = random.randint(x1, y1)
-            l1 = random.randint(x2, y2)
-            l2 = random.randint(x2, y2)
-            if mx == 2:  # here we don't need to specify more vars
+            a1 = np.random.randint(x1, y1)
+            a2 = np.random.randint(x1, y1)
+            b1 = np.random.randint(x1, y1)
+            b2 = np.random.randint(x1, y1)
+            l1 = np.random.randint(x2, y2)
+            l2 = np.random.randint(x2, y2)
+            if o.ms == 2:  # here we don't need to specify more vars
                 a = np.array([[a1, b1],
                               [a2, b2]])
                 b = np.array([[l1],
                               [l2]])
-            elif mx == 3:  # here we need to specify more vars
-                c1 = random.randint(x1, y1)
-                c2 = random.randint(x1, y1)
-                a3 = random.randint(x1, y1)
-                b3 = random.randint(x1, y1)
-                c3 = random.randint(x1, y1)
-                l3 = random.randint(x2, y2)
+            elif o.ms == 3:  # here we need to specify more vars
+                c1 = np.random.randint(x1, y1)
+                c2 = np.random.randint(x1, y1)
+                a3 = np.random.randint(x1, y1)
+                b3 = np.random.randint(x1, y1)
+                c3 = np.random.randint(x1, y1)
+                l3 = np.random.randint(x2, y2)
                 a = np.array([[a1, b1, c1],
                               [a2, b2, c2],
                               [a3, b3, c3]])
                 b = np.array([[l1],
                               [l2],
                               [l3]])
-            elif mx == 4:  # here we specify more vars depending on choice
+            elif o.ms == 4:  # here we specify more vars depending on choice
                 choices = ["2x3", "3x2"]
                 fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
                 if fch == "2x3":
-                    c1 = random.randint(x1, y1)
-                    c2 = random.randint(x1, y1)
-                    l3 = random.randint(x2, y2)
+                    c1 = np.random.randint(x1, y1)
+                    c2 = np.random.randint(x1, y1)
+                    l3 = np.random.randint(x2, y2)
                     a = np.array([[a1, b1, c1],
                                   [a2, b2, c2]])
                     b = np.array([[l1],
                                   [l2],
                                   [l3]])
                 elif fch == "3x2":
-                    a3 = random.randint(x1, y1)
-                    b3 = random.randint(x1, y1)
+                    a3 = np.random.randint(x1, y1)
+                    b3 = np.random.randint(x1, y1)
                     a = np.array([[a1, b1],
                                   [a2, b2],
                                   [a3, b3]])
@@ -376,29 +371,30 @@ async def vml(multiplicand, multiplier, mx, o):
                                   [l2]])
             c = np.matmul(a, b)
             """COUNTING BLOCK"""
-            if mx == 2 or mx == 4 and fch == "2x3":
+            if o.ms == 2 or o.ms == 4 and fch == "2x3":
                 c1, c2 = c[0], c[1]
                 if c1 == o.c1 or c2 == o.c2:
                     continue
                 o.c1, o.c2 = c1, c2
+                o.m = f"{a}\n*****\n{b}\n=====\n?????"
                 try:
-                    await o.sndm(f"{a}\n*****\n{b}\n=====\n?????")
+                    await o.sndm(o.m)
                 except ConnectionError:
                     continue
-                o.prevm = o.readlm
+                o.prevm = o.rdlm
                 while True:
                     try:
-                        await o.readm()
+                        await o.rdm()
                     except ConnectionError:
                         continue
-                    if o.readlm == "/start":  # check for restart m
+                    if o.rdlm == "/start":  # check for restart m
                         await o.restart()
-                    elif o.readlm == o.prevm:  # check for novelty
+                    elif o.rdlm == o.prevm:  # check for novelty
                         continue
                     else:
                         try:  # to extract nums from latest m
-                            o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                            u1, u2 = int(o.rf[0]), int(o.rf[1])
+                            o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                            u1, u2 = int(o.r[0]), int(o.r[1])
                         except IndexError:
                             try:
                                 if o.lang == "en":
@@ -407,53 +403,52 @@ async def vml(multiplicand, multiplier, mx, o):
                                     await o.sndm(o.MISTYPE_RU)
                             except ConnectionError:
                                 continue
-                            o.prevm = o.readlm
+                            o.prevm = o.rdlm
                             continue
                     if u1 == o.u1 and u2 == o.u2:
                         continue  # if got old m try again
                     o.u1, o.u2 = u1, u2  # if got new m work with nums
                     """compare user answers against right ones"""
                     if u1 == c1 and u2 == c2:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm("You're God Damn right!")
-                            elif o.lang == "ru":
-                                await o.sndm("Вы чертовски правы!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = "You're God Damn right!"
+                        elif o.lang == "ru":
+                            o.m = "Вы чертовски правы!"
                     else:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm(f"No, right answer is\n{c}!")
-                            elif o.lang == "ru":
-                                await o.sndm(f"Нет, правильный ответ\n{c}!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = f"No, right answer is\n{c}!"
+                        elif o.lang == "ru":
+                            o.m = f"Нет, правильный ответ\n{c}!"
+                    try:
+                        await o.sndm(o.m)
+                    except ConnectionError:
+                        continue
                     raise GetOut
-            elif mx == 3 or mx == 4 and fch == "3x2":
+            elif o.ms == 3 or o.ms == 4 and fch == "3x2":
                 c1, c2, c3 = c[0], c[1], c[2]
                 if c1 == o.c1 or c2 == o.c2 or c3 == o.c3:
                     continue
                 o.c1, o.c2, o.c3 = c1, c2, c3  # record answers
+                o.m = f"{a}\n*****\n{b}\n=====\n?????"
                 try:
-                    await o.sndm(f"{a}\n*****\n{b}\n=====\n?????")
+                    await o.sndm(o.m)
                 except ConnectionError:
                     continue
                 o.c1, o.c2 = c1, c2
-                o.prevm = o.readlm
+                o.prevm = o.rdlm
                 while True:
                     try:
-                        await o.readm()
+                        await o.rdm()
                     except ConnectionError:
                         continue
-                    if o.readlm == "/start":  # check for restart m
+                    if o.rdlm == "/start":  # check for restart m
                         await o.restart()
-                    elif o.readlm == o.prevm:  # check for novelty
+                    elif o.rdlm == o.prevm:  # check for novelty
                         continue
                     else:
                         try:  # to extract nums from latest m
-                            o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                            u1, u2, u3 = int(o.rf[0]), int(o.rf[1]), int(o.rf[2])
+                            o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                            u1, u2, u3 = int(o.r[0]), int(o.r[1]), int(o.r[2])
                         except IndexError:
                             try:
                                 if o.lang == "en":
@@ -462,47 +457,45 @@ async def vml(multiplicand, multiplier, mx, o):
                                     await o.sndm(o.MISTYPE_RU)
                             except ConnectionError:
                                 continue
-                            o.prevm = o.readlm
+                            o.prevm = o.rdlm
                             continue
                     if u1 == o.u1 and u2 == o.u2 and u3 == o.u3:
                         continue  # if got old m try again
                     o.u1, o.u2, o.u3 = u1, u2, u3  # record user answer
                     """compare user answers against right ones"""
                     if u1 == c1 and u2 == c2 and u3 == c3:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm("You're God Damn right!")
-                            elif o.lang == "ru":
-                                await o.sndm("Вы чертовски правы!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = "You're God Damn right!"
+                        elif o.lang == "ru":
+                            o.m = "Вы чертовски правы!"
                     else:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm(f"No, right answer is\n{c}!")
-                            elif o.lang == "ru":
-                                await o.sndm(f"Нет, правильный ответ\n{c}!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = f"No, right answer is\n{c}!"
+                        elif o.lang == "ru":
+                            o.m = f"Нет, правильный ответ\n{c}!"
+                    try:
+                        await o.sndm(o.m)
+                    except ConnectionError:
+                        continue
                     raise GetOut
 
     except GetOut:
         pass
 
 
-async def mml(multiplicand, multiplier, mx, o):
+async def mml(object o):
     """Linear Algebra operation: matrix-matrix multiplication"""
-    cdef int x1, x2, y1, y2
+    cdef int x1, x2, y1, y2, u
     cdef int a1, a2, a3, b1, b2, b3, c1, c2, c3
     cdef int l1, l2, l3, q1, q2, q3, s1, s2, s3
     x1, x2, y1, y2 = 1, 1, 1, 1
-    for i in range(multiplicand - 1):
+    for i in range(o.n1 - 1):
         x1 *= 10
-    for i in range(multiplicand):
+    for i in range(o.n1):
         y1 *= 10
-    for i in range(multiplier - 1):
+    for i in range(o.n2 - 1):
         x2 *= 10
-    for i in range(multiplier):
+    for i in range(o.n2):
         y2 *= 10
     y1 -= 1
     y2 -= 1
@@ -510,54 +503,54 @@ async def mml(multiplicand, multiplier, mx, o):
         while True:
             """SPECIFICATION BLOCK"""
             """non-static vars for basic matricies specification"""
-            a1 = random.randint(x1, y1)
-            a2 = random.randint(x1, y1)
-            b1 = random.randint(x1, y1)
-            b2 = random.randint(x1, y1)
-            l1 = random.randint(x2, y2)
-            l2 = random.randint(x2, y2)
-            q1 = random.randint(x2, y2)
-            q2 = random.randint(x2, y2)
-            if mx == 2:  # here we don't need to specify more vars
+            a1 = np.random.randint(x1, y1)
+            a2 = np.random.randint(x1, y1)
+            b1 = np.random.randint(x1, y1)
+            b2 = np.random.randint(x1, y1)
+            l1 = np.random.randint(x2, y2)
+            l2 = np.random.randint(x2, y2)
+            q1 = np.random.randint(x2, y2)
+            q2 = np.random.randint(x2, y2)
+            if o.ms == 2:  # here we don't need to specify more vars
                 a = np.array([[a1, b1],
                               [a2, b2]])
                 b = np.array([[l1, q1],
                               [l2, q2]])
-            elif mx == 3:  # here we need to specify more vars
-                c1 = random.randint(x1, y1)
-                c2 = random.randint(x1, y1)
-                s1 = random.randint(x2, y2)
-                s2 = random.randint(x2, y2)
-                a3 = random.randint(x1, y1)
-                b3 = random.randint(x1, y1)
-                c3 = random.randint(x1, y1)
-                l3 = random.randint(x2, y2)
-                q3 = random.randint(x2, y2)
-                s3 = random.randint(x2, y2)
+            elif o.ms == 3:  # here we need to specify more vars
+                c1 = np.random.randint(x1, y1)
+                c2 = np.random.randint(x1, y1)
+                s1 = np.random.randint(x2, y2)
+                s2 = np.random.randint(x2, y2)
+                a3 = np.random.randint(x1, y1)
+                b3 = np.random.randint(x1, y1)
+                c3 = np.random.randint(x1, y1)
+                l3 = np.random.randint(x2, y2)
+                q3 = np.random.randint(x2, y2)
+                s3 = np.random.randint(x2, y2)
                 a = np.array([[a1, b1, c1],
                               [a2, b2, c2],
                               [a3, b3, c3]])
                 b = np.array([[l1, q1, s1],
                               [l2, q2, s2],
                               [l3, q3, s3]])
-            elif mx == 4:  # here we specify more vars depending on choice
+            elif o.ms == 4:  # here we specify more vars depending on choice
                 choices = ["2x3", "3x2"]
                 fch = np.random.choice(choices, 1, replace=True, p=[0.5, 0.5])
                 if fch == "2x3":
-                    c1 = random.randint(x2, y2)
-                    c2 = random.randint(x2, y2)
-                    l3 = random.randint(x2, y2)
-                    q3 = random.randint(x2, y2)
+                    c1 = np.random.randint(x2, y2)
+                    c2 = np.random.randint(x2, y2)
+                    l3 = np.random.randint(x2, y2)
+                    q3 = np.random.randint(x2, y2)
                     a = np.array([[a1, b1, c1],
                                   [a2, b2, c2]])
                     b = np.array([[l1, q1],
                                   [l2, q2],
                                   [l3, q3]])
                 elif fch == "3x2":
-                    a3 = random.randint(x1, y1)
-                    b3 = random.randint(x1, y1)
-                    s1 = random.randint(x2, y2)
-                    s2 = random.randint(x2, y2)
+                    a3 = np.random.randint(x1, y1)
+                    b3 = np.random.randint(x1, y1)
+                    s1 = np.random.randint(x2, y2)
+                    s2 = np.random.randint(x2, y2)
                     a = np.array([[a1, b1],
                                   [a2, b2],
                                   [a3, b3]])
@@ -565,7 +558,7 @@ async def mml(multiplicand, multiplier, mx, o):
                                   [l2, q2, s2]])
             c = np.matmul(a, b)
             """COUNTING BLOCK"""
-            if mx == 2 or mx == 4 and fch == "2x3":
+            if o.ms == 2 or o.ms == 4 and fch == "2x3":
                 c1, c2, c3, c4 = c[0, 0], c[0, 1], c[1, 0], c[1, 1]
                 if c1 == o.c1 or c2 == o.c2:
                     continue
@@ -573,26 +566,27 @@ async def mml(multiplicand, multiplier, mx, o):
                     continue
                 o.c1, o.c2 = c1, c2
                 o.c3, o.c4 = c3, c4
+                o.m = f"{a}\n*****\n{b}\n=====\n?????"
                 try:
-                    await o.sndm(f"{a}\n*****\n{b}\n=====\n?????")
+                    await o.sndm(o.m)
                 except ConnectionError:
                     continue
-                o.prevm = o.readlm
+                o.prevm = o.rdlm
                 while True:
                     await asyncio.sleep(o.TIMEOUT)
                     try:
-                        await o.readm()
+                        await o.rdm()
                     except ConnectionError:
                         continue
-                    if o.readlm == "/start":  # check for restart m
+                    if o.rdlm == "/start":  # check for restart m
                         await o.restart()
-                    elif o.readlm == o.prevm:  # check for novelty
+                    elif o.rdlm == o.prevm:  # check for novelty
                         continue
                     else:
                         try:  # to extract nums from latest m
-                            o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                            u1, u2 = int(o.rf[0]), int(o.rf[1])
-                            u3, u4 = int(o.rf[2]), int(o.rf[3])
+                            o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                            u1, u2 = int(o.r[0]), int(o.r[1])
+                            u3, u4 = int(o.r[2]), int(o.r[3])
                         except IndexError:
                             try:
                                 if o.lang == "en":
@@ -601,7 +595,7 @@ async def mml(multiplicand, multiplier, mx, o):
                                     await o.sndm(o.MISTYPE_RU)
                             except ConnectionError:
                                 continue
-                            o.prevm = o.readlm
+                            o.prevm = o.rdlm
                             continue
                     if u1 == o.u1 and u2 == o.u2:
                         continue  # if got old m try again
@@ -611,23 +605,21 @@ async def mml(multiplicand, multiplier, mx, o):
                     o.u3, o.u4 = u3, u4  # record user answers
                     """compare user answers against right ones"""
                     if u1 == c1 and u2 == c2 and u3 == c3 and u4 == c4:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm("You're God Damn right!")
-                            elif o.lang == "ru":
-                                await o.sndm("Вы чертовски правы!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = "You're God Damn right!"
+                        elif o.lang == "ru":
+                            o.m = "Вы чертовски правы!"
                     else:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm(f"No, right answer is\n{c}!")
-                            elif o.lang == "ru":
-                                await o.sndm(f"Нет, правильный ответ\n{c}!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = f"No, right answer is\n{c}!"
+                        elif o.lang == "ru":
+                            o.m = f"Нет, правильный ответ\n{c}!"
+                    try:
+                        await o.sndm(o.m)
+                    except ConnectionError:
+                        continue
                     raise GetOut
-            elif mx == 3 or mx == 4 and fch == "3x2":
+            elif o.ms == 3 or o.ms == 4 and fch == "3x2":
                 c1, c2, c3 = c[0, 0], c[0, 1], c[0, 2]
                 c4, c5, c6 = c[1, 0], c[1, 1], c[1, 2]
                 c7, c8, c9 = c[2, 1], c[2, 1], c[2, 2]
@@ -638,27 +630,28 @@ async def mml(multiplicand, multiplier, mx, o):
                 o.c1, o.c2, o.c3 = c1, c2, c3  # record answers
                 o.c4, o.c5, o.c6 = c4, c5, c6  # record answers
                 o.c7, o.c8, o.c9 = c7, c8, c9  # record answers
+                o.m = f"{a}\n*****\n{b}\n=====\n?????"
                 try:
-                    await o.sndm(f"{a}\n*****\n{b}\n=====\n?????")
+                    await o.sndm(o.m)
                 except ConnectionError:
                     continue
-                o.prevm = o.readlm
+                o.prevm = o.rdlm
                 while True:
                     await asyncio.sleep(o.TIMEOUT)
                     try:
-                        await o.readm()
+                        await o.rdm()
                     except ConnectionError:
                         continue
-                    if o.readlm == "/start":  # check for restart m
+                    if o.rdlm == "/start":  # check for restart m
                         await o.restart()
-                    elif o.readlm == o.prevm:  # check for novelty
+                    elif o.rdlm == o.prevm:  # check for novelty
                         continue
                     else:
                         try:  # to extract nums from latest m
-                            o.rf = re.findall(r"([0-9]{1,10})", o.readlm)
-                            u1, u2, u3 = int(o.rf[0]), int(o.rf[1]), int(o.rf[2])
-                            u4, u5, u6 = int(o.rf[3]), int(o.rf[4]), int(o.rf[5])
-                            u7, u8, u9 = int(o.rf[6]), int(o.rf[7]), int(o.rf[8])
+                            o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
+                            u1, u2, u3 = int(o.r[0]), int(o.r[1]), int(o.r[2])
+                            u4, u5, u6 = int(o.r[3]), int(o.r[4]), int(o.r[5])
+                            u7, u8, u9 = int(o.r[6]), int(o.r[7]), int(o.r[8])
                         except IndexError:
                             try:
                                 if o.lang == "en":
@@ -667,7 +660,7 @@ async def mml(multiplicand, multiplier, mx, o):
                                     await o.sndm(o.MISTYPE_RU)
                             except ConnectionError:
                                 continue
-                            o.prevm = o.readlm
+                            o.prevm = o.rdlm
                             continue
                     if u1 == o.u1 and u2 == o.u2 and u3 == o.u3:
                         continue  # if got old m try again
@@ -680,21 +673,19 @@ async def mml(multiplicand, multiplier, mx, o):
                     o.u7, o.u8, o.u9 = u7, u8, u9  # record user answers
                     """compare user answers against right ones"""
                     if u1 == c1 and u2 == c2 and u3 == c3:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm("You're God Damn right!")
-                            elif o.lang == "ru":
-                                await o.sndm("Вы чертовски правы!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = "You're God Damn right!"
+                        elif o.lang == "ru":
+                            o.m = "Вы чертовски правы!"
                     else:
-                        try:
-                            if o.lang == "en":
-                                await o.sndm(f"No, right answer is\n{c}!")
-                            elif o.lang == "ru":
-                                await o.sndm(f"Нет, правильный ответ\n{c}!")
-                        except ConnectionError:
-                            continue
+                        if o.lang == "en":
+                            o.m = f"No, right answer is\n{c}!"
+                        elif o.lang == "ru":
+                            o.m = f"Нет, правильный ответ\n{c}!"
+                    try:
+                        await o.sndm(o.m)
+                    except ConnectionError:
+                        continue
                     raise GetOut
     except GetOut:
         pass
@@ -712,13 +703,12 @@ cdef class Bot():
     cdef public int c, c1, c2, c3, c4, c5, c6, c7, c8, c9
     cdef public int u, u1, u2, u3, u4, u5, u6, u7, u8, u9
     """define all messages and message related variables"""
-    cdef public str m, m1, m2, m3, m4, m5
-    cdef public str prevm, readlm
+    cdef public str m, m1, m2, m3, m4, m5, prevm, rdlm
     cdef public int sm, tm, fm, om, diffch  # (s)econd(m)essage..(o)ptional(m)
     """define all mode and mode of count related variables"""
-    cdef public int resch, fmul, fdiv, fsqr, froot, fvmul, fmmul  # (res)tart, (f)ormat
-    cdef public int date, pdate, ldate  # define
-    cdef public list rf, mnum, dnum, vmnum, mmnum
+    cdef public list r, mnum, dnum, vmnum, mmnum
+    cdef public int resch, cmul, cdiv, csqr, croot, cvmul, cmmul
+    cdef public int date, pdate, ldate
     cdef public int sqnum, ronum
     cdef public str lang, chosen
     cdef public int n1, n2
@@ -757,16 +747,16 @@ cdef class Bot():
         self.om = False
         self.diffch = True
         self.resch = False
-        self.fmul = True
-        self.fdiv = True
-        self.fvmul = True
-        self.fmmul = True
-        self.fsqr = True
-        self.froot = True
+        self.cmul = True
+        self.cdiv = True
+        self.cvmul = True
+        self.cmmul = True
+        self.csqr = True
+        self.croot = True
         self.s = 0
         self.d = 0
 
-    async def readf(self):
+    async def readf(object self):
         while True:
             with open("cids.log", "r") as f:
                 cids = f.read().rstrip().split("\n")
@@ -777,7 +767,7 @@ cdef class Bot():
                     await asyncio.sleep(self.TIMEOUT)
                     continue
 
-    async def readm(self):
+    async def rdm(object self):
         await asyncio.sleep(self.TIMEOUT)
         """new reqest to get fresh json data"""
         try:
@@ -803,9 +793,9 @@ cdef class Bot():
                 date = j["message"]["date"]
                 if date >= self.date:
                     self.ldate = date  # update date, if later found
-                    self.readlm = j["message"]["text"]  # get latest m
+                    self.rdlm = j["message"]["text"]  # get latest m
 
-    async def sndm(self, m):
+    async def sndm(object self, str m):
         """integrate cid and message into base url"""
         m = urllib.parse.quote_plus(m)
         snd = f"{self.URL}/sendmessage?text={m}&chat_id={self.CID}"
@@ -814,7 +804,7 @@ cdef class Bot():
         except (urllib.error.URLError, urllib.error.HTTPError):
             raise ConnectionError
 
-    async def error(self):
+    async def error(object self):
         try:
             if self.lang == "en":
                 await self.sndm(self.ERROR_EN)
@@ -823,7 +813,7 @@ cdef class Bot():
         except ConnectionError:
             await asyncio.sleep(self.TIMEOUT)
 
-    async def start(self):
+    async def start(object self):
         while True:
             try:
                 await self.readf()
@@ -833,11 +823,11 @@ cdef class Bot():
                 continue
         while True:
             try:
-                await self.readm()
+                await self.rdm()
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            if self.readlm == "/start" or self.resch:
+            if self.rdlm == "/start" or self.resch:
                 self.m1 = "Started setting up! "
                 self.m2 = "Type /start when want to restart! "
                 self.m3 = "Please, choose language! (/en, /ru)"
@@ -853,22 +843,22 @@ cdef class Bot():
                 break
         await self.lmode()
 
-    async def restart(self):
+    async def restart(object self):
         self.__init__(token, self.NUMBER)
         self.resch = True
         await self.start()
 
-    async def lmode(self):
+    async def lmode(object self):
         while True:
             try:
-                await self.readm()
+                await self.rdm()
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            if self.readlm == "/start" and self.ldate != self.pdate:
+            if self.rdlm == "/start" and self.ldate != self.pdate:
                 await self.restart()  # check for restart command, date
             """compare latest m with offered commands"""
-            if self.readlm == "/en":
+            if self.rdlm == "/en":
                 self.lang = "en"
                 try:
                     await self.sndm("English is chosen")
@@ -876,7 +866,7 @@ cdef class Bot():
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
-            elif self.readlm == "/ru":
+            elif self.rdlm == "/ru":
                 self.lang = "ru"
                 try:
                     await self.sndm("Выбран русский")
@@ -886,28 +876,28 @@ cdef class Bot():
                     continue
         await self.cmode()
 
-    async def cmode(self):
+    async def cmode(object self):
         """Counting Mode: define operation"""
         while True:
             try:
-                await self.readm()  # get latest m
+                await self.rdm()  # get latest m
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            if self.readlm == "/start":
+            if self.rdlm == "/start":
                 await self.restart()  # check for restart command
             if not self.sm:
                 if self.lang == "en":
                     self.m1 = "Do you want a linear algebra operations: "
-                    self.m2 = "matrix-matrix or vector-matrix multiplication; "
+                    self.m2 = "matrix, vector-matrix multiplication; "
                     self.m3 = "arithmetics operations: multiplication, "
-                    self.m4 = "division, squaring, taking square root? "
+                    self.m4 = "division, squaring, taking square root?"
                 elif self.lang == "ru":
                     self.m1 = "Вы хотите операции линейной алгебры: "
-                    self.m2 = "матрично-матричное или векторно-матричное умножение; "
-                    self.m3 = "арифметические операциии: умножение, "
-                    self.m4 = "деление, возведение в квадрат, взятие квадратного корня? "
-                self.m5 = "(/mmul, /vmul, /mul, /div, /sqr, /root):"
+                    self.m2 = "матричное, векторно-матричное умножение; "
+                    self.m3 = "арифметические операциии: умножение, деление, "
+                    self.m4 = "возведение в квадрат, взятие квадратного корня?"
+                self.m5 = " (/mmul, /vmul, /mul, /div, /sqr, /root)"
                 self.m = self.m1 + self.m2 + self.m3 + self.m4 + self.m5
                 try:
                     await self.sndm(self.m)
@@ -916,7 +906,7 @@ cdef class Bot():
                     continue
                 self.sm = True  # change state; not to resend message
             """compare latest message with offered commands"""
-            if self.readlm == "/mul":
+            if self.rdlm == "/mul":
                 try:
                     if self.lang == "en":
                         await self.sndm("Multiplication is chosen")
@@ -927,7 +917,7 @@ cdef class Bot():
                     continue
                 self.chosen = "mul"  # send state info and update choice var
                 break
-            elif self.readlm == "/div":
+            elif self.rdlm == "/div":
                 try:
                     if self.lang == "en":
                         await self.sndm("Division is chosen")
@@ -938,7 +928,7 @@ cdef class Bot():
                     continue
                 self.chosen = "div"  # send state info and update choice var
                 break
-            elif self.readlm == "/sqr":
+            elif self.rdlm == "/sqr":
                 try:
                     if self.lang == "en":
                         await self.sndm("Square taking is chosen")
@@ -949,7 +939,7 @@ cdef class Bot():
                     continue
                 self.chosen = "sqr"  # send state info and update choice var
                 break
-            elif self.readlm == "/root":
+            elif self.rdlm == "/root":
                 try:
                     if self.lang == "en":
                         await self.sndm("Square root taking is chosen")
@@ -960,51 +950,53 @@ cdef class Bot():
                     continue
                 self.chosen = "root"  # send state info and update choice var
                 break
-            elif self.readlm == "/vmul":
+            elif self.rdlm == "/vmul":
                 try:
                     if self.lang == "en":
-                        await self.sndm("Vector-matrix multiplication is chosen")
+                        self.m = "Vector-matrix multiplication is chosen"
+                        await self.sndm(self.m)
                     elif self.lang == "ru":
-                        await self.sndm("Выбрано векторно-матричное умножение")
+                        self.m = "Выбрано векторно-матричное умножение"
+                        await self.sndm(self.m)
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.chosen = "vmul"  # send state info and update choice var
                 break
-            elif self.readlm == "/mmul":
+            elif self.rdlm == "/mmul":
                 try:
                     if self.lang == "en":
-                        await self.sndm("Matrix-matrix multiplication is chosen")
+                        await self.sndm("Matrix multiplication is chosen")
                     elif self.lang == "ru":
-                        await self.sndm("Выбрано матрично-матричное умножение")
+                        await self.sndm("Выбрано матричное умножение")
                 except ConnectionError:
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 self.chosen = "mmul"  # send state info and update choice var
                 break
         """record previous m and go to the next method"""
-        self.prevm = self.readlm
+        self.prevm = self.rdlm
         await self.diff()
 
-    async def diff(self):
+    async def diff(object self):
         """Difficulty Speed"""
         while True:
             try:
-                await self.readm()  # read latest message
+                await self.rdm()  # read latest message
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            if self.readlm == "/start":
+            if self.rdlm == "/start":
                 await self.restart()  # check for restart command
             if not self.tm:
                 if self.lang == "en":
-                    self.m1 = "How many iterations do you want before increasing "
-                    self.m2 = "difficulty? (/s1, /s3, /s5, /s10, /s15, "
-                    self.m3 = "/s25, /s[number]):"
+                    self.m1 = "How many iterations do you want before "
+                    self.m2 = "increasing difficulty? (/s1, /s3, /s5, "
+                    self.m3 = "/s10, /s15, /s25, /s[number])"
                 elif self.lang == "ru":
-                    self.m1 = "Как много итераций прежде чем увеличить сложность? "
-                    self.m2 = "(/s1, /s3, /s5, /s10, /s15, "
-                    self.m3 = "/s25, /s[число]):"
+                    self.m1 = "Как много итераций прежде чем "
+                    self.m2 = "увеличить сложность? (/s1, /s3, /s5, "
+                    self.m3 = "/s10, /s15, /s25, /s[число])"
                 self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
@@ -1013,10 +1005,10 @@ cdef class Bot():
                     continue
                 self.tm = True  # change state; not to resend message
             try:
-                self.rf = re.findall(r"^\/s([0-9]{1,6})", self.readlm)
-                self.s = int(self.rf[0])  # num is extracted here
+                self.r = re.findall(r"^\/s([0-9]{1,6})", self.rdlm)
+                self.s = int(self.r[0])  # num is extracted here
             except IndexError:
-                if self.readlm != self.prevm:
+                if self.rdlm != self.prevm:
                     await self.error()
                     await self.restart()
                 continue
@@ -1032,20 +1024,20 @@ cdef class Bot():
                     await asyncio.sleep(self.TIMEOUT)
                     continue
                 break
-        self.prevm = self.readlm
+        self.prevm = self.rdlm
         await self.chmod()
 
-    async def chmod(self):
+    async def chmod(object self):
         """Diff Init parameters"""
         while True:
             try:
-                await self.readm()  # read latest message
+                await self.rdm()  # read latest message
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            if self.readlm == "/start":
+            if self.rdlm == "/start":
                 await self.restart()  # check for restart command
-            elif self.readlm == "/0":  # check for continue command
+            elif self.rdlm == "/0":  # check for continue command
                 try:
                     if self.lang == "en":
                         await self.sndm("No changes to init mode were made!")
@@ -1058,13 +1050,13 @@ cdef class Bot():
                 break
             if not self.fm:
                 if self.lang == "en":
-                    self.m1 = "Do you want to change initial difficulty? Set "
-                    self.m2 = "it right to second or further mode (/d2, /d3, "
-                    self.m3 = "/d4, /d5, /d[number]), /0 - if don't set new"
+                    self.m1 = "Do you want to change initial difficulty? "
+                    self.m2 = "Set it right further mode (/d2, /d3, /d4, "
+                    self.m3 = "/d5, /d[number]), /0 - if don't want to set new"
                 elif self.lang == "ru":
-                    self.m1 = "Вы хотите изменить начальную сложность? Ставьте "
-                    self.m2 = "сразу ко второму или дальнейшему моду (/d2, /d3, "
-                    self.m3 = "/d4, /d5 /d[число]), /0 - если не хотите ставить"
+                    self.m1 = "Вы хотите сменить стартовую сложность? Ставьте "
+                    self.m2 = "сразу к дальнейшему моду (/d2, /d3, /d4, /d5, "
+                    self.m3 = "/d[число]), /0 - если не хотите ставить новую"
                 self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
@@ -1073,12 +1065,12 @@ cdef class Bot():
                     continue
                 self.fm = True
             try:  # to extract number from latest message
-                if self.readlm == self.prevm:
+                if self.rdlm == self.prevm:
                     raise IndexError("Got no new messages!")
-                self.rf = re.findall(r"([0-9]{1,6})", self.readlm)
-                self.d = int(self.rf[0])
+                self.r = re.findall(r"([0-9]{1,6})", self.rdlm)
+                self.d = int(self.r[0])
             except IndexError:
-                if self.readlm != self.prevm and self.readlm != "/0":
+                if self.rdlm != self.prevm and self.rdlm != "/0":
                     await self.error()
                     await self.restart()
                 continue
@@ -1092,21 +1084,21 @@ cdef class Bot():
                 await asyncio.sleep(self.TIMEOUT)
                 continue
             break
-        self.prevm = self.readlm
+        self.prevm = self.rdlm
         if self.chosen == "vmul" or self.chosen == "mmul":
             await self.msize()  # for matrix operations we need their size
         else:
             await self.count()  # for basic operation we start counting now
 
-    async def msize(self):
+    async def msize(object self):
         """Matrix Size"""
         while True:
             try:
-                await self.readm()
+                await self.rdm()
             except ConnectionError:
                 await asyncio.sleep(self.TIMEOUT)
                 continue
-            if self.readlm == "/start":
+            if self.rdlm == "/start":
                 self.restart()  # check for restart command
             if not self.om:
                 if self.lang == "en":
@@ -1124,10 +1116,10 @@ cdef class Bot():
                     continue
                 self.om = True
             try:  # to extract number from latest message
-                if self.readlm == self.prevm:
+                if self.rdlm == self.prevm:
                     raise IndexError("Got no new messages!")
-                self.rf = re.findall(r"^\/m([2-4])", self.readlm)
-                self.ms = int(self.rf[0])
+                self.r = re.findall(r"^\/m([2-4])", self.rdlm)
+                self.ms = int(self.r[0])
                 try:
                     if self.lang == "en":
                         if self.ms == 4:
@@ -1144,24 +1136,24 @@ cdef class Bot():
                     await self.error()
                     await self.restart()
             except IndexError:
-                if self.readlm != self.prevm and self.readlm != "/0":
+                if self.rdlm != self.prevm and self.rdlm != "/0":
                     await self.error()
                     await self.restart()
                 continue
             break
         await self.count()  # start counting now
 
-    async def count(self):
+    async def count(object self):
         """Counting endless loop"""
         if self.diffch:
             self.st = (self.s * self.d) - (self.s - 1)
         else:
             self.st = 1
-        for i in itertools.count(start=self.st, step=1):  # specially defined loop
+        for i in itertools.count(start=self.st, step=1):  # special loop
             if self.chosen == "mul":  # check for counting mode option
-                if self.fmul:  # define loop's from initial o's vars
+                if self.cmul:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.mnum[0], self.mnum[1]
-                    self.fmul = False
+                    self.cmul = False
                 if self.diffch:
                     self.diffch = False
                     for itr in range(self.s * self.d):
@@ -1185,11 +1177,11 @@ cdef class Bot():
                         self.n1 += 1  # every 2nd pass increase 1st num
                     elif i % self.s == 1 and i != self.st:
                         self.n2 += 1  # every 1st pass increase 2nd num
-                await ml(self.n1, self.n2, self)
+                await ml(self)
             elif self.chosen == "div":  # check for counting mode option
-                if self.fdiv:  # define loop's from initial o's vars
+                if self.cdiv:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.dnum[0], self.dnum[1]
-                    self.fdiv = False
+                    self.cdiv = False
                 if self.diffch:
                     self.diffch = False
                     for itr in range(self.s * self.d):
@@ -1213,11 +1205,11 @@ cdef class Bot():
                         self.n2 += 1  # every 2nd pass increase 2nd num
                     elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1st num
-                await dl(self.n1, self.n2, self)
+                await dl(self)
             elif self.chosen == "sqr":  # check for counting mode option
-                if self.fsqr:  # define loop's from initial o's vars
+                if self.csqr:  # define loop's from initial o's vars
                     self.n1 = self.sqnum
-                    self.fsqr = False
+                    self.csqr = False
                 if self.diffch:
                     self.diffch = False
                     for itr in range(self.s * self.d):
@@ -1233,11 +1225,11 @@ cdef class Bot():
                 else:  # usual approach
                     if i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every pass increase num
-                await sqr(self.n1, self)
+                await sqr(self)
             elif self.chosen == "root":  # check for counting mode option
-                if self.froot:  # define loop's from initial o's vars
+                if self.croot:  # define loop's from initial o's vars
                     self.n1 = self.ronum
-                    self.froot = False
+                    self.croot = False
                 if self.diffch:
                     self.diffch = False
                     for itr in range(self.s * self.d):
@@ -1253,11 +1245,11 @@ cdef class Bot():
                 else:  # usual approach
                     if i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every pass increase num
-                await root(self.n1, self)
+                await root(self)
             elif self.chosen == "vmul":  # check for counting mode option
-                if self.fvmul:  # define loop's from initial o's vars
+                if self.cvmul:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.vmnum[0], self.vmnum[1]
-                    self.fvmul = False  # change state not to reconvert vars
+                    self.cvmul = False  # change state not to reconvert vars
                 if self.diffch:
                     self.diffch = False
                     for itr in range(self.s * self.d):
@@ -1281,11 +1273,11 @@ cdef class Bot():
                         self.n2 += 1  # every 2nd pass increase 1st num
                     elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 2nd num
-                await vml(self.n1, self.n2, self.ms, self)
+                await vml(self)
             elif self.chosen == "mmul":  # check for counting mode option
-                if self.fmmul:  # define loop's from initial o's vars
+                if self.cmmul:  # define loop's from initial o's vars
                     self.n1, self.n2 = self.mmnum[0], self.mmnum[1]
-                    self.fmmul = False  # change state not to reconvert vars
+                    self.cmmul = False  # change state not to reconvert vars
                 if self.diffch:
                     self.diffch = False
                     for itr in range(self.s * self.d):
@@ -1309,7 +1301,7 @@ cdef class Bot():
                         self.n2 += 1  # every 2nd pass increase 1st num
                     elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 2nd num
-                await mml(self.n1, self.n2, self.ms, self)
+                await mml(self)
 
 
 pbot0 = Bot(token, 0)

@@ -1,5 +1,6 @@
 import os
-import urllib.request, urllib.error
+import urllib.request
+import urllib.error
 import itertools
 import json
 
