@@ -1,12 +1,14 @@
 #!/bin/sh
 
+apt install nano vim tmux git gcc psmisc locales-all-y
+
 echo "Cleaning everything up..."
 rm -f *.c *.exe
-echo "Cleaning process is done!"
+echo "Cleaning process is done!\n"
 
-if [ `which python3.8 | grep "not found"` ]; then
-	echo "Python3.8 is not installed, started the process of installation!"
-	apt install zlib1g-dev libbz2-dev libncurses5-dev libgdbm-dev libssl-dev libnss3-dev libreadline-dev libffi-dev tk-dev libsqlite3-dev -y
+if [ ! `which python3.8 | grep "/usr/bin/python3.8"` ]; then
+	echo "Python3.8 is not installed, started the process of installation!\n"
+	apt install zlib1g-dev libbz2-dev liblz-dev libncurses5-dev libgdbm-dev libssl-dev libnss3-dev libreadline-dev libffi-dev tk-dev libsqlite3-dev -y
 	wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
 	tar xvf Python-3.8.2.tar.xz
 	cd Python-3.8.2
@@ -15,15 +17,16 @@ if [ `which python3.8 | grep "not found"` ]; then
 	make install
 	cd ..
 	rm -rf Python-3.8.2*
-	if [ `which python3.8 | /usr/bin/python3.8` ]; then
-		echo "Python installation went successful"
+	if [ `which python3.8 | grep "/usr/bin/python3.8"` ]; then
+		echo "\nPython installation went successful\n"
 		wget https://bootstrap.pypa.io/get-pip.py
 		python3.8 get-pip.py
 		python3.8 -m pip install -r requirements.txt
-		echo "Requirements should be installed successfully!"
+		echo "\nPython installation with requirements went successful!\n"
 	else
-		echo "Python installation went wront..."
+		echo "\nPython installation went wrong...\n"
 		exit
+	fi
 else
 	echo "Python3.8 is already installed! Skipping step of installation!\n"
 fi
