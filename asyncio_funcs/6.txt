@@ -1,0 +1,110 @@
+
+
+pbot300 = Bot(token, 300)
+pbot301 = Bot(token, 301)
+pbot302 = Bot(token, 302)
+pbot303 = Bot(token, 303)
+pbot304 = Bot(token, 304)
+pbot305 = Bot(token, 305)
+pbot306 = Bot(token, 306)
+pbot307 = Bot(token, 307)
+pbot308 = Bot(token, 308)
+pbot309 = Bot(token, 309)
+pbot310 = Bot(token, 310)
+pbot311 = Bot(token, 311)
+pbot312 = Bot(token, 312)
+pbot313 = Bot(token, 313)
+pbot314 = Bot(token, 314)
+pbot315 = Bot(token, 315)
+pbot316 = Bot(token, 316)
+pbot317 = Bot(token, 317)
+pbot318 = Bot(token, 318)
+pbot319 = Bot(token, 319)
+pbot320 = Bot(token, 320)
+pbot321 = Bot(token, 321)
+pbot322 = Bot(token, 322)
+pbot323 = Bot(token, 223)
+pbot324 = Bot(token, 324)
+pbot325 = Bot(token, 325)
+pbot326 = Bot(token, 326)
+pbot327 = Bot(token, 327)
+pbot328 = Bot(token, 328)
+pbot329 = Bot(token, 329)
+pbot330 = Bot(token, 330)
+pbot331 = Bot(token, 331)
+pbot332 = Bot(token, 332)
+pbot333 = Bot(token, 333)
+pbot334 = Bot(token, 334)
+pbot335 = Bot(token, 335)
+pbot336 = Bot(token, 336)
+pbot337 = Bot(token, 337)
+pbot338 = Bot(token, 338)
+pbot339 = Bot(token, 339)
+pbot340 = Bot(token, 330)
+pbot341 = Bot(token, 341)
+pbot342 = Bot(token, 342)
+pbot343 = Bot(token, 343)
+pbot344 = Bot(token, 344)
+pbot345 = Bot(token, 345)
+pbot346 = Bot(token, 346)
+pbot347 = Bot(token, 347)
+pbot348 = Bot(token, 348)
+pbot349 = Bot(token, 349)
+
+
+async def main():
+    await asyncio.gather(
+        pbot300.start(),
+        pbot301.start(),
+        pbot302.start(),
+        pbot303.start(),
+        pbot304.start(),
+        pbot305.start(),
+        pbot306.start(),
+        pbot307.start(),
+        pbot308.start(),
+        pbot309.start(),
+        pbot310.start(),
+        pbot311.start(),
+        pbot312.start(),
+        pbot313.start(),
+        pbot314.start(),
+        pbot315.start(),
+        pbot316.start(),
+        pbot317.start(),
+        pbot318.start(),
+        pbot319.start(),
+        pbot320.start(),
+        pbot321.start(),
+        pbot322.start(),
+        pbot323.start(),
+        pbot324.start(),
+        pbot325.start(),
+        pbot326.start(),
+        pbot327.start(),
+        pbot328.start(),
+        pbot329.start(),
+        pbot330.start(),
+        pbot331.start(),
+        pbot332.start(),
+        pbot333.start(),
+        pbot334.start(),
+        pbot335.start(),
+        pbot336.start(),
+        pbot337.start(),
+        pbot338.start(),
+        pbot339.start(),
+        pbot340.start(),
+        pbot341.start(),
+        pbot342.start(),
+        pbot343.start(),
+        pbot344.start(),
+        pbot345.start(),
+        pbot346.start(),
+        pbot347.start(),
+        pbot348.start(),
+        pbot349.start()
+        )
+
+
+asyncio.run(main())

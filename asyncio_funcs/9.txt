@@ -1,0 +1,110 @@
+
+
+pbot450 = Bot(token, 450)
+pbot451 = Bot(token, 451)
+pbot452 = Bot(token, 452)
+pbot453 = Bot(token, 453)
+pbot454 = Bot(token, 454)
+pbot455 = Bot(token, 455)
+pbot456 = Bot(token, 456)
+pbot457 = Bot(token, 457)
+pbot458 = Bot(token, 458)
+pbot459 = Bot(token, 459)
+pbot460 = Bot(token, 460)
+pbot461 = Bot(token, 461)
+pbot462 = Bot(token, 462)
+pbot463 = Bot(token, 463)
+pbot464 = Bot(token, 464)
+pbot465 = Bot(token, 465)
+pbot466 = Bot(token, 466)
+pbot467 = Bot(token, 467)
+pbot468 = Bot(token, 468)
+pbot469 = Bot(token, 469)
+pbot470 = Bot(token, 470)
+pbot471 = Bot(token, 471)
+pbot472 = Bot(token, 472)
+pbot473 = Bot(token, 473)
+pbot474 = Bot(token, 474)
+pbot475 = Bot(token, 475)
+pbot476 = Bot(token, 476)
+pbot477 = Bot(token, 477)
+pbot478 = Bot(token, 478)
+pbot479 = Bot(token, 479)
+pbot480 = Bot(token, 480)
+pbot481 = Bot(token, 481)
+pbot482 = Bot(token, 482)
+pbot483 = Bot(token, 483)
+pbot484 = Bot(token, 484)
+pbot485 = Bot(token, 485)
+pbot486 = Bot(token, 486)
+pbot487 = Bot(token, 487)
+pbot488 = Bot(token, 488)
+pbot489 = Bot(token, 489)
+pbot490 = Bot(token, 490)
+pbot491 = Bot(token, 491)
+pbot492 = Bot(token, 492)
+pbot493 = Bot(token, 493)
+pbot494 = Bot(token, 494)
+pbot495 = Bot(token, 495)
+pbot496 = Bot(token, 496)
+pbot497 = Bot(token, 497)
+pbot498 = Bot(token, 498)
+pbot499 = Bot(token, 499)
+
+
+async def main():
+    await asyncio.gather(
+        pbot450.start(),
+        pbot451.start(),
+        pbot452.start(),
+        pbot453.start(),
+        pbot454.start(),
+        pbot455.start(),
+        pbot456.start(),
+        pbot457.start(),
+        pbot458.start(),
+        pbot459.start(),
+        pbot460.start(),
+        pbot461.start(),
+        pbot462.start(),
+        pbot463.start(),
+        pbot464.start(),
+        pbot465.start(),
+        pbot466.start(),
+        pbot467.start(),
+        pbot468.start(),
+        pbot469.start(),
+        pbot470.start(),
+        pbot471.start(),
+        pbot472.start(),
+        pbot473.start(),
+        pbot474.start(),
+        pbot475.start(),
+        pbot476.start(),
+        pbot477.start(),
+        pbot478.start(),
+        pbot479.start(),
+        pbot480.start(),
+        pbot481.start(),
+        pbot482.start(),
+        pbot483.start(),
+        pbot484.start(),
+        pbot485.start(),
+        pbot486.start(),
+        pbot487.start(),
+        pbot488.start(),
+        pbot489.start(),
+        pbot490.start(),
+        pbot491.start(),
+        pbot492.start(),
+        pbot493.start(),
+        pbot494.start(),
+        pbot495.start(),
+        pbot496.start(),
+        pbot497.start(),
+        pbot498.start(),
+        pbot499.start()
+        )
+
+
+asyncio.run(main())

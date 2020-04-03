@@ -1,0 +1,110 @@
+
+
+pbot250 = Bot(token, 250)
+pbot251 = Bot(token, 251)
+pbot252 = Bot(token, 252)
+pbot253 = Bot(token, 253)
+pbot254 = Bot(token, 254)
+pbot255 = Bot(token, 255)
+pbot256 = Bot(token, 256)
+pbot257 = Bot(token, 257)
+pbot258 = Bot(token, 258)
+pbot259 = Bot(token, 259)
+pbot260 = Bot(token, 260)
+pbot261 = Bot(token, 261)
+pbot262 = Bot(token, 262)
+pbot263 = Bot(token, 263)
+pbot264 = Bot(token, 264)
+pbot265 = Bot(token, 265)
+pbot266 = Bot(token, 266)
+pbot267 = Bot(token, 267)
+pbot268 = Bot(token, 268)
+pbot269 = Bot(token, 269)
+pbot270 = Bot(token, 270)
+pbot271 = Bot(token, 271)
+pbot272 = Bot(token, 272)
+pbot273 = Bot(token, 273)
+pbot274 = Bot(token, 274)
+pbot275 = Bot(token, 275)
+pbot276 = Bot(token, 276)
+pbot277 = Bot(token, 277)
+pbot278 = Bot(token, 278)
+pbot279 = Bot(token, 279)
+pbot280 = Bot(token, 280)
+pbot281 = Bot(token, 281)
+pbot282 = Bot(token, 282)
+pbot283 = Bot(token, 283)
+pbot284 = Bot(token, 284)
+pbot285 = Bot(token, 285)
+pbot286 = Bot(token, 286)
+pbot287 = Bot(token, 287)
+pbot288 = Bot(token, 288)
+pbot289 = Bot(token, 289)
+pbot290 = Bot(token, 280)
+pbot291 = Bot(token, 291)
+pbot292 = Bot(token, 292)
+pbot293 = Bot(token, 293)
+pbot294 = Bot(token, 294)
+pbot295 = Bot(token, 295)
+pbot296 = Bot(token, 296)
+pbot297 = Bot(token, 297)
+pbot298 = Bot(token, 298)
+pbot299 = Bot(token, 299)
+
+
+async def main():
+    await asyncio.gather(
+        pbot250.start(),
+        pbot251.start(),
+        pbot252.start(),
+        pbot253.start(),
+        pbot254.start(),
+        pbot255.start(),
+        pbot256.start(),
+        pbot257.start(),
+        pbot258.start(),
+        pbot259.start(),
+        pbot260.start(),
+        pbot261.start(),
+        pbot262.start(),
+        pbot263.start(),
+        pbot264.start(),
+        pbot265.start(),
+        pbot266.start(),
+        pbot267.start(),
+        pbot268.start(),
+        pbot269.start(),
+        pbot270.start(),
+        pbot271.start(),
+        pbot272.start(),
+        pbot273.start(),
+        pbot274.start(),
+        pbot275.start(),
+        pbot276.start(),
+        pbot277.start(),
+        pbot278.start(),
+        pbot279.start(),
+        pbot280.start(),
+        pbot281.start(),
+        pbot282.start(),
+        pbot283.start(),
+        pbot284.start(),
+        pbot285.start(),
+        pbot286.start(),
+        pbot287.start(),
+        pbot288.start(),
+        pbot289.start(),
+        pbot290.start(),
+        pbot291.start(),
+        pbot292.start(),
+        pbot293.start(),
+        pbot294.start(),
+        pbot295.start(),
+        pbot296.start(),
+        pbot297.start(),
+        pbot298.start(),
+        pbot299.start()
+        )
+
+
+asyncio.run(main())

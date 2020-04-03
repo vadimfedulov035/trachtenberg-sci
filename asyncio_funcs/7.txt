@@ -1,0 +1,110 @@
+
+
+pbot350 = Bot(token, 350)
+pbot351 = Bot(token, 351)
+pbot352 = Bot(token, 352)
+pbot353 = Bot(token, 353)
+pbot354 = Bot(token, 354)
+pbot355 = Bot(token, 355)
+pbot356 = Bot(token, 356)
+pbot357 = Bot(token, 357)
+pbot358 = Bot(token, 358)
+pbot359 = Bot(token, 359)
+pbot360 = Bot(token, 360)
+pbot361 = Bot(token, 361)
+pbot362 = Bot(token, 362)
+pbot363 = Bot(token, 363)
+pbot364 = Bot(token, 364)
+pbot365 = Bot(token, 365)
+pbot366 = Bot(token, 366)
+pbot367 = Bot(token, 367)
+pbot368 = Bot(token, 368)
+pbot369 = Bot(token, 369)
+pbot370 = Bot(token, 370)
+pbot371 = Bot(token, 371)
+pbot372 = Bot(token, 372)
+pbot373 = Bot(token, 273)
+pbot374 = Bot(token, 374)
+pbot375 = Bot(token, 375)
+pbot376 = Bot(token, 376)
+pbot377 = Bot(token, 377)
+pbot378 = Bot(token, 378)
+pbot379 = Bot(token, 379)
+pbot380 = Bot(token, 380)
+pbot381 = Bot(token, 381)
+pbot382 = Bot(token, 382)
+pbot383 = Bot(token, 383)
+pbot384 = Bot(token, 384)
+pbot385 = Bot(token, 385)
+pbot386 = Bot(token, 386)
+pbot387 = Bot(token, 387)
+pbot388 = Bot(token, 388)
+pbot389 = Bot(token, 389)
+pbot390 = Bot(token, 380)
+pbot391 = Bot(token, 391)
+pbot392 = Bot(token, 392)
+pbot393 = Bot(token, 393)
+pbot394 = Bot(token, 394)
+pbot395 = Bot(token, 395)
+pbot396 = Bot(token, 396)
+pbot397 = Bot(token, 397)
+pbot398 = Bot(token, 398)
+pbot399 = Bot(token, 399)
+
+
+async def main():
+    await asyncio.gather(
+        pbot350.start(),
+        pbot351.start(),
+        pbot352.start(),
+        pbot353.start(),
+        pbot354.start(),
+        pbot355.start(),
+        pbot356.start(),
+        pbot357.start(),
+        pbot358.start(),
+        pbot359.start(),
+        pbot360.start(),
+        pbot361.start(),
+        pbot362.start(),
+        pbot363.start(),
+        pbot364.start(),
+        pbot365.start(),
+        pbot366.start(),
+        pbot367.start(),
+        pbot368.start(),
+        pbot369.start(),
+        pbot370.start(),
+        pbot371.start(),
+        pbot372.start(),
+        pbot373.start(),
+        pbot374.start(),
+        pbot375.start(),
+        pbot376.start(),
+        pbot377.start(),
+        pbot378.start(),
+        pbot379.start(),
+        pbot380.start(),
+        pbot381.start(),
+        pbot382.start(),
+        pbot383.start(),
+        pbot384.start(),
+        pbot385.start(),
+        pbot386.start(),
+        pbot387.start(),
+        pbot388.start(),
+        pbot389.start(),
+        pbot390.start(),
+        pbot391.start(),
+        pbot392.start(),
+        pbot393.start(),
+        pbot394.start(),
+        pbot395.start(),
+        pbot396.start(),
+        pbot397.start(),
+        pbot398.start(),
+        pbot399.start()
+        )
+
+
+asyncio.run(main())
