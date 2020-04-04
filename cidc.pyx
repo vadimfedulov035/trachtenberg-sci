@@ -3,6 +3,7 @@ import urllib.request
 import urllib.error
 import itertools
 import json
+import time
 
 
 """DECLARATION BLOCK"""
@@ -15,8 +16,10 @@ try:
 except FileExistsError:
     pass
 
+
 with open("tok.conf", "r") as f:
     token = f.read().rstrip()
+
 
 while True:
     try:
@@ -45,3 +48,5 @@ while True:
         for cid in cids:
             if cid not in pcids:
                 tl.write(f"{cid}\n")
+    
+    time.sleep(0.25)
