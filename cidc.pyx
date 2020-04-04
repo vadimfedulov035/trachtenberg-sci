@@ -5,20 +5,18 @@ import itertools
 import json
 
 
+"""DECLARATION BLOCK"""
+cdef str token
+cdef str URL = f"https://api.telegram.org/bot{token}/getupdates"
+cdef list cids, pcids
+cids, pcids = [], []
 try:
     os.mknod("cids.log")  # create cids.log file
 except FileExistsError:
     pass
 
-with open("token.conf", "r") as config:
-    token = config.read().rstrip()
-
-
-"""DECLARATION BLOCK"""
-cdef str URL = f"https://api.telegram.org/bot{token}/getupdates"
-cdef list cids, pcids
-cids, pcids = [], []
-
+with open("tok.conf", "r") as f:
+    token = f.read().rstrip()
 
 while True:
     try:

@@ -706,7 +706,7 @@ cdef class Bot():
     cdef public int u, u1, u2, u3, u4, u5, u6, u7, u8, u9
     """define all messages and message related variables"""
     cdef public str m, m1, m2, m3, m4, m5, prevm, rdlm
-    cdef public int sm, tm, fm, om, diffch  # (s)econd(m)essage..(o)ptional(m)
+    cdef public int mc1, mc2, mc3, mc4, mc5, diffch
     """define all mode and mode of count related variables"""
     cdef public list r, mnum, dnum, vmnum, mmnum
     cdef public int sqnum, ronum
@@ -746,10 +746,11 @@ cdef class Bot():
         self.mmnum = [1, 1]
         self.sqnum = 2
         self.ronum = 2
-        self.sm = False
-        self.tm = False
-        self.fm = False
-        self.om = False
+        self.mc1 = False
+        self.mc2 = False
+        self.mc3 = False
+        self.mc4 = False
+        self.mc5 = False
         self.diffch = True
         self.resch = False
         self.cmul = True
@@ -814,55 +815,55 @@ cdef class Bot():
             except ConnectionError:
                 continue
 
-    async def start(object self):
-        while True:
-            try:
-                await self.rdf()  # get CID
-            except IndexError:
-                continue
-            try:
-                await self.rdm()  # get latest message
-            except ConnectionError:
-                continue
-            if self.rdlm == "/start" or self.resch:
-                self.m1 = "Started setting up! "
-                self.m2 = "Type /restart when want to restart! "
-                self.m3 = "Please, choose language! (/en, /ru)"
-                self.m = self.m1 + self.m2 + self.m3
-                try:
-                    await self.sndm(self.m)
-                except ConnectionError:
-                    continue
-                if self.resch:
-                    self.resch = False  # if restarted - change state
-                break
-        await self.lmode()
-
     async def restart(object self):
         self.__init__(token, self.NUMBER)
         self.resch = True
         await self.start()
 
-    async def lmode(object self):
+    async def start(object self):
         while True:
             try:
-                await self.rdm()  # read latest message
-            except ConnectionError:
-                continue
-            if self.rdlm == "/start":
-                await self.restart()  # check for restart command, date
-            """compare latest message with offered commands"""
-            if self.rdlm == "/en":
-                self.lang = "en"
-                self.m = "English is chosen"
-            elif self.rdlm == "/ru":
-                self.lang = "ru"
-                self.m = "Выбран русский"
-            try:
-                await self.sndm(self.m)
+                await self.rdf()  # get CID
                 break
+            except IndexError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
+        while True:
+            try:
+                await self.rdm()  # get latest message
             except ConnectionError:
                 continue
+            if self.rdlm == "/restart":
+                await self.restart()  # check for restart command
+            if not self.mc1:
+                self.mc1 = True
+                if self.rdlm == "/start" or self.resch:
+                    self.m1 = "Started setting up! Type /restart if you want to restart today! "
+                    self.m2 = "Type /start when want to start again next day after 21:00 MSK! "
+                    self.m3 = "Please, choose language! (/en, /ru)"
+                    self.m = self.m1 + self.m2 + self.m3
+                    try:
+                        await self.sndm(self.m)
+                    except ConnectionError:
+                        continue
+                    if self.resch:
+                        self.resch = False  # if restarted - change state
+            if self.rdlm == "/en":
+                self.m = "English is chosen"
+                try:
+                    await self.sndm(self.m)
+                except ConnectionError:
+                    continue
+                self.lang = "en"
+                break
+            elif self.rdlm == "/ru":
+                self.m = "Выбран русский"
+                try:
+                    await self.sndm(self.m)
+                except ConnectionError:
+                    continue
+                self.lang = "ru"
+                break
         await self.cmode()
 
     async def cmode(object self):
@@ -872,85 +873,89 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/start":
+            if self.rdlm == "/restart":
                 await self.restart()  # check for restart command
-            if not self.sm:
+            if not self.mc2:
                 if self.lang == "en":
                     self.m1 = "Do you want a linear algebra operations: "
                     self.m2 = "matrix, vector-matrix multiplication; "
                     self.m3 = "arithmetics operations: multiplication, "
-                    self.m4 = "division, squaring, taking square root?"
+                    self.m4 = "division, squaring, taking square root? "
                 elif self.lang == "ru":
                     self.m1 = "Вы хотите операции линейной алгебры: "
                     self.m2 = "матричное, векторно-матричное умножение; "
                     self.m3 = "арифметические операциии: умножение, деление, "
-                    self.m4 = "возведение в квадрат, взятие квадратного корня?"
-                self.m5 = " (/mmul, /vmul, /mul, /div, /sqr, /root)"
+                    self.m4 = "возведение в квадрат, взятие квадратного корня? "
+                self.m5 = "(/mmul, /vmul, /mul, /div, /sqr, /root)"
                 self.m = self.m1 + self.m2 + self.m3 + self.m4 + self.m5
                 try:
                     await self.sndm(self.m)
                 except ConnectionError:
                     continue
-                self.sm = True  # change state; not to resend message
+                self.mc2 = True  # change state; not to resend message
             """compare latest message with offered commands"""
             if self.rdlm == "/mul":
+                if self.lang == "en":
+                    self.m = "Multiplication is chosen"
+                elif self.lang == "ru":
+                    self.m = "Выбрано умножение"
                 try:
-                    if self.lang == "en":
-                        await self.sndm("Multiplication is chosen")
-                    elif self.lang == "ru":
-                        await self.sndm("Выбрано умножение")
+                    await self.sndm(self.m)
                 except ConnectionError:
                     continue
                 self.mode = "mul"  # send state info and update choice var
                 break
             elif self.rdlm == "/div":
+                if self.lang == "en":
+                    self.m = "Division is chosen!"
+                elif self.lang == "ru":
+                    self.m = "Выбрано деление"
                 try:
-                    if self.lang == "en":
-                        await self.sndm("Division is mode")
-                    elif self.lang == "ru":
-                        await self.sndm("Выбрано деление")
+                    await self.sndm(self.m)
                 except ConnectionError:
                     continue
                 self.mode = "div"  # send state info and update choice var
                 break
             elif self.rdlm == "/sqr":
+                if self.lang == "en":
+                    self.m = "Square taking is chosen"
+                elif self.lang == "ru":
+                    self.m = "Выбрано возведение в квадрат"
                 try:
-                    if self.lang == "en":
-                        await self.sndm("Square taking is chosen")
-                    elif self.lang == "ru":
-                        await self.sndm("Выбрано возведение в квадрат")
+                    await self.sndm(self.m)
                 except ConnectionError:
                     continue
                 self.mode = "sqr"  # send state info and update choice var
                 break
             elif self.rdlm == "/root":
+                if self.lang == "en":
+                    self.m = "Square root taking is chosen"
+                elif self.lang == "ru":
+                    self.m = "Выбрано взятие квадратного корня"
                 try:
-                    if self.lang == "en":
-                        await self.sndm("Square root taking is chosen")
-                    elif self.lang == "ru":
-                        await self.sndm("Выбрано взятие квадратного корня")
+                    await self.sndm(self.m)
                 except ConnectionError:
                     continue
                 self.mode = "root"  # send state info and update choice var
                 break
             elif self.rdlm == "/vmul":
+                if self.lang == "en":
+                    self.m = "Vector-matrix multiplication is chosen"
+                elif self.lang == "ru":
+                    self.m = "Выбрано векторно-матричное умножение"
                 try:
-                    if self.lang == "en":
-                        self.m = "Vector-matrix multiplication is chosen"
-                        await self.sndm(self.m)
-                    elif self.lang == "ru":
-                        self.m = "Выбрано векторно-матричное умножение"
-                        await self.sndm(self.m)
+                    await self.sndm(self.m)
                 except ConnectionError:
                     continue
                 self.mode = "vmul"  # send state info and update choice var
                 break
             elif self.rdlm == "/mmul":
+                if self.lang == "en":
+                    self.m = "Matrix multiplication is chosen"
+                elif self.lang == "ru":
+                    self.m = "Выбрано матричное умножение"
                 try:
-                    if self.lang == "en":
-                        await self.sndm("Matrix multiplication is chosen")
-                    elif self.lang == "ru":
-                        await self.sndm("Выбрано матричное умножение")
+                    await self.sndm(self.m)
                 except ConnectionError:
                     continue
                 self.mode = "mmul"  # send state info and update choice var
@@ -966,9 +971,9 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/start":
+            if self.rdlm == "/restart":
                 await self.restart()  # check for restart command
-            if not self.tm:
+            if not self.mc3:
                 if self.lang == "en":
                     self.m1 = "How many iterations do you want before "
                     self.m2 = "increasing difficulty? (/s1, /s3, /s5, "
@@ -982,7 +987,7 @@ cdef class Bot():
                     await self.sndm(self.m)
                 except ConnectionError:
                     continue
-                self.tm = True  # change state; not to resend message
+                self.mc3 = True  # change state; not to resend message
             try:
                 self.r = re.findall(r"^\/s([0-9]{1,6})", self.rdlm)
                 self.s = int(self.r[0])  # num is extracted here
@@ -1011,7 +1016,7 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/start":
+            if self.rdlm == "/restart":
                 await self.restart()  # check for restart command
             elif self.rdlm == "/0":
                 try:  # check for continue command
@@ -1023,7 +1028,7 @@ cdef class Bot():
                     continue
                 self.diffch = False
                 break
-            if not self.fm:
+            if not self.mc4:
                 if self.lang == "en":
                     self.m1 = "Do you want to change initial difficulty? "
                     self.m2 = "Set it right further mode (/d2, /d3, /d4, "
@@ -1037,7 +1042,7 @@ cdef class Bot():
                     await self.sndm(self.m)
                 except ConnectionError:
                     continue
-                self.fm = True
+                self.mc4 = True
             try:  # try to extract number from latest message
                 if self.rdlm == self.prevm:
                     raise IndexError("Got no new messages!")
@@ -1070,9 +1075,9 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/start":
+            if self.rdlm == "/restart":
                 self.restart()  # check for restart command
-            if not self.om:
+            if not self.mc5:
                 if self.lang == "en":
                     self.m1 = "How big the matrix should be? "
                     self.m2 = "2 or 3 or 2/3 (4)? "
@@ -1085,7 +1090,7 @@ cdef class Bot():
                     await self.sndm(self.m)
                 except ConnectionError:
                     continue
-                self.om = True
+                self.mc5 = True
             try:  # try to extract number from latest message
                 if self.rdlm == self.prevm:
                     raise IndexError("Got no new messages!")
@@ -1115,7 +1120,7 @@ cdef class Bot():
 
     async def count(object self):
         """counting loop"""
-        if self.diffch:  # put bot through default loop  # define starting position
+        if self.diffch:  # define starting position
             self.st = (self.s * self.d) - (self.s - 1)
         else:
             self.st = 1
@@ -1274,111 +1279,3 @@ cdef class Bot():
                 await mml(self)
 
 
-pbot50 = Bot(token, 50)
-pbot51 = Bot(token, 51)
-pbot52 = Bot(token, 52)
-pbot53 = Bot(token, 53)
-pbot54 = Bot(token, 54)
-pbot55 = Bot(token, 55)
-pbot56 = Bot(token, 56)
-pbot57 = Bot(token, 57)
-pbot58 = Bot(token, 58)
-pbot59 = Bot(token, 59)
-pbot60 = Bot(token, 60)
-pbot61 = Bot(token, 61)
-pbot62 = Bot(token, 62)
-pbot63 = Bot(token, 63)
-pbot64 = Bot(token, 64)
-pbot65 = Bot(token, 65)
-pbot66 = Bot(token, 66)
-pbot67 = Bot(token, 67)
-pbot68 = Bot(token, 68)
-pbot69 = Bot(token, 69)
-pbot70 = Bot(token, 70)
-pbot71 = Bot(token, 71)
-pbot72 = Bot(token, 72)
-pbot73 = Bot(token, 73)
-pbot74 = Bot(token, 74)
-pbot75 = Bot(token, 75)
-pbot76 = Bot(token, 76)
-pbot77 = Bot(token, 77)
-pbot78 = Bot(token, 78)
-pbot79 = Bot(token, 79)
-pbot80 = Bot(token, 80)
-pbot81 = Bot(token, 81)
-pbot82 = Bot(token, 82)
-pbot83 = Bot(token, 83)
-pbot84 = Bot(token, 84)
-pbot85 = Bot(token, 85)
-pbot86 = Bot(token, 86)
-pbot87 = Bot(token, 87)
-pbot88 = Bot(token, 88)
-pbot89 = Bot(token, 89)
-pbot90 = Bot(token, 90)
-pbot91 = Bot(token, 91)
-pbot92 = Bot(token, 92)
-pbot93 = Bot(token, 93)
-pbot94 = Bot(token, 94)
-pbot95 = Bot(token, 95)
-pbot96 = Bot(token, 96)
-pbot97 = Bot(token, 97)
-pbot98 = Bot(token, 98)
-pbot99 = Bot(token, 99)
-
-
-async def main():
-    await asyncio.gather(
-        pbot50.start(),
-        pbot51.start(),
-        pbot52.start(),
-        pbot53.start(),
-        pbot54.start(),
-        pbot55.start(),
-        pbot56.start(),
-        pbot57.start(),
-        pbot58.start(),
-        pbot59.start(),
-        pbot60.start(),
-        pbot61.start(),
-        pbot62.start(),
-        pbot63.start(),
-        pbot64.start(),
-        pbot65.start(),
-        pbot66.start(),
-        pbot67.start(),
-        pbot68.start(),
-        pbot69.start(),
-        pbot70.start(),
-        pbot71.start(),
-        pbot72.start(),
-        pbot73.start(),
-        pbot74.start(),
-        pbot75.start(),
-        pbot76.start(),
-        pbot77.start(),
-        pbot78.start(),
-        pbot79.start(),
-        pbot80.start(),
-        pbot81.start(),
-        pbot82.start(),
-        pbot83.start(),
-        pbot84.start(),
-        pbot85.start(),
-        pbot86.start(),
-        pbot87.start(),
-        pbot88.start(),
-        pbot89.start(),
-        pbot90.start(),
-        pbot91.start(),
-        pbot92.start(),
-        pbot93.start(),
-        pbot94.start(),
-        pbot95.start(),
-        pbot96.start(),
-        pbot97.start(),
-        pbot98.start(),
-        pbot99.start()
-        )
-
-
-asyncio.run(main())
