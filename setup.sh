@@ -14,7 +14,7 @@ echo "Cleaning process is done!\n"
 
 if [ ! `which python3.8 | grep "/usr/bin/python3.8"` ]; then
 	echo "Python3.8 is not installed, started the process of installation!\n"
-	apt install zlib1g-dev libbz2-dev liblz-dev libncurses5-dev libgdbm-dev libssl-dev libnss3-dev libreadline-dev libffi-dev tk-dev libsqlite3-dev -y
+	apt install zlib1g-dev libbz2-dev liblzma-dev libncurses5-dev libgdbm-dev libssl-dev libnss3-dev libreadline-dev libffi-dev tk-dev libsqlite3-dev -y
 	wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
 	tar xvf Python-3.8.2.tar.xz
 	cd Python-3.8.2

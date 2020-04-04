@@ -1,5 +1,5 @@
 __pycache__
-token.conf
+tok.conf
 *.c
 *.exe
 *.log

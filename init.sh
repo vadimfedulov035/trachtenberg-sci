@@ -26,7 +26,7 @@ while true; do
 		sleep 5
 		cbot
 		echo "Timebased restart of bot occured"
-	elif [ -z `pgrep cbot` ]; then
+	elif [ `pgrep cbot` ]; then
 		cidc
 		sleep 5
 		cbot
