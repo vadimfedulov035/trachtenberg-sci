@@ -18,4 +18,4 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Make bot more user-friendly and stable
 - [x] Write script for compilation of 10 executables for handling up to 500 conversations
 - [x] Write server-backend for handling execution of bot instances and CID collector
-- [ ] Release 2.5 version
+- [x] Release 2.5 version :tada: :tada: :tada:

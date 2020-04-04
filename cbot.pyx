@@ -8,7 +8,7 @@ import asyncio
 import numpy as np
 
 
-with open("tok.conf", "r") as r:
+with open("tok.conf", "r") as f:
     token = f.read().rstrip()  # read config for token info
 
 
