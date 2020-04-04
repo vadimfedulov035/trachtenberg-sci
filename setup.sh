@@ -1,4 +1,5 @@
 #!/bin/sh
+# apt install nano vim tmux git gcc psmisc locales-all -y
 trap 'exfunc' 2
 
 exfunc (){
@@ -6,7 +7,11 @@ rm -f cbot0.pyx cbot1.pyx cbot2.pyx cbot3.pyx cbot4.pyx cbot5.pyx cbot6.pyx cbot
 exit 0
 }
 
-# apt install nano vim tmux git gcc psmisc locales-all -y
+req (){
+wget https://bootstrap.pypa.io/get-pip.py
+python3.8 get-pip.py
+python3.8 -m pip install -r requirements.txt
+}
 
 echo "\nCleaning everything up..."
 rm -f cbot0.pyx cbot1.pyx cbot2.pyx cbot3.pyx cbot4.pyx cbot5.pyx cbot6.pyx cbot7.pyx cbot8.pyx cbot9.pyx *.c *.exe
@@ -23,17 +28,15 @@ if [ ! `which python3.8 | grep "/usr/bin/python3.8"` ]; then
 	make install
 	cd ..
 	rm -rf Python-3.8.2*
+	echo "\nPython installation went successful!\n"
 	if [ `which python3.8 | grep "/usr/bin/python3.8"` ]; then
-		wget https://bootstrap.pypa.io/get-pip.py
-		python3.8 get-pip.py
-		python3.8 -m pip install -r requirements.txt
-		echo "\nPython installation with requirements went successful!\n"
-	else
-		echo "\nPython installation went wrong...\n"
-		exit
+		req
+		echo "\nPython installation with dependencies went successful!\n"
 	fi
 else
-	echo "Python3.8 is already installed! Skipping step of installation!\n"
+	echo "Python3.8 is already installed! Skipping step of installation! Checking dependencies...\n"
+	req
+	echo "\nPython installation with dependencies went successful!\n"
 fi
 
 echo "Started concatenation and cythonization of code..."

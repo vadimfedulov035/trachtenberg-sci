@@ -163,7 +163,7 @@ async def dl(object o):
 
 
 async def sqr(object o):
-"""Arithmetics operation: Squaring"""
+    """Arithmetics operation: Squaring"""
     cdef int x1, y1, a, c, u
     x1, y1 = 1, 1
     for i in range(o.n1 - 1):
