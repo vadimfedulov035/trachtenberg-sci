@@ -3,7 +3,7 @@
 trap 'exfunc' 2
 
 exfunc (){
-rm -f cbot0.pyx cbot1.pyx cbot2.pyx cbot3.pyx cbot4.pyx cbot5.pyx cbot6.pyx cbot7.pyx cbot8.pyx cbot9.pyx *.py *.c *.exe
+rm -rf *.py *.c *.exe
 exit 0
 }
 
@@ -39,74 +39,14 @@ else
 	echo "\nPython installation with dependencies went successful!\n"
 fi
 
-echo "Started concatenation and cythonization of code..."
-cat cbot.pyx asyncio_funcs/0.txt > cbot0.pyx
-cat cbot.pyx asyncio_funcs/1.txt > cbot1.pyx
-cat cbot.pyx asyncio_funcs/2.txt > cbot2.pyx
-cat cbot.pyx asyncio_funcs/3.txt > cbot3.pyx
-cat cbot.pyx asyncio_funcs/4.txt > cbot4.pyx
-cat cbot.pyx asyncio_funcs/5.txt > cbot5.pyx
-cat cbot.pyx asyncio_funcs/6.txt > cbot6.pyx
-cat cbot.pyx asyncio_funcs/7.txt > cbot7.pyx
-cat cbot.pyx asyncio_funcs/8.txt > cbot8.pyx
-cat cbot.pyx asyncio_funcs/9.txt > cbot9.pyx
-python3.8 -m cython -3 --embed cidc.pyx
-python3.8 -m cython -3 --embed cbot0.pyx
-python3.8 -m cython -3 --embed cbot1.pyx
-python3.8 -m cython -3 --embed cbot2.pyx
-python3.8 -m cython -3 --embed cbot3.pyx
-python3.8 -m cython -3 --embed cbot4.pyx
-python3.8 -m cython -3 --embed cbot5.pyx
-python3.8 -m cython -3 --embed cbot6.pyx
-python3.8 -m cython -3 --embed cbot7.pyx
-python3.8 -m cython -3 --embed cbot8.pyx
-python3.8 -m cython -3 --embed cbot9.pyx
-echo "Concatenation and cythonization is over, C files are ready for compilation!\n"
+echo "Started cythonization of code..."
+python3.8 -m cython -3 --embed cbot.pyx
+echo "Cythonization is over, C files are ready for compilation!\n"
 
-echo "Compiling CID collector..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cidc.c -o cidc.exe
-echo "Compilation of CID collector is done!\n"
-
-echo "Compiling 1st instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot0.c -o cbot0.exe
-echo "Compilation of 1st instanse of bot is done!\n"
-
-echo "Compiling 2nd instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot1.c -o cbot1.exe
-echo "Compilation of 2nd instanse of bot is done!\n"
-
-echo "Compiling 3rd instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot2.c -o cbot2.exe
-echo "Compilation of 3rd instanse of bot is done!\n"
-
-echo "Compiling 4th instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot3.c -o cbot3.exe
-echo "Compilation of 4th instanse of bot is done!\n"
-
-echo "Compiling 5th instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot4.c -o cbot4.exe
-echo "Compilation of 5th instanse of bot is done!\n"
-
-echo "Compiling 6th instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot5.c -o cbot5.exe
-echo "Compilation of 6th instanse of bot is done!\n"
-
-echo "Compiling 7th instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot6.c -o cbot6.exe
-echo "Compilation of 7th instanse of bot is done!\n"
-
-echo "Compiling 8th instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot7.c -o cbot7.exe
-echo "Compilation of 8th instanse of bot is done!\n"
-
-echo "Compiling 9th instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot8.c -o cbot8.exe
-echo "Compilation of 9th instanse of bot is done!\n"
-
-echo "Compiling 10th instance of bot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot9.c -o cbot9.exe
-echo "Compilation of 10th instanse of bot is done!\n"
+echo "Compiling cbot..."
+gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot.c -o cbot.exe
+echo "Compilation of cbot is done!\n"
 
 echo "Cleaning everything up..."
-rm -f cbot0.pyx cbot1.pyx cbot2.pyx cbot3.pyx cbot4.pyx cbot5.pyx cbot6.pyx cbot7.pyx cbot8.pyx cbot9.pyx *.py *.c
+rm -rf *.py *.c
 echo "Cleaning process is done!\n"

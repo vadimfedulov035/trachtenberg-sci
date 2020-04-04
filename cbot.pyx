@@ -47,7 +47,7 @@ async def ml(object o):
             await o.rdm()
         except ConnectionError:
             continue
-        if o.rdlm == "/restart":  # check for restart command
+        if o.rdlm == "/start":  # check for restart command
             await o.restart()
         elif o.rdlm == o.prevm:  # check for novelty
             continue
@@ -120,7 +120,7 @@ async def dl(object o):
             await o.rdm()
         except ConnectionError:
             continue
-        if o.rdlm == "/restart":  # check for restart command
+        if o.rdlm == "/start":  # check for restart command
             await o.restart()
         elif o.rdlm == o.prevm:  # check for novelty
             continue
@@ -189,7 +189,7 @@ async def sqr(object o):
             await o.rdm()
         except ConnectionError:
             continue
-        if o.rdlm == "/restart":  # check for restart command
+        if o.rdlm == "/start":  # check for restart command
             await o.restart()
         elif o.rdlm == o.prevm:  # check for novelty
             continue
@@ -256,7 +256,7 @@ async def root(object o):
             await o.rdm()
         except ConnectionError:
             continue
-        if o.rdlm == "/restart":  # check for restart m
+        if o.rdlm == "/start":  # check for restart m
             await o.restart()
         elif o.rdlm == o.prevm:  # check for novelty
             continue
@@ -390,7 +390,7 @@ async def vml(object o):
                 await o.rdm()
             except ConnectionError:
                 continue
-            if o.rdlm == "/restart":  # check for restart m
+            if o.rdlm == "/start":  # check for restart m
                 await o.restart()
             elif o.rdlm == o.prevm:  # check for novelty
                 continue
@@ -431,7 +431,7 @@ async def vml(object o):
                 await o.rdm()
             except ConnectionError:
                 continue
-            if o.rdlm == "/restart":  # check for restart m
+            if o.rdlm == "/start":  # check for restart m
                 await o.restart()
             elif o.rdlm == o.prevm:  # check for novelty
                 continue
@@ -584,7 +584,7 @@ async def mml(object o):
                 await o.rdm()
             except ConnectionError:
                 continue
-            if o.rdlm == "/restart":  # check for restart m
+            if o.rdlm == "/start":  # check for restart m
                 await o.restart()
             elif o.rdlm == o.prevm:  # check for novelty
                 continue
@@ -629,7 +629,7 @@ async def mml(object o):
                 await o.rdm()
             except ConnectionError:
                 continue
-            if o.rdlm == "/restart":  # check for restart m
+            if o.rdlm == "/start":  # check for restart m
                 await o.restart()
             elif o.rdlm == o.prevm:  # check for novelty
                 continue
@@ -681,6 +681,7 @@ cdef class Bot():
     cdef public str TOKEN
     cdef public int NUMBER
     cdef public str CID
+    cdef public list ucids
     cdef public double TIMEOUT
     """define message urls and message variables"""
     cdef public str URL, URLR, ERROR_EN, ERROR_RU, MISTYPE_EN, MISTYPE_RU
@@ -689,7 +690,7 @@ cdef class Bot():
     cdef public int u, u1, u2, u3, u4, u5, u6, u7, u8, u9
     """define all messages and message related variables"""
     cdef public str m, m1, m2, m3, m4, m5, prevm, rdlm
-    cdef public int mc1, mc2, mc3, mc4, mc5, diffch
+    cdef public int mc2, mc3, mc4, mc5, diffch
     """define all mode and mode of count related variables"""
     cdef public list r, mnum, dnum, vmnum, mmnum
     cdef public int sqnum, ronum
@@ -697,7 +698,7 @@ cdef class Bot():
     """define restart variable and convertion ones for different modes"""
     cdef public int resch, cmul, cdiv, csqr, croot, cvmul, cmmul
     """define all time related variables"""
-    cdef public int date, ldate
+    cdef public int date, ldate, pdate
     """define all choice related variables"""
     cdef public str lang, mode
     cdef public int s, d, ms
@@ -706,7 +707,7 @@ cdef class Bot():
         """static variables are defined here for correct start up"""
         self.TOKEN = tok  # try token for connection to API
         self.NUMBER = num  # num serves as enumerator of cid later
-        self.TIMEOUT = 0.0001  # serves as placeholder for switching
+        self.TIMEOUT = 0.001  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
         self.ERROR_EN = "Sorry, I don't understand you, I will restart dialog!"
@@ -729,7 +730,6 @@ cdef class Bot():
         self.mmnum = [1, 1]
         self.sqnum = 2
         self.ronum = 2
-        self.mc1 = False
         self.mc2 = False
         self.mc3 = False
         self.mc4 = False
@@ -745,11 +745,33 @@ cdef class Bot():
         self.s = 0
         self.d = 0
 
-    async def rdf(object self):
-        """read cids from log file for finding right CID"""
-        with open("cids.log", "r") as f:
-            cids = f.read().rstrip().split("\n")
-            self.CID = cids[self.NUMBER]
+    async def rdc(self):
+        while True:
+            """first request for getting chat ids (cids) is done here"""
+            try:
+                msgreq = urllib.request.urlopen(self.URLR)
+            except (urllib.error.URLError, urllib.error.HTTPError):
+                continue
+            rj = msgreq.read()
+            try:
+                js = json.loads(rj.decode("utf-8"))
+            except json.decoder.JSONDecodeError:
+                continue
+            self.ucids = []
+            """parsing loop through all cids"""
+            for n in itertools.count():
+                try:
+                    cid = js["result"][n]["message"]["chat"]["id"]
+                    if cid not in self.ucids:
+                        self.ucids.append(cid)
+                except IndexError:
+                    break
+            try:
+                self.CID = str(self.ucids[self.NUMBER])  # we pick one cid num-based
+                break
+            except IndexError:
+                await asyncio.sleep(self.TIMEOUT)
+                continue
 
     async def rdm(object self):
         """new reqest to get fresh json data"""
@@ -804,33 +826,25 @@ cdef class Bot():
         await self.start()
 
     async def start(object self):
-        while True:
-            try:
-                await self.rdf()  # get CID
-                break
-            except IndexError:
-                await asyncio.sleep(self.TIMEOUT)
-                continue
+        await self.rdc()  # get CID
         while True:
             try:
                 await self.rdm()  # get latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/restart":
-                await self.restart()  # check for restart command
-            if not self.mc1:
-                self.mc1 = True
-                if self.rdlm == "/start" or self.resch:
-                    self.m1 = "Started setting up! Type /restart if you want to restart today! "
-                    self.m2 = "Type /start when want to start again next day after 21:00 MSK! "
-                    self.m3 = "Please, choose language! (/en, /ru)"
-                    self.m = self.m1 + self.m2 + self.m3
-                    try:
-                        await self.sndm(self.m)
-                    except ConnectionError:
-                        continue
-                    if self.resch:
-                        self.resch = False  # if restarted - change state
+            if self.rdlm == "/start" and self.pdate != self.ldate or self.resch:
+                self.pdate = self.ldate
+                self.m1 = "Started setting up! Type /start at any moment if "
+                self.m2 = "you want to restart! Bot restarts everyday at "
+                self.m3 = "21:00 MSK, be careful not to lose calculations! "
+                self.m4 = "Please, choose language! (/en, /ru)"
+                self.m = self.m1 + self.m2 + self.m3 + self.m4
+                try:
+                    await self.sndm(self.m)
+                except ConnectionError:
+                    continue
+                if self.resch:
+                    self.resch = False  # if restarted - change state
             if self.rdlm == "/en":
                 self.m = "English is chosen"
                 try:
@@ -856,7 +870,7 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/restart":
+            if self.rdlm == "/start":
                 await self.restart()  # check for restart command
             if not self.mc2:
                 if self.lang == "en":
@@ -954,7 +968,7 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/restart":
+            if self.rdlm == "/start":
                 await self.restart()  # check for restart command
             if not self.mc3:
                 if self.lang == "en":
@@ -999,7 +1013,7 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/restart":
+            if self.rdlm == "/start":
                 await self.restart()  # check for restart command
             elif self.rdlm == "/0":
                 try:  # check for continue command
@@ -1058,7 +1072,7 @@ cdef class Bot():
                 await self.rdm()  # read latest message
             except ConnectionError:
                 continue
-            if self.rdlm == "/restart":
+            if self.rdlm == "/start":
                 self.restart()  # check for restart command
             if not self.mc5:
                 if self.lang == "en":
@@ -1260,3 +1274,213 @@ cdef class Bot():
                     elif i % self.s == 1 and i != self.st:
                         self.n1 += 1  # every 1st pass increase 1nd num
                 await mml(self)
+
+
+pbot0 = Bot(token, 0)
+pbot1 = Bot(token, 1)
+pbot2 = Bot(token, 2)
+pbot3 = Bot(token, 3)
+pbot4 = Bot(token, 4)
+pbot5 = Bot(token, 5)
+pbot6 = Bot(token, 6)
+pbot7 = Bot(token, 7)
+pbot8 = Bot(token, 8)
+pbot9 = Bot(token, 9)
+pbot10 = Bot(token, 10)
+pbot11 = Bot(token, 11)
+pbot12 = Bot(token, 12)
+pbot13 = Bot(token, 13)
+pbot14 = Bot(token, 14)
+pbot15 = Bot(token, 15)
+pbot16 = Bot(token, 16)
+pbot17 = Bot(token, 17)
+pbot18 = Bot(token, 18)
+pbot19 = Bot(token, 19)
+pbot20 = Bot(token, 20)
+pbot21 = Bot(token, 21)
+pbot22 = Bot(token, 22)
+pbot23 = Bot(token, 23)
+pbot24 = Bot(token, 24)
+pbot25 = Bot(token, 25)
+pbot26 = Bot(token, 26)
+pbot27 = Bot(token, 27)
+pbot28 = Bot(token, 28)
+pbot29 = Bot(token, 29)
+pbot30 = Bot(token, 30)
+pbot31 = Bot(token, 31)
+pbot32 = Bot(token, 32)
+pbot33 = Bot(token, 33)
+pbot34 = Bot(token, 34)
+pbot35 = Bot(token, 35)
+pbot36 = Bot(token, 36)
+pbot37 = Bot(token, 37)
+pbot38 = Bot(token, 38)
+pbot39 = Bot(token, 39)
+pbot40 = Bot(token, 40)
+pbot41 = Bot(token, 41)
+pbot42 = Bot(token, 42)
+pbot43 = Bot(token, 43)
+pbot44 = Bot(token, 44)
+pbot45 = Bot(token, 45)
+pbot46 = Bot(token, 46)
+pbot47 = Bot(token, 47)
+pbot48 = Bot(token, 48)
+pbot49 = Bot(token, 49)
+pbot50 = Bot(token, 50)
+pbot51 = Bot(token, 51)
+pbot52 = Bot(token, 52)
+pbot53 = Bot(token, 53)
+pbot54 = Bot(token, 54)
+pbot55 = Bot(token, 55)
+pbot56 = Bot(token, 56)
+pbot57 = Bot(token, 57)
+pbot58 = Bot(token, 58)
+pbot59 = Bot(token, 59)
+pbot60 = Bot(token, 60)
+pbot61 = Bot(token, 61)
+pbot62 = Bot(token, 62)
+pbot63 = Bot(token, 63)
+pbot64 = Bot(token, 64)
+pbot65 = Bot(token, 65)
+pbot66 = Bot(token, 66)
+pbot67 = Bot(token, 67)
+pbot68 = Bot(token, 68)
+pbot69 = Bot(token, 69)
+pbot70 = Bot(token, 70)
+pbot71 = Bot(token, 71)
+pbot72 = Bot(token, 72)
+pbot73 = Bot(token, 73)
+pbot74 = Bot(token, 74)
+pbot75 = Bot(token, 75)
+pbot76 = Bot(token, 76)
+pbot77 = Bot(token, 77)
+pbot78 = Bot(token, 78)
+pbot79 = Bot(token, 79)
+pbot80 = Bot(token, 80)
+pbot81 = Bot(token, 81)
+pbot82 = Bot(token, 82)
+pbot83 = Bot(token, 83)
+pbot84 = Bot(token, 84)
+pbot85 = Bot(token, 85)
+pbot86 = Bot(token, 86)
+pbot87 = Bot(token, 87)
+pbot88 = Bot(token, 88)
+pbot89 = Bot(token, 89)
+pbot90 = Bot(token, 90)
+pbot91 = Bot(token, 91)
+pbot92 = Bot(token, 92)
+pbot93 = Bot(token, 93)
+pbot94 = Bot(token, 94)
+pbot95 = Bot(token, 95)
+pbot96 = Bot(token, 96)
+pbot97 = Bot(token, 97)
+pbot98 = Bot(token, 98)
+pbot99 = Bot(token, 99)
+
+
+async def main():
+    await asyncio.gather(
+        pbot0.start(),
+        pbot1.start(),
+        pbot2.start(),
+        pbot3.start(),
+        pbot4.start(),
+        pbot5.start(),
+        pbot6.start(),
+        pbot7.start(),
+        pbot8.start(),
+        pbot9.start(),
+        pbot10.start(),
+        pbot11.start(),
+        pbot12.start(),
+        pbot13.start(),
+        pbot14.start(),
+        pbot15.start(),
+        pbot16.start(),
+        pbot17.start(),
+        pbot18.start(),
+        pbot19.start(),
+        pbot20.start(),
+        pbot21.start(),
+        pbot22.start(),
+        pbot23.start(),
+        pbot24.start(),
+        pbot25.start(),
+        pbot26.start(),
+        pbot27.start(),
+        pbot28.start(),
+        pbot29.start(),
+        pbot30.start(),
+        pbot31.start(),
+        pbot32.start(),
+        pbot33.start(),
+        pbot34.start(),
+        pbot35.start(),
+        pbot36.start(),
+        pbot37.start(),
+        pbot38.start(),
+        pbot39.start(),
+        pbot40.start(),
+        pbot41.start(),
+        pbot42.start(),
+        pbot43.start(),
+        pbot44.start(),
+        pbot45.start(),
+        pbot46.start(),
+        pbot47.start(),
+        pbot48.start(),
+        pbot49.start(),
+        pbot50.start(),
+        pbot51.start(),
+        pbot52.start(),
+        pbot53.start(),
+        pbot54.start(),
+        pbot55.start(),
+        pbot56.start(),
+        pbot57.start(),
+        pbot58.start(),
+        pbot59.start(),
+        pbot60.start(),
+        pbot61.start(),
+        pbot62.start(),
+        pbot63.start(),
+        pbot64.start(),
+        pbot65.start(),
+        pbot66.start(),
+        pbot67.start(),
+        pbot68.start(),
+        pbot69.start(),
+        pbot70.start(),
+        pbot71.start(),
+        pbot72.start(),
+        pbot73.start(),
+        pbot74.start(),
+        pbot75.start(),
+        pbot76.start(),
+        pbot77.start(),
+        pbot78.start(),
+        pbot79.start(),
+        pbot80.start(),
+        pbot81.start(),
+        pbot82.start(),
+        pbot83.start(),
+        pbot84.start(),
+        pbot85.start(),
+        pbot86.start(),
+        pbot87.start(),
+        pbot88.start(),
+        pbot89.start(),
+        pbot90.start(),
+        pbot91.start(),
+        pbot92.start(),
+        pbot93.start(),
+        pbot94.start(),
+        pbot95.start(),
+        pbot96.start(),
+        pbot97.start(),
+        pbot98.start(),
+        pbot99.start()
+        )
+
+
+asyncio.run(main())

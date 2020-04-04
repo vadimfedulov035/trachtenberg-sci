@@ -16,8 +16,5 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Port code from CPython to Cython and learn how to compile executable (-02)
 - [x] Cythonize code as much as possible for speeding up and decreasing load on CPU
 - [x] Make bot more user-friendly and stable
-- [x] Write script for compilation of 10 executables for handling up to 500 conversations
-- [x] Write server-backend for handling execution of bot instances and CID collector
-- [x] Release 2.5 version :tada: :tada: :tada:
-- [ ] Assure 1 week work without problems
-- [ ] Release 2.6 stable version
+- [x] Write script for compilation of executable for handling up to 100 conversations
+- [x] Release 2.6 version :tada: :tada: :tada:

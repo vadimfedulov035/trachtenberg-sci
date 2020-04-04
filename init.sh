@@ -1,34 +1,19 @@
 #!/bin/sh
 
-cidc(){
-./cidc.exe &
+cbot(){
+./cbot.exe &
 }
 
-cbot(){
-./cbot0.exe &
-./cbot1.exe &
-./cbot2.exe &
-./cbot3.exe &
-./cbot4.exe &
-./cbot5.exe &
-./cbot6.exe &
-./cbot7.exe &
-./cbot8.exe &
-./cbot9.exe &
-}
+while [ `date | cut -d" " -f 5 | cut -d":" -f 3` != 00 ]; do
+	sleep 0.01
+done
 
 while true; do
-	if [ `date | cut -d" " -f 4 | cut -d":" --fields 1,2` = 21:00 ]; then
-		killall cidc.exe
-		killall cbot*.exe
-		rm -f cids.log
-		cidc
-		sleep 5
+	if [ `date | cut -d" " -f 5 | cut -d":" --fields 1,2` = 21:00 ]; then
+		killall cbot.exe
 		cbot
 		echo "Timebased restart of bot occured"
-	elif [ -z `pgrep cbot` ]; then
-		cidc
-		sleep 5
+	elif [ -z `pgrep cbot.exe` ]; then
 		cbot
 		echo "Start of bot occured, whether it was reconnection or first start"
 	fi
