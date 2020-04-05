@@ -20,13 +20,12 @@ rm -rf *.c *.py
 
 echo "\nCleaning everything up..."
 clean
-rm -rf *.exe
 echo "Cleaning process is done!\n"
 
 read -p "Do you want to use pre-built cbot? (choose this if don't have enough power only) (yes/no): " build
 
 if [ ! `which python3.8 | grep "/usr/bin/python3.8"` ]; then
-	echo "Python3.8 is not installed, started the process of installation!\n"
+	echo "\nPython3.8 is not installed, started the process of installation!\n"
 	apt install zlib1g-dev libbz2-dev liblzma-dev libncurses5-dev libgdbm-dev libssl-dev libnss3-dev libreadline-dev libffi-dev tk-dev libsqlite3-dev -y
 	wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
 	tar xvf Python-3.8.2.tar.xz
@@ -56,7 +55,8 @@ if [ "$build" = "no" ]; then
 	gcc -static-libgcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot.c -o cbot.exe
 	echo "Compilation of cbot is done!\n"
 
-	echo "Cleaning everything up..."
-	clean
-	echo "Cleaning process is done!\n"
 fi
+
+echo "Cleaning everything up..."
+clean
+echo "Cleaning process is done!\n"
