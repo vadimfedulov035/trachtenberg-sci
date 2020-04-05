@@ -3,9 +3,23 @@
 
 ![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.jpg)
 
-If you have read the original book you will be able to test your knowledge easily by just chatting with bot in Telegram.
+If you have read the original book you will be able to test your knowledge easily by just chatting with TrachtenbergBot in Telegram.
 
-If you want to, you can explore the source code of TrachtenbergBot in Telegram, it is written on Cython using its own micro-framework for work with Telegram API. It is heavily statically typed for fast work, almost every object statically defined for speed. Main file is init.sh, this is a shell script which starts Cython + GCC compiled executable. To compile the same executable yourself you will need at least 4GB of RAM. If you want to repeat all my steps you just need to start script setup.sh and choose no to use pre-build executable.
+If you want to, you can explore the source code of bot, it is written in Cython using its own micro-framework for work with Telegram REST API. It is heavily statically typed for fast work, almost every object is statically defined for speed.
+
+## Compile bot yourself, if you want to (at least 4GB RAM is required)
+
+Just run these commands. Shell-script setup.sh installs Python3.8.2 and needed shared libraries with psmisc and GNU make cythonizes source code and compiles executable from C file.
+
+`sudo ./setup.sh`
+
+`make clean`
+
+`make`
+
+## Start bot on your own computer or VPS/VDS
+
+To start bot you will need pre-compiled or compiled by yourself executable and token written in tok.conf file. You can get token from BotFather in Telegram. To enable scheduled work of bot with restarts at 21:00 just run `./init.sh`
 
 - [x] Add Arithmetics operations
 - [x] Add Linear Algebra operations
@@ -13,8 +27,9 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 - [x] Optimize code for PEP-8 standards and make readable comments
 - [x] Make bot able to have instant messaging with newcomers
 - [x] Translate to Russian via unicode support
-- [x] Port code from CPython to Cython and learn how to compile executable (-02)
+- [x] Port code from CPython to Cython and learn how to compile executable using GCC and GNU Make 
 - [x] Cythonize code as much as possible for speeding up and decreasing load on CPU
 - [x] Make bot more user-friendly and stable
-- [x] Write script for compilation of executable for handling up to 1000 conversations
-- [ ] Release 3.0 version :tada: :tada: :tada:
+- [x] Write scripts for installing dependencies and scheduled execution of bot handling up to 1000 conversations
+- [x] Write GNU Makefile scenario
+- [x] Release 3.0 version :tada: :tada: :tada:
