@@ -1,5 +1,6 @@
 #!/bin/sh
-# apt install nano vim tmux git gcc psmisc locales-all -y
+
+apt install psmisc -y
 
 clean(){
 rm -rf get-pip.py*
@@ -27,11 +28,13 @@ if [ ! `which python3.8 | grep "/usr/bin/python3.8"` ]; then
 	echo "\nPython installation went successful!\n"
 	if [ `which python3.8 | grep "/usr/bin/python3.8"` ]; then
 		req
+		clean
 		echo "\nPython installation with dependencies went successful!\n"
 	fi
 else
 	echo "\nPython3.8 is already installed! Skipping step of installation! Checking dependencies...\n"
 	req
+	clean
 	echo "\nPython installation with dependencies went successful!\n"
 	clean
 fi
