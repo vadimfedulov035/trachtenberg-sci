@@ -1,4 +1,5 @@
 import re
+import os
 import json
 import itertools
 import urllib.request
@@ -707,7 +708,7 @@ cdef class Bot():
         """static variables are defined here for correct start up"""
         self.TOKEN = tok  # try token for connection to API
         self.NUMBER = num  # num serves as enumerator of cid later
-        self.TIMEOUT = 0.1  # serves as placeholder for switching
+        self.TIMEOUT = 0.001  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
         self.ERROR_EN = "Sorry, I don't understand you, I will restart dialog!"
@@ -717,6 +718,7 @@ cdef class Bot():
         """non-static variables are defined here for further work"""
         self.date = 0  # date set to zero will serve in expression as start var
         self.prevm = "None"  # set to such value because of Cython specifics
+        self.cids = []
         self.c, self.u = 0, 0
         self.c1, self.c2, self.c3 = 0, 0, 0
         self.c4, self.c5, self.c6 = 0, 0, 0
@@ -746,18 +748,29 @@ cdef class Bot():
         self.d = 0
 
 
+    async def rdc(object self):
+        while True:
+            """first request for getting chat ids (cids) is done here"""
+            await asyncio.sleep(self.TIMEOUT)
+            with open("cids.log", "r") as f:
+                self.cids = f.read().rstrip().split("\n")
+            try:
+                self.CID = int(self.cids[self.NUMBER])  # we pick one cid num-based
+                break
+            except IndexError:
+                continue
+
     async def rdm(object self):
         """new reqest to get fresh json data"""
+        await asyncio.sleep(self.TIMEOUT)
         try:
             mreq = urllib.request.urlopen(self.URLR)
         except (urllib.error.URLError, urllib.error.HTTPError):
-            await asyncio.sleep(self.TIMEOUT)
             raise ConnectionError  # define ConnectionError as combination
         rj = mreq.read()
         try:
             js = json.loads(rj.decode("utf-8"))
         except json.decoder.JSONDecodeError:
-            await asyncio.sleep(self.TIMEOUT)
             raise ConnectionError
         """set offset for bulk deletion of old messages"""
         if len(js["result"]) == 100:
@@ -765,7 +778,6 @@ cdef class Bot():
             try:
                 urllib.request.urlopen(f"{self.URLR}?offset={upd_id}")
             except (urllib.error.URLError, urllib.error.HTTPError):
-                await asyncio.sleep(self.TIMEOUT)
                 raise ConnectionError
         """loop through json to find last message by date"""
         for j in js["result"]:
@@ -802,31 +814,7 @@ cdef class Bot():
         await self.start()
 
     async def start(object self):
-        while True:
-            """first request for getting chat ids (cids) is done here"""
-            try:
-                msgreq = urllib.request.urlopen(self.URLR)
-            except (urllib.error.URLError, urllib.error.HTTPError):
-                continue
-            rj = msgreq.read()
-            try:
-                js = json.loads(rj.decode("utf-8"))
-            except json.decoder.JSONDecodeError:
-                continue
-            self.cids = []
-            """parsing loop through all cids"""
-            for n in itertools.count():
-                try:
-                    cid = js["result"][n]["message"]["chat"]["id"]
-                    if cid not in self.cids:
-                        self.cids.append(cid)
-                except IndexError:
-                    break
-            try:
-                self.CID = self.cids[self.NUMBER]  # we pick one cid num-based
-                break
-            except IndexError:
-                continue
+        await self.rdc()
         while True:
             try:
                 await self.rdm()  # get latest message
@@ -1277,211 +1265,3 @@ cdef class Bot():
                 await mml(self)
 
 
-cbot0 = Bot(token, 0)
-cbot1 = Bot(token, 1)
-cbot2 = Bot(token, 2)
-cbot3 = Bot(token, 3)
-cbot4 = Bot(token, 4)
-cbot5 = Bot(token, 5)
-cbot6 = Bot(token, 6)
-cbot7 = Bot(token, 7)
-cbot8 = Bot(token, 8)
-cbot9 = Bot(token, 9)
-cbot10 = Bot(token, 10)
-cbot11 = Bot(token, 11)
-cbot12 = Bot(token, 12)
-cbot13 = Bot(token, 13)
-cbot14 = Bot(token, 14)
-cbot15 = Bot(token, 15)
-cbot16 = Bot(token, 16)
-cbot17 = Bot(token, 17)
-cbot18 = Bot(token, 18)
-cbot19 = Bot(token, 19)
-cbot20 = Bot(token, 20)
-cbot21 = Bot(token, 21)
-cbot22 = Bot(token, 22)
-cbot23 = Bot(token, 23)
-cbot24 = Bot(token, 24)
-cbot25 = Bot(token, 25)
-cbot26 = Bot(token, 26)
-cbot27 = Bot(token, 27)
-cbot28 = Bot(token, 28)
-cbot29 = Bot(token, 29)
-cbot30 = Bot(token, 30)
-cbot31 = Bot(token, 31)
-cbot32 = Bot(token, 32)
-cbot33 = Bot(token, 33)
-cbot34 = Bot(token, 34)
-cbot35 = Bot(token, 35)
-cbot36 = Bot(token, 36)
-cbot37 = Bot(token, 37)
-cbot38 = Bot(token, 38)
-cbot39 = Bot(token, 39)
-cbot40 = Bot(token, 40)
-cbot41 = Bot(token, 41)
-cbot42 = Bot(token, 42)
-cbot43 = Bot(token, 43)
-cbot44 = Bot(token, 44)
-cbot45 = Bot(token, 45)
-cbot46 = Bot(token, 46)
-cbot47 = Bot(token, 47)
-cbot48 = Bot(token, 48)
-cbot49 = Bot(token, 49)
-cbot50 = Bot(token, 50)
-cbot51 = Bot(token, 51)
-cbot52 = Bot(token, 52)
-cbot53 = Bot(token, 53)
-cbot54 = Bot(token, 54)
-cbot55 = Bot(token, 55)
-cbot56 = Bot(token, 56)
-cbot57 = Bot(token, 57)
-cbot58 = Bot(token, 58)
-cbot59 = Bot(token, 59)
-cbot60 = Bot(token, 60)
-cbot61 = Bot(token, 61)
-cbot62 = Bot(token, 62)
-cbot63 = Bot(token, 63)
-cbot64 = Bot(token, 64)
-cbot65 = Bot(token, 65)
-cbot66 = Bot(token, 66)
-cbot67 = Bot(token, 67)
-cbot68 = Bot(token, 68)
-cbot69 = Bot(token, 69)
-cbot70 = Bot(token, 70)
-cbot71 = Bot(token, 71)
-cbot72 = Bot(token, 72)
-cbot73 = Bot(token, 73)
-cbot74 = Bot(token, 74)
-cbot75 = Bot(token, 75)
-cbot76 = Bot(token, 76)
-cbot77 = Bot(token, 77)
-cbot78 = Bot(token, 78)
-cbot79 = Bot(token, 79)
-cbot80 = Bot(token, 80)
-cbot81 = Bot(token, 81)
-cbot82 = Bot(token, 82)
-cbot83 = Bot(token, 83)
-cbot84 = Bot(token, 84)
-cbot85 = Bot(token, 85)
-cbot86 = Bot(token, 86)
-cbot87 = Bot(token, 87)
-cbot88 = Bot(token, 88)
-cbot89 = Bot(token, 89)
-cbot90 = Bot(token, 90)
-cbot91 = Bot(token, 91)
-cbot92 = Bot(token, 92)
-cbot93 = Bot(token, 93)
-cbot94 = Bot(token, 94)
-cbot95 = Bot(token, 95)
-cbot96 = Bot(token, 96)
-cbot97 = Bot(token, 97)
-cbot98 = Bot(token, 98)
-cbot99 = Bot(token, 99)
-
-
-async def main():
-    await asyncio.gather(
-        cbot0.start(),
-        cbot1.start(),
-        cbot2.start(),
-        cbot3.start(),
-        cbot4.start(),
-        cbot5.start(),
-        cbot6.start(),
-        cbot7.start(),
-        cbot8.start(),
-        cbot9.start(),
-        cbot10.start(),
-        cbot11.start(),
-        cbot12.start(),
-        cbot13.start(),
-        cbot14.start(),
-        cbot15.start(),
-        cbot16.start(),
-        cbot17.start(),
-        cbot18.start(),
-        cbot19.start(),
-        cbot20.start(),
-        cbot21.start(),
-        cbot22.start(),
-        cbot23.start(),
-        cbot24.start(),
-        cbot25.start(),
-        cbot26.start(),
-        cbot27.start(),
-        cbot28.start(),
-        cbot29.start(),
-        cbot30.start(),
-        cbot31.start(),
-        cbot32.start(),
-        cbot33.start(),
-        cbot34.start(),
-        cbot35.start(),
-        cbot36.start(),
-        cbot37.start(),
-        cbot38.start(),
-        cbot39.start(),
-        cbot40.start(),
-        cbot41.start(),
-        cbot42.start(),
-        cbot43.start(),
-        cbot44.start(),
-        cbot45.start(),
-        cbot46.start(),
-        cbot47.start(),
-        cbot48.start(),
-        cbot49.start(),
-        cbot50.start(),
-        cbot51.start(),
-        cbot52.start(),
-        cbot53.start(),
-        cbot54.start(),
-        cbot55.start(),
-        cbot56.start(),
-        cbot57.start(),
-        cbot58.start(),
-        cbot59.start(),
-        cbot60.start(),
-        cbot61.start(),
-        cbot62.start(),
-        cbot63.start(),
-        cbot64.start(),
-        cbot65.start(),
-        cbot66.start(),
-        cbot67.start(),
-        cbot68.start(),
-        cbot69.start(),
-        cbot70.start(),
-        cbot71.start(),
-        cbot72.start(),
-        cbot73.start(),
-        cbot74.start(),
-        cbot75.start(),
-        cbot76.start(),
-        cbot77.start(),
-        cbot78.start(),
-        cbot79.start(),
-        cbot80.start(),
-        cbot81.start(),
-        cbot82.start(),
-        cbot83.start(),
-        cbot84.start(),
-        cbot85.start(),
-        cbot86.start(),
-        cbot87.start(),
-        cbot88.start(),
-        cbot89.start(),
-        cbot90.start(),
-        cbot91.start(),
-        cbot92.start(),
-        cbot93.start(),
-        cbot94.start(),
-        cbot95.start(),
-        cbot96.start(),
-        cbot97.start(),
-        cbot98.start(),
-        cbot99.start()
-        )
-
-
-asyncio.run(main())

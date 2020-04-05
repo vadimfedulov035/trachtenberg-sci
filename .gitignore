@@ -1,3 +1,3 @@
-tok.conf
+*.conf
 *.c
-*.p
+*.log
