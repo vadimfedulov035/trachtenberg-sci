@@ -2,20 +2,28 @@
 # apt install nano vim tmux git gcc psmisc locales-all -y
 trap 'exfunc' 2
 
-exfunc (){
+exfunc(){
 rm -rf *.py *.c *.exe
 exit 0
 }
 
-req (){
+req(){
 wget https://bootstrap.pypa.io/get-pip.py
 python3.8 get-pip.py
 python3.8 -m pip install -r requirements.txt
 }
 
+
+clean(){
+rm -rf *.c *.py
+}
+
 echo "\nCleaning everything up..."
-rm -f cbot0.pyx cbot1.pyx cbot2.pyx cbot3.pyx cbot4.pyx cbot5.pyx cbot6.pyx cbot7.pyx cbot8.pyx cbot9.pyx *.c *.exe
+clean
+rm -rf *.exe
 echo "Cleaning process is done!\n"
+
+read -p "Do you want to use pre-built cbot? (choose this if don't have enough power only) (yes/no): " build
 
 if [ ! `which python3.8 | grep "/usr/bin/python3.8"` ]; then
 	echo "Python3.8 is not installed, started the process of installation!\n"
@@ -39,14 +47,16 @@ else
 	echo "\nPython installation with dependencies went successful!\n"
 fi
 
-echo "Started cythonization of code..."
-python3.8 -m cython -3 --embed cbot.pyx
-echo "Cythonization is over, C files are ready for compilation!\n"
+if [ "$build" = "no" ]; then
+	echo "Started cythonization of code..."
+	python3.8 -m cython -3 --embed cbot.pyx
+	echo "Cythonization is over, C files are ready for compilation!\n"
 
-echo "Compiling cbot..."
-gcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot.c -o cbot.exe
-echo "Compilation of cbot is done!\n"
+	echo "Compiling cbot..."
+	gcc -static-libgcc -fPIC -pthread -O2 -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include -L/usr/lib/x86_64-linux-gnu -lpython3.8d cbot.c -o cbot.exe
+	echo "Compilation of cbot is done!\n"
 
-echo "Cleaning everything up..."
-rm -rf *.py *.c
-echo "Cleaning process is done!\n"
+	echo "Cleaning everything up..."
+	clean
+	echo "Cleaning process is done!\n"
+fi

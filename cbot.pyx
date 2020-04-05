@@ -1034,13 +1034,13 @@ cdef class Bot():
                 break
             if not self.mc4:
                 if self.lang == "en":
-                    self.m1 = "Do you want to change initial difficulty? "
-                    self.m2 = "Set it right further mode (/d2, /d3, /d4, "
-                    self.m3 = "/d5, /d[number]), /0 - if don't want to set new"
+                    self.m1 = "What initial difficulty do you want? /0 - is "
+                    self.m2 = "default and /d options are next steps (/0, "
+                    self.m3 = "/d2, /d3, /d4, /d5, /d6, /d7, /d8, /d[number])"
                 elif self.lang == "ru":
-                    self.m1 = "Вы хотите сменить стартовую сложность? Ставьте "
-                    self.m2 = "сразу к дальнейшему моду (/d2, /d3, /d4, /d5, "
-                    self.m3 = "/d[число]), /0 - если не хотите ставить новую"
+                    self.m1 = "Какую стартовую сложность вы хотите? /0 - это "
+                    self.m2 = "обычная и /d опции следующие шаги (/0, "
+                    self.m3 = "/d2, /d3, /d4, /d5, /d6, /d7, /d8, /d[число])"
                 self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
@@ -1088,7 +1088,7 @@ cdef class Bot():
                 elif self.lang == "ru":
                     self.m1 = "Каков должен быть размер матрицы "
                     self.m2 = "2 или 3 или 2/3? "
-                self.m3 = "(/m2, /m3, /m4):"
+                self.m3 = "(/m2, /m3, /m4)"
                 self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)

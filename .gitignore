@@ -1,5 +1,4 @@
 __pycache__
 tok.conf
 *.c
-*.exe
-*.log
+*.p
