@@ -1081,7 +1081,7 @@ cdef class Bot():
             except ConnectionError:
                 continue
             if self.rdlm == "/start":
-                self.restart()  # check for restart command
+                await self.restart()  # check for restart command
             if not self.mc5:
                 if self.lang == "en":
                     self.m1 = "How big the matrix should be?"
@@ -1284,1820 +1284,1820 @@ cdef class Bot():
                 await mml(self)
 
 
-pbot0 = Bot(token, 0)
-pbot1 = Bot(token, 1)
-pbot2 = Bot(token, 2)
-pbot3 = Bot(token, 3)
-pbot4 = Bot(token, 4)
-pbot5 = Bot(token, 5)
-pbot6 = Bot(token, 6)
-pbot7 = Bot(token, 7)
-pbot8 = Bot(token, 8)
-pbot9 = Bot(token, 9)
-pbot10 = Bot(token, 10)
-pbot11 = Bot(token, 11)
-pbot12 = Bot(token, 12)
-pbot13 = Bot(token, 13)
-pbot14 = Bot(token, 14)
-pbot15 = Bot(token, 15)
-pbot16 = Bot(token, 16)
-pbot17 = Bot(token, 17)
-pbot18 = Bot(token, 18)
-pbot19 = Bot(token, 19)
-pbot20 = Bot(token, 20)
-pbot21 = Bot(token, 21)
-pbot22 = Bot(token, 22)
-pbot23 = Bot(token, 23)
-pbot24 = Bot(token, 24)
-pbot25 = Bot(token, 25)
-pbot26 = Bot(token, 26)
-pbot27 = Bot(token, 27)
-pbot28 = Bot(token, 28)
-pbot29 = Bot(token, 29)
-pbot30 = Bot(token, 30)
-pbot31 = Bot(token, 31)
-pbot32 = Bot(token, 32)
-pbot33 = Bot(token, 33)
-pbot34 = Bot(token, 34)
-pbot35 = Bot(token, 35)
-pbot36 = Bot(token, 36)
-pbot37 = Bot(token, 37)
-pbot38 = Bot(token, 38)
-pbot39 = Bot(token, 39)
-pbot40 = Bot(token, 40)
-pbot41 = Bot(token, 41)
-pbot42 = Bot(token, 42)
-pbot43 = Bot(token, 43)
-pbot44 = Bot(token, 44)
-pbot45 = Bot(token, 45)
-pbot46 = Bot(token, 46)
-pbot47 = Bot(token, 47)
-pbot48 = Bot(token, 48)
-pbot49 = Bot(token, 49)
-pbot50 = Bot(token, 50)
-pbot51 = Bot(token, 51)
-pbot52 = Bot(token, 52)
-pbot53 = Bot(token, 53)
-pbot54 = Bot(token, 54)
-pbot55 = Bot(token, 55)
-pbot56 = Bot(token, 56)
-pbot57 = Bot(token, 57)
-pbot58 = Bot(token, 58)
-pbot59 = Bot(token, 59)
-pbot60 = Bot(token, 60)
-pbot61 = Bot(token, 61)
-pbot62 = Bot(token, 62)
-pbot63 = Bot(token, 63)
-pbot64 = Bot(token, 64)
-pbot65 = Bot(token, 65)
-pbot66 = Bot(token, 66)
-pbot67 = Bot(token, 67)
-pbot68 = Bot(token, 68)
-pbot69 = Bot(token, 69)
-pbot70 = Bot(token, 70)
-pbot71 = Bot(token, 71)
-pbot72 = Bot(token, 72)
-pbot73 = Bot(token, 73)
-pbot74 = Bot(token, 74)
-pbot75 = Bot(token, 75)
-pbot76 = Bot(token, 76)
-pbot77 = Bot(token, 77)
-pbot78 = Bot(token, 78)
-pbot79 = Bot(token, 79)
-pbot80 = Bot(token, 80)
-pbot81 = Bot(token, 81)
-pbot82 = Bot(token, 82)
-pbot83 = Bot(token, 83)
-pbot84 = Bot(token, 84)
-pbot85 = Bot(token, 85)
-pbot86 = Bot(token, 86)
-pbot87 = Bot(token, 87)
-pbot88 = Bot(token, 88)
-pbot89 = Bot(token, 89)
-pbot90 = Bot(token, 90)
-pbot91 = Bot(token, 91)
-pbot92 = Bot(token, 92)
-pbot93 = Bot(token, 93)
-pbot94 = Bot(token, 94)
-pbot95 = Bot(token, 95)
-pbot96 = Bot(token, 96)
-pbot97 = Bot(token, 97)
-pbot98 = Bot(token, 98)
-pbot99 = Bot(token, 99)
-pbot100 = Bot(token, 100)
-pbot101 = Bot(token, 101)
-pbot102 = Bot(token, 102)
-pbot103 = Bot(token, 103)
-pbot104 = Bot(token, 104)
-pbot105 = Bot(token, 105)
-pbot106 = Bot(token, 106)
-pbot107 = Bot(token, 107)
-pbot108 = Bot(token, 108)
-pbot109 = Bot(token, 109)
-pbot110 = Bot(token, 110)
-pbot111 = Bot(token, 111)
-pbot112 = Bot(token, 112)
-pbot113 = Bot(token, 113)
-pbot114 = Bot(token, 114)
-pbot115 = Bot(token, 115)
-pbot116 = Bot(token, 116)
-pbot117 = Bot(token, 117)
-pbot118 = Bot(token, 118)
-pbot119 = Bot(token, 119)
-pbot120 = Bot(token, 120)
-pbot121 = Bot(token, 121)
-pbot122 = Bot(token, 122)
-pbot123 = Bot(token, 123)
-pbot124 = Bot(token, 124)
-pbot125 = Bot(token, 125)
-pbot126 = Bot(token, 126)
-pbot127 = Bot(token, 127)
-pbot128 = Bot(token, 128)
-pbot129 = Bot(token, 129)
-pbot130 = Bot(token, 130)
-pbot131 = Bot(token, 131)
-pbot132 = Bot(token, 132)
-pbot133 = Bot(token, 133)
-pbot134 = Bot(token, 134)
-pbot135 = Bot(token, 135)
-pbot136 = Bot(token, 136)
-pbot137 = Bot(token, 137)
-pbot138 = Bot(token, 138)
-pbot139 = Bot(token, 139)
-pbot140 = Bot(token, 140)
-pbot141 = Bot(token, 141)
-pbot142 = Bot(token, 142)
-pbot143 = Bot(token, 143)
-pbot144 = Bot(token, 144)
-pbot145 = Bot(token, 145)
-pbot146 = Bot(token, 146)
-pbot147 = Bot(token, 147)
-pbot148 = Bot(token, 148)
-pbot149 = Bot(token, 149)
-pbot150 = Bot(token, 150)
-pbot151 = Bot(token, 151)
-pbot152 = Bot(token, 152)
-pbot153 = Bot(token, 153)
-pbot154 = Bot(token, 154)
-pbot155 = Bot(token, 155)
-pbot156 = Bot(token, 156)
-pbot157 = Bot(token, 157)
-pbot158 = Bot(token, 158)
-pbot159 = Bot(token, 159)
-pbot160 = Bot(token, 160)
-pbot161 = Bot(token, 161)
-pbot162 = Bot(token, 162)
-pbot163 = Bot(token, 163)
-pbot164 = Bot(token, 164)
-pbot165 = Bot(token, 165)
-pbot166 = Bot(token, 166)
-pbot167 = Bot(token, 167)
-pbot168 = Bot(token, 168)
-pbot169 = Bot(token, 169)
-pbot170 = Bot(token, 170)
-pbot171 = Bot(token, 171)
-pbot172 = Bot(token, 172)
-pbot173 = Bot(token, 173)
-pbot174 = Bot(token, 174)
-pbot175 = Bot(token, 175)
-pbot176 = Bot(token, 176)
-pbot177 = Bot(token, 127)
-pbot178 = Bot(token, 178)
-pbot179 = Bot(token, 179)
-pbot180 = Bot(token, 180)
-pbot181 = Bot(token, 181)
-pbot182 = Bot(token, 182)
-pbot183 = Bot(token, 183)
-pbot184 = Bot(token, 184)
-pbot185 = Bot(token, 185)
-pbot186 = Bot(token, 186)
-pbot187 = Bot(token, 187)
-pbot188 = Bot(token, 188)
-pbot189 = Bot(token, 189)
-pbot190 = Bot(token, 190)
-pbot191 = Bot(token, 191)
-pbot192 = Bot(token, 192)
-pbot193 = Bot(token, 193)
-pbot194 = Bot(token, 194)
-pbot195 = Bot(token, 195)
-pbot196 = Bot(token, 196)
-pbot197 = Bot(token, 197)
-pbot198 = Bot(token, 198)
-pbot199 = Bot(token, 199)
-pbot200 = Bot(token, 200)
-pbot201 = Bot(token, 201)
-pbot202 = Bot(token, 202)
-pbot203 = Bot(token, 203)
-pbot204 = Bot(token, 204)
-pbot205 = Bot(token, 205)
-pbot206 = Bot(token, 206)
-pbot207 = Bot(token, 207)
-pbot208 = Bot(token, 208)
-pbot209 = Bot(token, 209)
-pbot210 = Bot(token, 210)
-pbot211 = Bot(token, 211)
-pbot212 = Bot(token, 212)
-pbot213 = Bot(token, 213)
-pbot214 = Bot(token, 214)
-pbot215 = Bot(token, 215)
-pbot216 = Bot(token, 216)
-pbot217 = Bot(token, 217)
-pbot218 = Bot(token, 218)
-pbot219 = Bot(token, 219)
-pbot220 = Bot(token, 220)
-pbot221 = Bot(token, 221)
-pbot222 = Bot(token, 222)
-pbot223 = Bot(token, 223)
-pbot224 = Bot(token, 224)
-pbot225 = Bot(token, 225)
-pbot226 = Bot(token, 226)
-pbot227 = Bot(token, 227)
-pbot228 = Bot(token, 228)
-pbot229 = Bot(token, 229)
-pbot230 = Bot(token, 230)
-pbot231 = Bot(token, 231)
-pbot232 = Bot(token, 232)
-pbot233 = Bot(token, 233)
-pbot234 = Bot(token, 234)
-pbot235 = Bot(token, 235)
-pbot236 = Bot(token, 236)
-pbot237 = Bot(token, 237)
-pbot238 = Bot(token, 238)
-pbot239 = Bot(token, 239)
-pbot240 = Bot(token, 240)
-pbot241 = Bot(token, 241)
-pbot242 = Bot(token, 242)
-pbot243 = Bot(token, 243)
-pbot244 = Bot(token, 244)
-pbot245 = Bot(token, 245)
-pbot246 = Bot(token, 246)
-pbot247 = Bot(token, 247)
-pbot248 = Bot(token, 248)
-pbot249 = Bot(token, 249)
-pbot250 = Bot(token, 250)
-pbot251 = Bot(token, 251)
-pbot252 = Bot(token, 252)
-pbot253 = Bot(token, 253)
-pbot254 = Bot(token, 254)
-pbot255 = Bot(token, 255)
-pbot256 = Bot(token, 256)
-pbot257 = Bot(token, 257)
-pbot258 = Bot(token, 258)
-pbot259 = Bot(token, 259)
-pbot260 = Bot(token, 260)
-pbot261 = Bot(token, 261)
-pbot262 = Bot(token, 262)
-pbot263 = Bot(token, 263)
-pbot264 = Bot(token, 264)
-pbot265 = Bot(token, 265)
-pbot266 = Bot(token, 266)
-pbot267 = Bot(token, 267)
-pbot268 = Bot(token, 268)
-pbot269 = Bot(token, 269)
-pbot270 = Bot(token, 270)
-pbot271 = Bot(token, 271)
-pbot272 = Bot(token, 272)
-pbot273 = Bot(token, 273)
-pbot274 = Bot(token, 274)
-pbot275 = Bot(token, 275)
-pbot276 = Bot(token, 276)
-pbot277 = Bot(token, 277)
-pbot278 = Bot(token, 278)
-pbot279 = Bot(token, 279)
-pbot280 = Bot(token, 280)
-pbot281 = Bot(token, 281)
-pbot282 = Bot(token, 282)
-pbot283 = Bot(token, 283)
-pbot284 = Bot(token, 284)
-pbot285 = Bot(token, 285)
-pbot286 = Bot(token, 286)
-pbot287 = Bot(token, 287)
-pbot288 = Bot(token, 288)
-pbot289 = Bot(token, 289)
-pbot290 = Bot(token, 280)
-pbot291 = Bot(token, 291)
-pbot292 = Bot(token, 292)
-pbot293 = Bot(token, 293)
-pbot294 = Bot(token, 294)
-pbot295 = Bot(token, 295)
-pbot296 = Bot(token, 296)
-pbot297 = Bot(token, 297)
-pbot298 = Bot(token, 298)
-pbot299 = Bot(token, 299)
-pbot300 = Bot(token, 300)
-pbot301 = Bot(token, 301)
-pbot302 = Bot(token, 302)
-pbot303 = Bot(token, 303)
-pbot304 = Bot(token, 304)
-pbot305 = Bot(token, 305)
-pbot306 = Bot(token, 306)
-pbot307 = Bot(token, 307)
-pbot308 = Bot(token, 308)
-pbot309 = Bot(token, 309)
-pbot310 = Bot(token, 310)
-pbot311 = Bot(token, 311)
-pbot312 = Bot(token, 312)
-pbot313 = Bot(token, 313)
-pbot314 = Bot(token, 314)
-pbot315 = Bot(token, 315)
-pbot316 = Bot(token, 316)
-pbot317 = Bot(token, 317)
-pbot318 = Bot(token, 318)
-pbot319 = Bot(token, 319)
-pbot320 = Bot(token, 320)
-pbot321 = Bot(token, 321)
-pbot322 = Bot(token, 322)
-pbot323 = Bot(token, 223)
-pbot324 = Bot(token, 324)
-pbot325 = Bot(token, 325)
-pbot326 = Bot(token, 326)
-pbot327 = Bot(token, 327)
-pbot328 = Bot(token, 328)
-pbot329 = Bot(token, 329)
-pbot330 = Bot(token, 330)
-pbot331 = Bot(token, 331)
-pbot332 = Bot(token, 332)
-pbot333 = Bot(token, 333)
-pbot334 = Bot(token, 334)
-pbot335 = Bot(token, 335)
-pbot336 = Bot(token, 336)
-pbot337 = Bot(token, 337)
-pbot338 = Bot(token, 338)
-pbot339 = Bot(token, 339)
-pbot340 = Bot(token, 330)
-pbot341 = Bot(token, 341)
-pbot342 = Bot(token, 342)
-pbot343 = Bot(token, 343)
-pbot344 = Bot(token, 344)
-pbot345 = Bot(token, 345)
-pbot346 = Bot(token, 346)
-pbot347 = Bot(token, 347)
-pbot348 = Bot(token, 348)
-pbot349 = Bot(token, 349)
-pbot350 = Bot(token, 350)
-pbot351 = Bot(token, 351)
-pbot352 = Bot(token, 352)
-pbot353 = Bot(token, 353)
-pbot354 = Bot(token, 354)
-pbot355 = Bot(token, 355)
-pbot356 = Bot(token, 356)
-pbot357 = Bot(token, 357)
-pbot358 = Bot(token, 358)
-pbot359 = Bot(token, 359)
-pbot360 = Bot(token, 360)
-pbot361 = Bot(token, 361)
-pbot362 = Bot(token, 362)
-pbot363 = Bot(token, 363)
-pbot364 = Bot(token, 364)
-pbot365 = Bot(token, 365)
-pbot366 = Bot(token, 366)
-pbot367 = Bot(token, 367)
-pbot368 = Bot(token, 368)
-pbot369 = Bot(token, 369)
-pbot370 = Bot(token, 370)
-pbot371 = Bot(token, 371)
-pbot372 = Bot(token, 372)
-pbot373 = Bot(token, 273)
-pbot374 = Bot(token, 374)
-pbot375 = Bot(token, 375)
-pbot376 = Bot(token, 376)
-pbot377 = Bot(token, 377)
-pbot378 = Bot(token, 378)
-pbot379 = Bot(token, 379)
-pbot380 = Bot(token, 380)
-pbot381 = Bot(token, 381)
-pbot382 = Bot(token, 382)
-pbot383 = Bot(token, 383)
-pbot384 = Bot(token, 384)
-pbot385 = Bot(token, 385)
-pbot386 = Bot(token, 386)
-pbot387 = Bot(token, 387)
-pbot388 = Bot(token, 388)
-pbot389 = Bot(token, 389)
-pbot390 = Bot(token, 380)
-pbot391 = Bot(token, 391)
-pbot392 = Bot(token, 392)
-pbot393 = Bot(token, 393)
-pbot394 = Bot(token, 394)
-pbot395 = Bot(token, 395)
-pbot396 = Bot(token, 396)
-pbot397 = Bot(token, 397)
-pbot398 = Bot(token, 398)
-pbot399 = Bot(token, 399)
-pbot400 = Bot(token, 400)
-pbot401 = Bot(token, 401)
-pbot402 = Bot(token, 402)
-pbot403 = Bot(token, 403)
-pbot404 = Bot(token, 404)
-pbot405 = Bot(token, 405)
-pbot406 = Bot(token, 406)
-pbot407 = Bot(token, 407)
-pbot408 = Bot(token, 408)
-pbot409 = Bot(token, 409)
-pbot410 = Bot(token, 410)
-pbot411 = Bot(token, 411)
-pbot412 = Bot(token, 412)
-pbot413 = Bot(token, 413)
-pbot414 = Bot(token, 414)
-pbot415 = Bot(token, 415)
-pbot416 = Bot(token, 416)
-pbot417 = Bot(token, 417)
-pbot418 = Bot(token, 418)
-pbot419 = Bot(token, 419)
-pbot420 = Bot(token, 420)
-pbot421 = Bot(token, 421)
-pbot422 = Bot(token, 422)
-pbot423 = Bot(token, 423)
-pbot424 = Bot(token, 424)
-pbot425 = Bot(token, 425)
-pbot426 = Bot(token, 426)
-pbot427 = Bot(token, 427)
-pbot428 = Bot(token, 428)
-pbot429 = Bot(token, 429)
-pbot430 = Bot(token, 430)
-pbot431 = Bot(token, 431)
-pbot432 = Bot(token, 432)
-pbot433 = Bot(token, 433)
-pbot434 = Bot(token, 434)
-pbot435 = Bot(token, 435)
-pbot436 = Bot(token, 436)
-pbot437 = Bot(token, 437)
-pbot438 = Bot(token, 438)
-pbot439 = Bot(token, 439)
-pbot440 = Bot(token, 430)
-pbot441 = Bot(token, 441)
-pbot442 = Bot(token, 442)
-pbot443 = Bot(token, 443)
-pbot444 = Bot(token, 444)
-pbot445 = Bot(token, 445)
-pbot446 = Bot(token, 446)
-pbot447 = Bot(token, 447)
-pbot448 = Bot(token, 448)
-pbot449 = Bot(token, 449)
-pbot450 = Bot(token, 450)
-pbot451 = Bot(token, 451)
-pbot452 = Bot(token, 452)
-pbot453 = Bot(token, 453)
-pbot454 = Bot(token, 454)
-pbot455 = Bot(token, 455)
-pbot456 = Bot(token, 456)
-pbot457 = Bot(token, 457)
-pbot458 = Bot(token, 458)
-pbot459 = Bot(token, 459)
-pbot460 = Bot(token, 460)
-pbot461 = Bot(token, 461)
-pbot462 = Bot(token, 462)
-pbot463 = Bot(token, 463)
-pbot464 = Bot(token, 464)
-pbot465 = Bot(token, 465)
-pbot466 = Bot(token, 466)
-pbot467 = Bot(token, 467)
-pbot468 = Bot(token, 468)
-pbot469 = Bot(token, 469)
-pbot470 = Bot(token, 470)
-pbot471 = Bot(token, 471)
-pbot472 = Bot(token, 472)
-pbot473 = Bot(token, 473)
-pbot474 = Bot(token, 474)
-pbot475 = Bot(token, 475)
-pbot476 = Bot(token, 476)
-pbot477 = Bot(token, 477)
-pbot478 = Bot(token, 478)
-pbot479 = Bot(token, 479)
-pbot480 = Bot(token, 480)
-pbot481 = Bot(token, 481)
-pbot482 = Bot(token, 482)
-pbot483 = Bot(token, 483)
-pbot484 = Bot(token, 484)
-pbot485 = Bot(token, 485)
-pbot486 = Bot(token, 486)
-pbot487 = Bot(token, 487)
-pbot488 = Bot(token, 488)
-pbot489 = Bot(token, 489)
-pbot490 = Bot(token, 490)
-pbot491 = Bot(token, 491)
-pbot492 = Bot(token, 492)
-pbot493 = Bot(token, 493)
-pbot494 = Bot(token, 494)
-pbot495 = Bot(token, 495)
-pbot496 = Bot(token, 496)
-pbot497 = Bot(token, 497)
-pbot498 = Bot(token, 498)
-pbot499 = Bot(token, 499)
-pbot500 = Bot(token, 500)
-pbot501 = Bot(token, 501)
-pbot502 = Bot(token, 502)
-pbot503 = Bot(token, 503)
-pbot504 = Bot(token, 504)
-pbot505 = Bot(token, 505)
-pbot506 = Bot(token, 506)
-pbot507 = Bot(token, 507)
-pbot508 = Bot(token, 508)
-pbot509 = Bot(token, 509)
-pbot510 = Bot(token, 510)
-pbot511 = Bot(token, 511)
-pbot512 = Bot(token, 512)
-pbot513 = Bot(token, 513)
-pbot514 = Bot(token, 514)
-pbot515 = Bot(token, 515)
-pbot516 = Bot(token, 516)
-pbot517 = Bot(token, 517)
-pbot518 = Bot(token, 518)
-pbot519 = Bot(token, 519)
-pbot520 = Bot(token, 520)
-pbot521 = Bot(token, 521)
-pbot522 = Bot(token, 522)
-pbot523 = Bot(token, 523)
-pbot524 = Bot(token, 524)
-pbot525 = Bot(token, 525)
-pbot526 = Bot(token, 526)
-pbot527 = Bot(token, 527)
-pbot528 = Bot(token, 528)
-pbot529 = Bot(token, 529)
-pbot530 = Bot(token, 530)
-pbot531 = Bot(token, 531)
-pbot532 = Bot(token, 532)
-pbot533 = Bot(token, 533)
-pbot534 = Bot(token, 534)
-pbot535 = Bot(token, 535)
-pbot536 = Bot(token, 536)
-pbot537 = Bot(token, 537)
-pbot538 = Bot(token, 538)
-pbot539 = Bot(token, 539)
-pbot540 = Bot(token, 540)
-pbot541 = Bot(token, 541)
-pbot542 = Bot(token, 542)
-pbot543 = Bot(token, 543)
-pbot544 = Bot(token, 544)
-pbot545 = Bot(token, 545)
-pbot546 = Bot(token, 546)
-pbot547 = Bot(token, 547)
-pbot548 = Bot(token, 548)
-pbot549 = Bot(token, 549)
-pbot550 = Bot(token, 550)
-pbot551 = Bot(token, 551)
-pbot552 = Bot(token, 552)
-pbot553 = Bot(token, 553)
-pbot554 = Bot(token, 554)
-pbot555 = Bot(token, 555)
-pbot556 = Bot(token, 556)
-pbot557 = Bot(token, 557)
-pbot558 = Bot(token, 558)
-pbot559 = Bot(token, 559)
-pbot560 = Bot(token, 560)
-pbot561 = Bot(token, 561)
-pbot562 = Bot(token, 562)
-pbot563 = Bot(token, 563)
-pbot564 = Bot(token, 564)
-pbot565 = Bot(token, 565)
-pbot566 = Bot(token, 566)
-pbot567 = Bot(token, 567)
-pbot568 = Bot(token, 568)
-pbot569 = Bot(token, 569)
-pbot570 = Bot(token, 570)
-pbot571 = Bot(token, 571)
-pbot572 = Bot(token, 572)
-pbot573 = Bot(token, 573)
-pbot574 = Bot(token, 574)
-pbot575 = Bot(token, 575)
-pbot576 = Bot(token, 576)
-pbot577 = Bot(token, 577)
-pbot578 = Bot(token, 578)
-pbot579 = Bot(token, 579)
-pbot580 = Bot(token, 580)
-pbot581 = Bot(token, 581)
-pbot582 = Bot(token, 582)
-pbot583 = Bot(token, 583)
-pbot584 = Bot(token, 584)
-pbot585 = Bot(token, 585)
-pbot586 = Bot(token, 586)
-pbot587 = Bot(token, 587)
-pbot588 = Bot(token, 588)
-pbot589 = Bot(token, 589)
-pbot590 = Bot(token, 590)
-pbot591 = Bot(token, 591)
-pbot592 = Bot(token, 592)
-pbot593 = Bot(token, 593)
-pbot594 = Bot(token, 594)
-pbot595 = Bot(token, 595)
-pbot596 = Bot(token, 596)
-pbot597 = Bot(token, 597)
-pbot598 = Bot(token, 598)
-pbot599 = Bot(token, 599)
-pbot600 = Bot(token, 600)
-pbot601 = Bot(token, 601)
-pbot602 = Bot(token, 602)
-pbot603 = Bot(token, 603)
-pbot604 = Bot(token, 604)
-pbot605 = Bot(token, 605)
-pbot606 = Bot(token, 606)
-pbot607 = Bot(token, 607)
-pbot608 = Bot(token, 608)
-pbot609 = Bot(token, 609)
-pbot610 = Bot(token, 610)
-pbot611 = Bot(token, 611)
-pbot612 = Bot(token, 612)
-pbot613 = Bot(token, 613)
-pbot614 = Bot(token, 614)
-pbot615 = Bot(token, 615)
-pbot616 = Bot(token, 616)
-pbot617 = Bot(token, 617)
-pbot618 = Bot(token, 618)
-pbot619 = Bot(token, 619)
-pbot620 = Bot(token, 620)
-pbot621 = Bot(token, 621)
-pbot622 = Bot(token, 622)
-pbot623 = Bot(token, 623)
-pbot624 = Bot(token, 624)
-pbot625 = Bot(token, 625)
-pbot626 = Bot(token, 626)
-pbot627 = Bot(token, 627)
-pbot628 = Bot(token, 628)
-pbot629 = Bot(token, 629)
-pbot630 = Bot(token, 630)
-pbot631 = Bot(token, 631)
-pbot632 = Bot(token, 632)
-pbot633 = Bot(token, 633)
-pbot634 = Bot(token, 634)
-pbot635 = Bot(token, 635)
-pbot636 = Bot(token, 636)
-pbot637 = Bot(token, 637)
-pbot638 = Bot(token, 638)
-pbot639 = Bot(token, 639)
-pbot640 = Bot(token, 640)
-pbot641 = Bot(token, 641)
-pbot642 = Bot(token, 642)
-pbot643 = Bot(token, 643)
-pbot644 = Bot(token, 644)
-pbot645 = Bot(token, 645)
-pbot646 = Bot(token, 646)
-pbot647 = Bot(token, 647)
-pbot648 = Bot(token, 648)
-pbot649 = Bot(token, 649)
-pbot650 = Bot(token, 650)
-pbot651 = Bot(token, 651)
-pbot652 = Bot(token, 652)
-pbot653 = Bot(token, 653)
-pbot654 = Bot(token, 654)
-pbot655 = Bot(token, 655)
-pbot656 = Bot(token, 656)
-pbot657 = Bot(token, 657)
-pbot658 = Bot(token, 658)
-pbot659 = Bot(token, 659)
-pbot660 = Bot(token, 660)
-pbot661 = Bot(token, 661)
-pbot662 = Bot(token, 662)
-pbot663 = Bot(token, 663)
-pbot664 = Bot(token, 664)
-pbot665 = Bot(token, 665)
-pbot666 = Bot(token, 666)
-pbot667 = Bot(token, 667)
-pbot668 = Bot(token, 668)
-pbot669 = Bot(token, 669)
-pbot670 = Bot(token, 670)
-pbot671 = Bot(token, 671)
-pbot672 = Bot(token, 672)
-pbot673 = Bot(token, 673)
-pbot674 = Bot(token, 674)
-pbot675 = Bot(token, 675)
-pbot676 = Bot(token, 676)
-pbot677 = Bot(token, 677)
-pbot678 = Bot(token, 678)
-pbot679 = Bot(token, 679)
-pbot680 = Bot(token, 680)
-pbot681 = Bot(token, 681)
-pbot682 = Bot(token, 682)
-pbot683 = Bot(token, 683)
-pbot684 = Bot(token, 684)
-pbot685 = Bot(token, 685)
-pbot686 = Bot(token, 686)
-pbot687 = Bot(token, 687)
-pbot688 = Bot(token, 688)
-pbot689 = Bot(token, 689)
-pbot690 = Bot(token, 690)
-pbot691 = Bot(token, 691)
-pbot692 = Bot(token, 692)
-pbot693 = Bot(token, 693)
-pbot694 = Bot(token, 694)
-pbot695 = Bot(token, 695)
-pbot696 = Bot(token, 696)
-pbot697 = Bot(token, 697)
-pbot698 = Bot(token, 698)
-pbot699 = Bot(token, 699)
-pbot700 = Bot(token, 700)
-pbot701 = Bot(token, 701)
-pbot702 = Bot(token, 702)
-pbot703 = Bot(token, 703)
-pbot704 = Bot(token, 704)
-pbot705 = Bot(token, 705)
-pbot706 = Bot(token, 706)
-pbot707 = Bot(token, 707)
-pbot708 = Bot(token, 708)
-pbot709 = Bot(token, 709)
-pbot710 = Bot(token, 710)
-pbot711 = Bot(token, 711)
-pbot712 = Bot(token, 712)
-pbot713 = Bot(token, 713)
-pbot714 = Bot(token, 714)
-pbot715 = Bot(token, 715)
-pbot716 = Bot(token, 716)
-pbot717 = Bot(token, 717)
-pbot718 = Bot(token, 718)
-pbot719 = Bot(token, 719)
-pbot720 = Bot(token, 720)
-pbot721 = Bot(token, 721)
-pbot722 = Bot(token, 722)
-pbot723 = Bot(token, 723)
-pbot724 = Bot(token, 724)
-pbot725 = Bot(token, 795)
-pbot726 = Bot(token, 726)
-pbot727 = Bot(token, 727)
-pbot728 = Bot(token, 728)
-pbot729 = Bot(token, 729)
-pbot730 = Bot(token, 730)
-pbot731 = Bot(token, 731)
-pbot732 = Bot(token, 732)
-pbot733 = Bot(token, 733)
-pbot734 = Bot(token, 734)
-pbot735 = Bot(token, 735)
-pbot736 = Bot(token, 736)
-pbot737 = Bot(token, 737)
-pbot738 = Bot(token, 738)
-pbot739 = Bot(token, 739)
-pbot740 = Bot(token, 740)
-pbot741 = Bot(token, 741)
-pbot742 = Bot(token, 742)
-pbot743 = Bot(token, 743)
-pbot744 = Bot(token, 744)
-pbot745 = Bot(token, 745)
-pbot746 = Bot(token, 746)
-pbot747 = Bot(token, 747)
-pbot748 = Bot(token, 748)
-pbot749 = Bot(token, 749)
-pbot750 = Bot(token, 750)
-pbot751 = Bot(token, 751)
-pbot752 = Bot(token, 752)
-pbot753 = Bot(token, 753)
-pbot754 = Bot(token, 754)
-pbot755 = Bot(token, 755)
-pbot756 = Bot(token, 756)
-pbot757 = Bot(token, 757)
-pbot758 = Bot(token, 758)
-pbot759 = Bot(token, 759)
-pbot760 = Bot(token, 760)
-pbot761 = Bot(token, 761)
-pbot762 = Bot(token, 762)
-pbot763 = Bot(token, 763)
-pbot764 = Bot(token, 764)
-pbot765 = Bot(token, 765)
-pbot766 = Bot(token, 766)
-pbot767 = Bot(token, 767)
-pbot768 = Bot(token, 768)
-pbot769 = Bot(token, 769)
-pbot770 = Bot(token, 770)
-pbot771 = Bot(token, 771)
-pbot772 = Bot(token, 772)
-pbot773 = Bot(token, 773)
-pbot774 = Bot(token, 774)
-pbot775 = Bot(token, 775)
-pbot776 = Bot(token, 776)
-pbot777 = Bot(token, 777)
-pbot778 = Bot(token, 778)
-pbot779 = Bot(token, 779)
-pbot780 = Bot(token, 780)
-pbot781 = Bot(token, 781)
-pbot782 = Bot(token, 782)
-pbot783 = Bot(token, 783)
-pbot784 = Bot(token, 784)
-pbot785 = Bot(token, 785)
-pbot786 = Bot(token, 786)
-pbot787 = Bot(token, 787)
-pbot788 = Bot(token, 788)
-pbot789 = Bot(token, 789)
-pbot790 = Bot(token, 790)
-pbot791 = Bot(token, 791)
-pbot792 = Bot(token, 792)
-pbot793 = Bot(token, 793)
-pbot794 = Bot(token, 794)
-pbot795 = Bot(token, 795)
-pbot796 = Bot(token, 796)
-pbot797 = Bot(token, 797)
-pbot798 = Bot(token, 798)
-pbot799 = Bot(token, 799)
-pbot800 = Bot(token, 800)
-pbot801 = Bot(token, 801)
-pbot802 = Bot(token, 802)
-pbot803 = Bot(token, 803)
-pbot804 = Bot(token, 804)
-pbot805 = Bot(token, 805)
-pbot806 = Bot(token, 806)
-pbot807 = Bot(token, 807)
-pbot808 = Bot(token, 808)
-pbot809 = Bot(token, 809)
-pbot810 = Bot(token, 810)
-pbot811 = Bot(token, 811)
-pbot812 = Bot(token, 812)
-pbot813 = Bot(token, 813)
-pbot814 = Bot(token, 814)
-pbot815 = Bot(token, 815)
-pbot816 = Bot(token, 816)
-pbot817 = Bot(token, 817)
-pbot818 = Bot(token, 818)
-pbot819 = Bot(token, 819)
-pbot820 = Bot(token, 820)
-pbot821 = Bot(token, 821)
-pbot822 = Bot(token, 822)
-pbot823 = Bot(token, 823)
-pbot824 = Bot(token, 824)
-pbot825 = Bot(token, 825)
-pbot826 = Bot(token, 826)
-pbot827 = Bot(token, 827)
-pbot828 = Bot(token, 828)
-pbot829 = Bot(token, 829)
-pbot830 = Bot(token, 830)
-pbot831 = Bot(token, 831)
-pbot832 = Bot(token, 832)
-pbot833 = Bot(token, 833)
-pbot834 = Bot(token, 834)
-pbot835 = Bot(token, 835)
-pbot836 = Bot(token, 836)
-pbot837 = Bot(token, 837)
-pbot838 = Bot(token, 838)
-pbot839 = Bot(token, 839)
-pbot840 = Bot(token, 840)
-pbot841 = Bot(token, 841)
-pbot842 = Bot(token, 842)
-pbot843 = Bot(token, 843)
-pbot844 = Bot(token, 844)
-pbot845 = Bot(token, 845)
-pbot846 = Bot(token, 846)
-pbot847 = Bot(token, 847)
-pbot848 = Bot(token, 848)
-pbot849 = Bot(token, 849)
-pbot850 = Bot(token, 850)
-pbot851 = Bot(token, 851)
-pbot852 = Bot(token, 852)
-pbot853 = Bot(token, 853)
-pbot854 = Bot(token, 854)
-pbot855 = Bot(token, 855)
-pbot856 = Bot(token, 856)
-pbot857 = Bot(token, 857)
-pbot858 = Bot(token, 858)
-pbot859 = Bot(token, 859)
-pbot860 = Bot(token, 860)
-pbot861 = Bot(token, 861)
-pbot862 = Bot(token, 862)
-pbot863 = Bot(token, 863)
-pbot864 = Bot(token, 864)
-pbot865 = Bot(token, 865)
-pbot866 = Bot(token, 866)
-pbot867 = Bot(token, 867)
-pbot868 = Bot(token, 868)
-pbot869 = Bot(token, 869)
-pbot870 = Bot(token, 870)
-pbot871 = Bot(token, 871)
-pbot872 = Bot(token, 872)
-pbot873 = Bot(token, 873)
-pbot874 = Bot(token, 874)
-pbot875 = Bot(token, 875)
-pbot876 = Bot(token, 876)
-pbot877 = Bot(token, 877)
-pbot878 = Bot(token, 878)
-pbot879 = Bot(token, 879)
-pbot880 = Bot(token, 880)
-pbot881 = Bot(token, 881)
-pbot882 = Bot(token, 882)
-pbot883 = Bot(token, 883)
-pbot884 = Bot(token, 884)
-pbot885 = Bot(token, 885)
-pbot886 = Bot(token, 886)
-pbot887 = Bot(token, 887)
-pbot888 = Bot(token, 888)
-pbot889 = Bot(token, 889)
-pbot890 = Bot(token, 890)
-pbot891 = Bot(token, 891)
-pbot892 = Bot(token, 892)
-pbot893 = Bot(token, 893)
-pbot894 = Bot(token, 894)
-pbot895 = Bot(token, 895)
-pbot896 = Bot(token, 896)
-pbot897 = Bot(token, 897)
-pbot898 = Bot(token, 898)
-pbot899 = Bot(token, 899)
-pbot900 = Bot(token, 900)
-pbot901 = Bot(token, 901)
-pbot902 = Bot(token, 902)
-pbot903 = Bot(token, 903)
-pbot904 = Bot(token, 904)
-pbot905 = Bot(token, 905)
-pbot906 = Bot(token, 906)
-pbot907 = Bot(token, 907)
-pbot908 = Bot(token, 908)
-pbot909 = Bot(token, 909)
-pbot910 = Bot(token, 910)
-pbot911 = Bot(token, 911)
-pbot912 = Bot(token, 912)
-pbot913 = Bot(token, 913)
-pbot914 = Bot(token, 914)
-pbot915 = Bot(token, 915)
-pbot916 = Bot(token, 916)
-pbot917 = Bot(token, 917)
-pbot918 = Bot(token, 918)
-pbot919 = Bot(token, 919)
-pbot920 = Bot(token, 920)
-pbot921 = Bot(token, 921)
-pbot922 = Bot(token, 922)
-pbot923 = Bot(token, 923)
-pbot924 = Bot(token, 924)
-pbot925 = Bot(token, 925)
-pbot926 = Bot(token, 926)
-pbot927 = Bot(token, 927)
-pbot928 = Bot(token, 928)
-pbot929 = Bot(token, 929)
-pbot930 = Bot(token, 930)
-pbot931 = Bot(token, 931)
-pbot932 = Bot(token, 932)
-pbot933 = Bot(token, 933)
-pbot934 = Bot(token, 934)
-pbot935 = Bot(token, 935)
-pbot936 = Bot(token, 936)
-pbot937 = Bot(token, 937)
-pbot938 = Bot(token, 938)
-pbot939 = Bot(token, 939)
-pbot940 = Bot(token, 940)
-pbot941 = Bot(token, 941)
-pbot942 = Bot(token, 942)
-pbot943 = Bot(token, 943)
-pbot944 = Bot(token, 944)
-pbot945 = Bot(token, 945)
-pbot946 = Bot(token, 946)
-pbot947 = Bot(token, 947)
-pbot948 = Bot(token, 948)
-pbot949 = Bot(token, 949)
-pbot950 = Bot(token, 950)
-pbot951 = Bot(token, 951)
-pbot952 = Bot(token, 952)
-pbot953 = Bot(token, 953)
-pbot954 = Bot(token, 954)
-pbot955 = Bot(token, 955)
-pbot956 = Bot(token, 956)
-pbot957 = Bot(token, 957)
-pbot958 = Bot(token, 958)
-pbot959 = Bot(token, 959)
-pbot960 = Bot(token, 960)
-pbot961 = Bot(token, 961)
-pbot962 = Bot(token, 962)
-pbot963 = Bot(token, 963)
-pbot964 = Bot(token, 964)
-pbot965 = Bot(token, 965)
-pbot966 = Bot(token, 966)
-pbot967 = Bot(token, 967)
-pbot968 = Bot(token, 968)
-pbot969 = Bot(token, 969)
-pbot970 = Bot(token, 970)
-pbot971 = Bot(token, 971)
-pbot972 = Bot(token, 972)
-pbot973 = Bot(token, 973)
-pbot974 = Bot(token, 974)
-pbot975 = Bot(token, 975)
-pbot976 = Bot(token, 976)
-pbot977 = Bot(token, 977)
-pbot978 = Bot(token, 978)
-pbot979 = Bot(token, 979)
-pbot980 = Bot(token, 980)
-pbot981 = Bot(token, 981)
-pbot982 = Bot(token, 982)
-pbot983 = Bot(token, 983)
-pbot984 = Bot(token, 984)
-pbot985 = Bot(token, 985)
-pbot986 = Bot(token, 986)
-pbot987 = Bot(token, 987)
-pbot988 = Bot(token, 988)
-pbot989 = Bot(token, 989)
-pbot990 = Bot(token, 990)
-pbot991 = Bot(token, 991)
-pbot992 = Bot(token, 992)
-pbot993 = Bot(token, 993)
-pbot994 = Bot(token, 994)
-pbot995 = Bot(token, 995)
-pbot996 = Bot(token, 996)
-pbot997 = Bot(token, 997)
-pbot998 = Bot(token, 998)
-pbot999 = Bot(token, 999)
+cbot0 = Bot(token, 0)
+cbot1 = Bot(token, 1)
+cbot2 = Bot(token, 2)
+cbot3 = Bot(token, 3)
+cbot4 = Bot(token, 4)
+cbot5 = Bot(token, 5)
+cbot6 = Bot(token, 6)
+cbot7 = Bot(token, 7)
+cbot8 = Bot(token, 8)
+cbot9 = Bot(token, 9)
+cbot10 = Bot(token, 10)
+cbot11 = Bot(token, 11)
+cbot12 = Bot(token, 12)
+cbot13 = Bot(token, 13)
+cbot14 = Bot(token, 14)
+cbot15 = Bot(token, 15)
+cbot16 = Bot(token, 16)
+cbot17 = Bot(token, 17)
+cbot18 = Bot(token, 18)
+cbot19 = Bot(token, 19)
+cbot20 = Bot(token, 20)
+cbot21 = Bot(token, 21)
+cbot22 = Bot(token, 22)
+cbot23 = Bot(token, 23)
+cbot24 = Bot(token, 24)
+cbot25 = Bot(token, 25)
+cbot26 = Bot(token, 26)
+cbot27 = Bot(token, 27)
+cbot28 = Bot(token, 28)
+cbot29 = Bot(token, 29)
+cbot30 = Bot(token, 30)
+cbot31 = Bot(token, 31)
+cbot32 = Bot(token, 32)
+cbot33 = Bot(token, 33)
+cbot34 = Bot(token, 34)
+cbot35 = Bot(token, 35)
+cbot36 = Bot(token, 36)
+cbot37 = Bot(token, 37)
+cbot38 = Bot(token, 38)
+cbot39 = Bot(token, 39)
+cbot40 = Bot(token, 40)
+cbot41 = Bot(token, 41)
+cbot42 = Bot(token, 42)
+cbot43 = Bot(token, 43)
+cbot44 = Bot(token, 44)
+cbot45 = Bot(token, 45)
+cbot46 = Bot(token, 46)
+cbot47 = Bot(token, 47)
+cbot48 = Bot(token, 48)
+cbot49 = Bot(token, 49)
+cbot50 = Bot(token, 50)
+cbot51 = Bot(token, 51)
+cbot52 = Bot(token, 52)
+cbot53 = Bot(token, 53)
+cbot54 = Bot(token, 54)
+cbot55 = Bot(token, 55)
+cbot56 = Bot(token, 56)
+cbot57 = Bot(token, 57)
+cbot58 = Bot(token, 58)
+cbot59 = Bot(token, 59)
+cbot60 = Bot(token, 60)
+cbot61 = Bot(token, 61)
+cbot62 = Bot(token, 62)
+cbot63 = Bot(token, 63)
+cbot64 = Bot(token, 64)
+cbot65 = Bot(token, 65)
+cbot66 = Bot(token, 66)
+cbot67 = Bot(token, 67)
+cbot68 = Bot(token, 68)
+cbot69 = Bot(token, 69)
+cbot70 = Bot(token, 70)
+cbot71 = Bot(token, 71)
+cbot72 = Bot(token, 72)
+cbot73 = Bot(token, 73)
+cbot74 = Bot(token, 74)
+cbot75 = Bot(token, 75)
+cbot76 = Bot(token, 76)
+cbot77 = Bot(token, 77)
+cbot78 = Bot(token, 78)
+cbot79 = Bot(token, 79)
+cbot80 = Bot(token, 80)
+cbot81 = Bot(token, 81)
+cbot82 = Bot(token, 82)
+cbot83 = Bot(token, 83)
+cbot84 = Bot(token, 84)
+cbot85 = Bot(token, 85)
+cbot86 = Bot(token, 86)
+cbot87 = Bot(token, 87)
+cbot88 = Bot(token, 88)
+cbot89 = Bot(token, 89)
+cbot90 = Bot(token, 90)
+cbot91 = Bot(token, 91)
+cbot92 = Bot(token, 92)
+cbot93 = Bot(token, 93)
+cbot94 = Bot(token, 94)
+cbot95 = Bot(token, 95)
+cbot96 = Bot(token, 96)
+cbot97 = Bot(token, 97)
+cbot98 = Bot(token, 98)
+cbot99 = Bot(token, 99)
+cbot100 = Bot(token, 100)
+cbot101 = Bot(token, 101)
+cbot102 = Bot(token, 102)
+cbot103 = Bot(token, 103)
+cbot104 = Bot(token, 104)
+cbot105 = Bot(token, 105)
+cbot106 = Bot(token, 106)
+cbot107 = Bot(token, 107)
+cbot108 = Bot(token, 108)
+cbot109 = Bot(token, 109)
+cbot110 = Bot(token, 110)
+cbot111 = Bot(token, 111)
+cbot112 = Bot(token, 112)
+cbot113 = Bot(token, 113)
+cbot114 = Bot(token, 114)
+cbot115 = Bot(token, 115)
+cbot116 = Bot(token, 116)
+cbot117 = Bot(token, 117)
+cbot118 = Bot(token, 118)
+cbot119 = Bot(token, 119)
+cbot120 = Bot(token, 120)
+cbot121 = Bot(token, 121)
+cbot122 = Bot(token, 122)
+cbot123 = Bot(token, 123)
+cbot124 = Bot(token, 124)
+cbot125 = Bot(token, 125)
+cbot126 = Bot(token, 126)
+cbot127 = Bot(token, 127)
+cbot128 = Bot(token, 128)
+cbot129 = Bot(token, 129)
+cbot130 = Bot(token, 130)
+cbot131 = Bot(token, 131)
+cbot132 = Bot(token, 132)
+cbot133 = Bot(token, 133)
+cbot134 = Bot(token, 134)
+cbot135 = Bot(token, 135)
+cbot136 = Bot(token, 136)
+cbot137 = Bot(token, 137)
+cbot138 = Bot(token, 138)
+cbot139 = Bot(token, 139)
+cbot140 = Bot(token, 140)
+cbot141 = Bot(token, 141)
+cbot142 = Bot(token, 142)
+cbot143 = Bot(token, 143)
+cbot144 = Bot(token, 144)
+cbot145 = Bot(token, 145)
+cbot146 = Bot(token, 146)
+cbot147 = Bot(token, 147)
+cbot148 = Bot(token, 148)
+cbot149 = Bot(token, 149)
+cbot150 = Bot(token, 150)
+cbot151 = Bot(token, 151)
+cbot152 = Bot(token, 152)
+cbot153 = Bot(token, 153)
+cbot154 = Bot(token, 154)
+cbot155 = Bot(token, 155)
+cbot156 = Bot(token, 156)
+cbot157 = Bot(token, 157)
+cbot158 = Bot(token, 158)
+cbot159 = Bot(token, 159)
+cbot160 = Bot(token, 160)
+cbot161 = Bot(token, 161)
+cbot162 = Bot(token, 162)
+cbot163 = Bot(token, 163)
+cbot164 = Bot(token, 164)
+cbot165 = Bot(token, 165)
+cbot166 = Bot(token, 166)
+cbot167 = Bot(token, 167)
+cbot168 = Bot(token, 168)
+cbot169 = Bot(token, 169)
+cbot170 = Bot(token, 170)
+cbot171 = Bot(token, 171)
+cbot172 = Bot(token, 172)
+cbot173 = Bot(token, 173)
+cbot174 = Bot(token, 174)
+cbot175 = Bot(token, 175)
+cbot176 = Bot(token, 176)
+cbot177 = Bot(token, 127)
+cbot178 = Bot(token, 178)
+cbot179 = Bot(token, 179)
+cbot180 = Bot(token, 180)
+cbot181 = Bot(token, 181)
+cbot182 = Bot(token, 182)
+cbot183 = Bot(token, 183)
+cbot184 = Bot(token, 184)
+cbot185 = Bot(token, 185)
+cbot186 = Bot(token, 186)
+cbot187 = Bot(token, 187)
+cbot188 = Bot(token, 188)
+cbot189 = Bot(token, 189)
+cbot190 = Bot(token, 190)
+cbot191 = Bot(token, 191)
+cbot192 = Bot(token, 192)
+cbot193 = Bot(token, 193)
+cbot194 = Bot(token, 194)
+cbot195 = Bot(token, 195)
+cbot196 = Bot(token, 196)
+cbot197 = Bot(token, 197)
+cbot198 = Bot(token, 198)
+cbot199 = Bot(token, 199)
+cbot200 = Bot(token, 200)
+cbot201 = Bot(token, 201)
+cbot202 = Bot(token, 202)
+cbot203 = Bot(token, 203)
+cbot204 = Bot(token, 204)
+cbot205 = Bot(token, 205)
+cbot206 = Bot(token, 206)
+cbot207 = Bot(token, 207)
+cbot208 = Bot(token, 208)
+cbot209 = Bot(token, 209)
+cbot210 = Bot(token, 210)
+cbot211 = Bot(token, 211)
+cbot212 = Bot(token, 212)
+cbot213 = Bot(token, 213)
+cbot214 = Bot(token, 214)
+cbot215 = Bot(token, 215)
+cbot216 = Bot(token, 216)
+cbot217 = Bot(token, 217)
+cbot218 = Bot(token, 218)
+cbot219 = Bot(token, 219)
+cbot220 = Bot(token, 220)
+cbot221 = Bot(token, 221)
+cbot222 = Bot(token, 222)
+cbot223 = Bot(token, 223)
+cbot224 = Bot(token, 224)
+cbot225 = Bot(token, 225)
+cbot226 = Bot(token, 226)
+cbot227 = Bot(token, 227)
+cbot228 = Bot(token, 228)
+cbot229 = Bot(token, 229)
+cbot230 = Bot(token, 230)
+cbot231 = Bot(token, 231)
+cbot232 = Bot(token, 232)
+cbot233 = Bot(token, 233)
+cbot234 = Bot(token, 234)
+cbot235 = Bot(token, 235)
+cbot236 = Bot(token, 236)
+cbot237 = Bot(token, 237)
+cbot238 = Bot(token, 238)
+cbot239 = Bot(token, 239)
+cbot240 = Bot(token, 240)
+cbot241 = Bot(token, 241)
+cbot242 = Bot(token, 242)
+cbot243 = Bot(token, 243)
+cbot244 = Bot(token, 244)
+cbot245 = Bot(token, 245)
+cbot246 = Bot(token, 246)
+cbot247 = Bot(token, 247)
+cbot248 = Bot(token, 248)
+cbot249 = Bot(token, 249)
+cbot250 = Bot(token, 250)
+cbot251 = Bot(token, 251)
+cbot252 = Bot(token, 252)
+cbot253 = Bot(token, 253)
+cbot254 = Bot(token, 254)
+cbot255 = Bot(token, 255)
+cbot256 = Bot(token, 256)
+cbot257 = Bot(token, 257)
+cbot258 = Bot(token, 258)
+cbot259 = Bot(token, 259)
+cbot260 = Bot(token, 260)
+cbot261 = Bot(token, 261)
+cbot262 = Bot(token, 262)
+cbot263 = Bot(token, 263)
+cbot264 = Bot(token, 264)
+cbot265 = Bot(token, 265)
+cbot266 = Bot(token, 266)
+cbot267 = Bot(token, 267)
+cbot268 = Bot(token, 268)
+cbot269 = Bot(token, 269)
+cbot270 = Bot(token, 270)
+cbot271 = Bot(token, 271)
+cbot272 = Bot(token, 272)
+cbot273 = Bot(token, 273)
+cbot274 = Bot(token, 274)
+cbot275 = Bot(token, 275)
+cbot276 = Bot(token, 276)
+cbot277 = Bot(token, 277)
+cbot278 = Bot(token, 278)
+cbot279 = Bot(token, 279)
+cbot280 = Bot(token, 280)
+cbot281 = Bot(token, 281)
+cbot282 = Bot(token, 282)
+cbot283 = Bot(token, 283)
+cbot284 = Bot(token, 284)
+cbot285 = Bot(token, 285)
+cbot286 = Bot(token, 286)
+cbot287 = Bot(token, 287)
+cbot288 = Bot(token, 288)
+cbot289 = Bot(token, 289)
+cbot290 = Bot(token, 280)
+cbot291 = Bot(token, 291)
+cbot292 = Bot(token, 292)
+cbot293 = Bot(token, 293)
+cbot294 = Bot(token, 294)
+cbot295 = Bot(token, 295)
+cbot296 = Bot(token, 296)
+cbot297 = Bot(token, 297)
+cbot298 = Bot(token, 298)
+cbot299 = Bot(token, 299)
+cbot300 = Bot(token, 300)
+cbot301 = Bot(token, 301)
+cbot302 = Bot(token, 302)
+cbot303 = Bot(token, 303)
+cbot304 = Bot(token, 304)
+cbot305 = Bot(token, 305)
+cbot306 = Bot(token, 306)
+cbot307 = Bot(token, 307)
+cbot308 = Bot(token, 308)
+cbot309 = Bot(token, 309)
+cbot310 = Bot(token, 310)
+cbot311 = Bot(token, 311)
+cbot312 = Bot(token, 312)
+cbot313 = Bot(token, 313)
+cbot314 = Bot(token, 314)
+cbot315 = Bot(token, 315)
+cbot316 = Bot(token, 316)
+cbot317 = Bot(token, 317)
+cbot318 = Bot(token, 318)
+cbot319 = Bot(token, 319)
+cbot320 = Bot(token, 320)
+cbot321 = Bot(token, 321)
+cbot322 = Bot(token, 322)
+cbot323 = Bot(token, 223)
+cbot324 = Bot(token, 324)
+cbot325 = Bot(token, 325)
+cbot326 = Bot(token, 326)
+cbot327 = Bot(token, 327)
+cbot328 = Bot(token, 328)
+cbot329 = Bot(token, 329)
+cbot330 = Bot(token, 330)
+cbot331 = Bot(token, 331)
+cbot332 = Bot(token, 332)
+cbot333 = Bot(token, 333)
+cbot334 = Bot(token, 334)
+cbot335 = Bot(token, 335)
+cbot336 = Bot(token, 336)
+cbot337 = Bot(token, 337)
+cbot338 = Bot(token, 338)
+cbot339 = Bot(token, 339)
+cbot340 = Bot(token, 330)
+cbot341 = Bot(token, 341)
+cbot342 = Bot(token, 342)
+cbot343 = Bot(token, 343)
+cbot344 = Bot(token, 344)
+cbot345 = Bot(token, 345)
+cbot346 = Bot(token, 346)
+cbot347 = Bot(token, 347)
+cbot348 = Bot(token, 348)
+cbot349 = Bot(token, 349)
+cbot350 = Bot(token, 350)
+cbot351 = Bot(token, 351)
+cbot352 = Bot(token, 352)
+cbot353 = Bot(token, 353)
+cbot354 = Bot(token, 354)
+cbot355 = Bot(token, 355)
+cbot356 = Bot(token, 356)
+cbot357 = Bot(token, 357)
+cbot358 = Bot(token, 358)
+cbot359 = Bot(token, 359)
+cbot360 = Bot(token, 360)
+cbot361 = Bot(token, 361)
+cbot362 = Bot(token, 362)
+cbot363 = Bot(token, 363)
+cbot364 = Bot(token, 364)
+cbot365 = Bot(token, 365)
+cbot366 = Bot(token, 366)
+cbot367 = Bot(token, 367)
+cbot368 = Bot(token, 368)
+cbot369 = Bot(token, 369)
+cbot370 = Bot(token, 370)
+cbot371 = Bot(token, 371)
+cbot372 = Bot(token, 372)
+cbot373 = Bot(token, 273)
+cbot374 = Bot(token, 374)
+cbot375 = Bot(token, 375)
+cbot376 = Bot(token, 376)
+cbot377 = Bot(token, 377)
+cbot378 = Bot(token, 378)
+cbot379 = Bot(token, 379)
+cbot380 = Bot(token, 380)
+cbot381 = Bot(token, 381)
+cbot382 = Bot(token, 382)
+cbot383 = Bot(token, 383)
+cbot384 = Bot(token, 384)
+cbot385 = Bot(token, 385)
+cbot386 = Bot(token, 386)
+cbot387 = Bot(token, 387)
+cbot388 = Bot(token, 388)
+cbot389 = Bot(token, 389)
+cbot390 = Bot(token, 380)
+cbot391 = Bot(token, 391)
+cbot392 = Bot(token, 392)
+cbot393 = Bot(token, 393)
+cbot394 = Bot(token, 394)
+cbot395 = Bot(token, 395)
+cbot396 = Bot(token, 396)
+cbot397 = Bot(token, 397)
+cbot398 = Bot(token, 398)
+cbot399 = Bot(token, 399)
+cbot400 = Bot(token, 400)
+cbot401 = Bot(token, 401)
+cbot402 = Bot(token, 402)
+cbot403 = Bot(token, 403)
+cbot404 = Bot(token, 404)
+cbot405 = Bot(token, 405)
+cbot406 = Bot(token, 406)
+cbot407 = Bot(token, 407)
+cbot408 = Bot(token, 408)
+cbot409 = Bot(token, 409)
+cbot410 = Bot(token, 410)
+cbot411 = Bot(token, 411)
+cbot412 = Bot(token, 412)
+cbot413 = Bot(token, 413)
+cbot414 = Bot(token, 414)
+cbot415 = Bot(token, 415)
+cbot416 = Bot(token, 416)
+cbot417 = Bot(token, 417)
+cbot418 = Bot(token, 418)
+cbot419 = Bot(token, 419)
+cbot420 = Bot(token, 420)
+cbot421 = Bot(token, 421)
+cbot422 = Bot(token, 422)
+cbot423 = Bot(token, 423)
+cbot424 = Bot(token, 424)
+cbot425 = Bot(token, 425)
+cbot426 = Bot(token, 426)
+cbot427 = Bot(token, 427)
+cbot428 = Bot(token, 428)
+cbot429 = Bot(token, 429)
+cbot430 = Bot(token, 430)
+cbot431 = Bot(token, 431)
+cbot432 = Bot(token, 432)
+cbot433 = Bot(token, 433)
+cbot434 = Bot(token, 434)
+cbot435 = Bot(token, 435)
+cbot436 = Bot(token, 436)
+cbot437 = Bot(token, 437)
+cbot438 = Bot(token, 438)
+cbot439 = Bot(token, 439)
+cbot440 = Bot(token, 430)
+cbot441 = Bot(token, 441)
+cbot442 = Bot(token, 442)
+cbot443 = Bot(token, 443)
+cbot444 = Bot(token, 444)
+cbot445 = Bot(token, 445)
+cbot446 = Bot(token, 446)
+cbot447 = Bot(token, 447)
+cbot448 = Bot(token, 448)
+cbot449 = Bot(token, 449)
+cbot450 = Bot(token, 450)
+cbot451 = Bot(token, 451)
+cbot452 = Bot(token, 452)
+cbot453 = Bot(token, 453)
+cbot454 = Bot(token, 454)
+cbot455 = Bot(token, 455)
+cbot456 = Bot(token, 456)
+cbot457 = Bot(token, 457)
+cbot458 = Bot(token, 458)
+cbot459 = Bot(token, 459)
+cbot460 = Bot(token, 460)
+cbot461 = Bot(token, 461)
+cbot462 = Bot(token, 462)
+cbot463 = Bot(token, 463)
+cbot464 = Bot(token, 464)
+cbot465 = Bot(token, 465)
+cbot466 = Bot(token, 466)
+cbot467 = Bot(token, 467)
+cbot468 = Bot(token, 468)
+cbot469 = Bot(token, 469)
+cbot470 = Bot(token, 470)
+cbot471 = Bot(token, 471)
+cbot472 = Bot(token, 472)
+cbot473 = Bot(token, 473)
+cbot474 = Bot(token, 474)
+cbot475 = Bot(token, 475)
+cbot476 = Bot(token, 476)
+cbot477 = Bot(token, 477)
+cbot478 = Bot(token, 478)
+cbot479 = Bot(token, 479)
+cbot480 = Bot(token, 480)
+cbot481 = Bot(token, 481)
+cbot482 = Bot(token, 482)
+cbot483 = Bot(token, 483)
+cbot484 = Bot(token, 484)
+cbot485 = Bot(token, 485)
+cbot486 = Bot(token, 486)
+cbot487 = Bot(token, 487)
+cbot488 = Bot(token, 488)
+cbot489 = Bot(token, 489)
+cbot490 = Bot(token, 490)
+cbot491 = Bot(token, 491)
+cbot492 = Bot(token, 492)
+cbot493 = Bot(token, 493)
+cbot494 = Bot(token, 494)
+cbot495 = Bot(token, 495)
+cbot496 = Bot(token, 496)
+cbot497 = Bot(token, 497)
+cbot498 = Bot(token, 498)
+cbot499 = Bot(token, 499)
+cbot500 = Bot(token, 500)
+cbot501 = Bot(token, 501)
+cbot502 = Bot(token, 502)
+cbot503 = Bot(token, 503)
+cbot504 = Bot(token, 504)
+cbot505 = Bot(token, 505)
+cbot506 = Bot(token, 506)
+cbot507 = Bot(token, 507)
+cbot508 = Bot(token, 508)
+cbot509 = Bot(token, 509)
+cbot510 = Bot(token, 510)
+cbot511 = Bot(token, 511)
+cbot512 = Bot(token, 512)
+cbot513 = Bot(token, 513)
+cbot514 = Bot(token, 514)
+cbot515 = Bot(token, 515)
+cbot516 = Bot(token, 516)
+cbot517 = Bot(token, 517)
+cbot518 = Bot(token, 518)
+cbot519 = Bot(token, 519)
+cbot520 = Bot(token, 520)
+cbot521 = Bot(token, 521)
+cbot522 = Bot(token, 522)
+cbot523 = Bot(token, 523)
+cbot524 = Bot(token, 524)
+cbot525 = Bot(token, 525)
+cbot526 = Bot(token, 526)
+cbot527 = Bot(token, 527)
+cbot528 = Bot(token, 528)
+cbot529 = Bot(token, 529)
+cbot530 = Bot(token, 530)
+cbot531 = Bot(token, 531)
+cbot532 = Bot(token, 532)
+cbot533 = Bot(token, 533)
+cbot534 = Bot(token, 534)
+cbot535 = Bot(token, 535)
+cbot536 = Bot(token, 536)
+cbot537 = Bot(token, 537)
+cbot538 = Bot(token, 538)
+cbot539 = Bot(token, 539)
+cbot540 = Bot(token, 540)
+cbot541 = Bot(token, 541)
+cbot542 = Bot(token, 542)
+cbot543 = Bot(token, 543)
+cbot544 = Bot(token, 544)
+cbot545 = Bot(token, 545)
+cbot546 = Bot(token, 546)
+cbot547 = Bot(token, 547)
+cbot548 = Bot(token, 548)
+cbot549 = Bot(token, 549)
+cbot550 = Bot(token, 550)
+cbot551 = Bot(token, 551)
+cbot552 = Bot(token, 552)
+cbot553 = Bot(token, 553)
+cbot554 = Bot(token, 554)
+cbot555 = Bot(token, 555)
+cbot556 = Bot(token, 556)
+cbot557 = Bot(token, 557)
+cbot558 = Bot(token, 558)
+cbot559 = Bot(token, 559)
+cbot560 = Bot(token, 560)
+cbot561 = Bot(token, 561)
+cbot562 = Bot(token, 562)
+cbot563 = Bot(token, 563)
+cbot564 = Bot(token, 564)
+cbot565 = Bot(token, 565)
+cbot566 = Bot(token, 566)
+cbot567 = Bot(token, 567)
+cbot568 = Bot(token, 568)
+cbot569 = Bot(token, 569)
+cbot570 = Bot(token, 570)
+cbot571 = Bot(token, 571)
+cbot572 = Bot(token, 572)
+cbot573 = Bot(token, 573)
+cbot574 = Bot(token, 574)
+cbot575 = Bot(token, 575)
+cbot576 = Bot(token, 576)
+cbot577 = Bot(token, 577)
+cbot578 = Bot(token, 578)
+cbot579 = Bot(token, 579)
+cbot580 = Bot(token, 580)
+cbot581 = Bot(token, 581)
+cbot582 = Bot(token, 582)
+cbot583 = Bot(token, 583)
+cbot584 = Bot(token, 584)
+cbot585 = Bot(token, 585)
+cbot586 = Bot(token, 586)
+cbot587 = Bot(token, 587)
+cbot588 = Bot(token, 588)
+cbot589 = Bot(token, 589)
+cbot590 = Bot(token, 590)
+cbot591 = Bot(token, 591)
+cbot592 = Bot(token, 592)
+cbot593 = Bot(token, 593)
+cbot594 = Bot(token, 594)
+cbot595 = Bot(token, 595)
+cbot596 = Bot(token, 596)
+cbot597 = Bot(token, 597)
+cbot598 = Bot(token, 598)
+cbot599 = Bot(token, 599)
+cbot600 = Bot(token, 600)
+cbot601 = Bot(token, 601)
+cbot602 = Bot(token, 602)
+cbot603 = Bot(token, 603)
+cbot604 = Bot(token, 604)
+cbot605 = Bot(token, 605)
+cbot606 = Bot(token, 606)
+cbot607 = Bot(token, 607)
+cbot608 = Bot(token, 608)
+cbot609 = Bot(token, 609)
+cbot610 = Bot(token, 610)
+cbot611 = Bot(token, 611)
+cbot612 = Bot(token, 612)
+cbot613 = Bot(token, 613)
+cbot614 = Bot(token, 614)
+cbot615 = Bot(token, 615)
+cbot616 = Bot(token, 616)
+cbot617 = Bot(token, 617)
+cbot618 = Bot(token, 618)
+cbot619 = Bot(token, 619)
+cbot620 = Bot(token, 620)
+cbot621 = Bot(token, 621)
+cbot622 = Bot(token, 622)
+cbot623 = Bot(token, 623)
+cbot624 = Bot(token, 624)
+cbot625 = Bot(token, 625)
+cbot626 = Bot(token, 626)
+cbot627 = Bot(token, 627)
+cbot628 = Bot(token, 628)
+cbot629 = Bot(token, 629)
+cbot630 = Bot(token, 630)
+cbot631 = Bot(token, 631)
+cbot632 = Bot(token, 632)
+cbot633 = Bot(token, 633)
+cbot634 = Bot(token, 634)
+cbot635 = Bot(token, 635)
+cbot636 = Bot(token, 636)
+cbot637 = Bot(token, 637)
+cbot638 = Bot(token, 638)
+cbot639 = Bot(token, 639)
+cbot640 = Bot(token, 640)
+cbot641 = Bot(token, 641)
+cbot642 = Bot(token, 642)
+cbot643 = Bot(token, 643)
+cbot644 = Bot(token, 644)
+cbot645 = Bot(token, 645)
+cbot646 = Bot(token, 646)
+cbot647 = Bot(token, 647)
+cbot648 = Bot(token, 648)
+cbot649 = Bot(token, 649)
+cbot650 = Bot(token, 650)
+cbot651 = Bot(token, 651)
+cbot652 = Bot(token, 652)
+cbot653 = Bot(token, 653)
+cbot654 = Bot(token, 654)
+cbot655 = Bot(token, 655)
+cbot656 = Bot(token, 656)
+cbot657 = Bot(token, 657)
+cbot658 = Bot(token, 658)
+cbot659 = Bot(token, 659)
+cbot660 = Bot(token, 660)
+cbot661 = Bot(token, 661)
+cbot662 = Bot(token, 662)
+cbot663 = Bot(token, 663)
+cbot664 = Bot(token, 664)
+cbot665 = Bot(token, 665)
+cbot666 = Bot(token, 666)
+cbot667 = Bot(token, 667)
+cbot668 = Bot(token, 668)
+cbot669 = Bot(token, 669)
+cbot670 = Bot(token, 670)
+cbot671 = Bot(token, 671)
+cbot672 = Bot(token, 672)
+cbot673 = Bot(token, 673)
+cbot674 = Bot(token, 674)
+cbot675 = Bot(token, 675)
+cbot676 = Bot(token, 676)
+cbot677 = Bot(token, 677)
+cbot678 = Bot(token, 678)
+cbot679 = Bot(token, 679)
+cbot680 = Bot(token, 680)
+cbot681 = Bot(token, 681)
+cbot682 = Bot(token, 682)
+cbot683 = Bot(token, 683)
+cbot684 = Bot(token, 684)
+cbot685 = Bot(token, 685)
+cbot686 = Bot(token, 686)
+cbot687 = Bot(token, 687)
+cbot688 = Bot(token, 688)
+cbot689 = Bot(token, 689)
+cbot690 = Bot(token, 690)
+cbot691 = Bot(token, 691)
+cbot692 = Bot(token, 692)
+cbot693 = Bot(token, 693)
+cbot694 = Bot(token, 694)
+cbot695 = Bot(token, 695)
+cbot696 = Bot(token, 696)
+cbot697 = Bot(token, 697)
+cbot698 = Bot(token, 698)
+cbot699 = Bot(token, 699)
+cbot700 = Bot(token, 700)
+cbot701 = Bot(token, 701)
+cbot702 = Bot(token, 702)
+cbot703 = Bot(token, 703)
+cbot704 = Bot(token, 704)
+cbot705 = Bot(token, 705)
+cbot706 = Bot(token, 706)
+cbot707 = Bot(token, 707)
+cbot708 = Bot(token, 708)
+cbot709 = Bot(token, 709)
+cbot710 = Bot(token, 710)
+cbot711 = Bot(token, 711)
+cbot712 = Bot(token, 712)
+cbot713 = Bot(token, 713)
+cbot714 = Bot(token, 714)
+cbot715 = Bot(token, 715)
+cbot716 = Bot(token, 716)
+cbot717 = Bot(token, 717)
+cbot718 = Bot(token, 718)
+cbot719 = Bot(token, 719)
+cbot720 = Bot(token, 720)
+cbot721 = Bot(token, 721)
+cbot722 = Bot(token, 722)
+cbot723 = Bot(token, 723)
+cbot724 = Bot(token, 724)
+cbot725 = Bot(token, 795)
+cbot726 = Bot(token, 726)
+cbot727 = Bot(token, 727)
+cbot728 = Bot(token, 728)
+cbot729 = Bot(token, 729)
+cbot730 = Bot(token, 730)
+cbot731 = Bot(token, 731)
+cbot732 = Bot(token, 732)
+cbot733 = Bot(token, 733)
+cbot734 = Bot(token, 734)
+cbot735 = Bot(token, 735)
+cbot736 = Bot(token, 736)
+cbot737 = Bot(token, 737)
+cbot738 = Bot(token, 738)
+cbot739 = Bot(token, 739)
+cbot740 = Bot(token, 740)
+cbot741 = Bot(token, 741)
+cbot742 = Bot(token, 742)
+cbot743 = Bot(token, 743)
+cbot744 = Bot(token, 744)
+cbot745 = Bot(token, 745)
+cbot746 = Bot(token, 746)
+cbot747 = Bot(token, 747)
+cbot748 = Bot(token, 748)
+cbot749 = Bot(token, 749)
+cbot750 = Bot(token, 750)
+cbot751 = Bot(token, 751)
+cbot752 = Bot(token, 752)
+cbot753 = Bot(token, 753)
+cbot754 = Bot(token, 754)
+cbot755 = Bot(token, 755)
+cbot756 = Bot(token, 756)
+cbot757 = Bot(token, 757)
+cbot758 = Bot(token, 758)
+cbot759 = Bot(token, 759)
+cbot760 = Bot(token, 760)
+cbot761 = Bot(token, 761)
+cbot762 = Bot(token, 762)
+cbot763 = Bot(token, 763)
+cbot764 = Bot(token, 764)
+cbot765 = Bot(token, 765)
+cbot766 = Bot(token, 766)
+cbot767 = Bot(token, 767)
+cbot768 = Bot(token, 768)
+cbot769 = Bot(token, 769)
+cbot770 = Bot(token, 770)
+cbot771 = Bot(token, 771)
+cbot772 = Bot(token, 772)
+cbot773 = Bot(token, 773)
+cbot774 = Bot(token, 774)
+cbot775 = Bot(token, 775)
+cbot776 = Bot(token, 776)
+cbot777 = Bot(token, 777)
+cbot778 = Bot(token, 778)
+cbot779 = Bot(token, 779)
+cbot780 = Bot(token, 780)
+cbot781 = Bot(token, 781)
+cbot782 = Bot(token, 782)
+cbot783 = Bot(token, 783)
+cbot784 = Bot(token, 784)
+cbot785 = Bot(token, 785)
+cbot786 = Bot(token, 786)
+cbot787 = Bot(token, 787)
+cbot788 = Bot(token, 788)
+cbot789 = Bot(token, 789)
+cbot790 = Bot(token, 790)
+cbot791 = Bot(token, 791)
+cbot792 = Bot(token, 792)
+cbot793 = Bot(token, 793)
+cbot794 = Bot(token, 794)
+cbot795 = Bot(token, 795)
+cbot796 = Bot(token, 796)
+cbot797 = Bot(token, 797)
+cbot798 = Bot(token, 798)
+cbot799 = Bot(token, 799)
+cbot800 = Bot(token, 800)
+cbot801 = Bot(token, 801)
+cbot802 = Bot(token, 802)
+cbot803 = Bot(token, 803)
+cbot804 = Bot(token, 804)
+cbot805 = Bot(token, 805)
+cbot806 = Bot(token, 806)
+cbot807 = Bot(token, 807)
+cbot808 = Bot(token, 808)
+cbot809 = Bot(token, 809)
+cbot810 = Bot(token, 810)
+cbot811 = Bot(token, 811)
+cbot812 = Bot(token, 812)
+cbot813 = Bot(token, 813)
+cbot814 = Bot(token, 814)
+cbot815 = Bot(token, 815)
+cbot816 = Bot(token, 816)
+cbot817 = Bot(token, 817)
+cbot818 = Bot(token, 818)
+cbot819 = Bot(token, 819)
+cbot820 = Bot(token, 820)
+cbot821 = Bot(token, 821)
+cbot822 = Bot(token, 822)
+cbot823 = Bot(token, 823)
+cbot824 = Bot(token, 824)
+cbot825 = Bot(token, 825)
+cbot826 = Bot(token, 826)
+cbot827 = Bot(token, 827)
+cbot828 = Bot(token, 828)
+cbot829 = Bot(token, 829)
+cbot830 = Bot(token, 830)
+cbot831 = Bot(token, 831)
+cbot832 = Bot(token, 832)
+cbot833 = Bot(token, 833)
+cbot834 = Bot(token, 834)
+cbot835 = Bot(token, 835)
+cbot836 = Bot(token, 836)
+cbot837 = Bot(token, 837)
+cbot838 = Bot(token, 838)
+cbot839 = Bot(token, 839)
+cbot840 = Bot(token, 840)
+cbot841 = Bot(token, 841)
+cbot842 = Bot(token, 842)
+cbot843 = Bot(token, 843)
+cbot844 = Bot(token, 844)
+cbot845 = Bot(token, 845)
+cbot846 = Bot(token, 846)
+cbot847 = Bot(token, 847)
+cbot848 = Bot(token, 848)
+cbot849 = Bot(token, 849)
+cbot850 = Bot(token, 850)
+cbot851 = Bot(token, 851)
+cbot852 = Bot(token, 852)
+cbot853 = Bot(token, 853)
+cbot854 = Bot(token, 854)
+cbot855 = Bot(token, 855)
+cbot856 = Bot(token, 856)
+cbot857 = Bot(token, 857)
+cbot858 = Bot(token, 858)
+cbot859 = Bot(token, 859)
+cbot860 = Bot(token, 860)
+cbot861 = Bot(token, 861)
+cbot862 = Bot(token, 862)
+cbot863 = Bot(token, 863)
+cbot864 = Bot(token, 864)
+cbot865 = Bot(token, 865)
+cbot866 = Bot(token, 866)
+cbot867 = Bot(token, 867)
+cbot868 = Bot(token, 868)
+cbot869 = Bot(token, 869)
+cbot870 = Bot(token, 870)
+cbot871 = Bot(token, 871)
+cbot872 = Bot(token, 872)
+cbot873 = Bot(token, 873)
+cbot874 = Bot(token, 874)
+cbot875 = Bot(token, 875)
+cbot876 = Bot(token, 876)
+cbot877 = Bot(token, 877)
+cbot878 = Bot(token, 878)
+cbot879 = Bot(token, 879)
+cbot880 = Bot(token, 880)
+cbot881 = Bot(token, 881)
+cbot882 = Bot(token, 882)
+cbot883 = Bot(token, 883)
+cbot884 = Bot(token, 884)
+cbot885 = Bot(token, 885)
+cbot886 = Bot(token, 886)
+cbot887 = Bot(token, 887)
+cbot888 = Bot(token, 888)
+cbot889 = Bot(token, 889)
+cbot890 = Bot(token, 890)
+cbot891 = Bot(token, 891)
+cbot892 = Bot(token, 892)
+cbot893 = Bot(token, 893)
+cbot894 = Bot(token, 894)
+cbot895 = Bot(token, 895)
+cbot896 = Bot(token, 896)
+cbot897 = Bot(token, 897)
+cbot898 = Bot(token, 898)
+cbot899 = Bot(token, 899)
+cbot900 = Bot(token, 900)
+cbot901 = Bot(token, 901)
+cbot902 = Bot(token, 902)
+cbot903 = Bot(token, 903)
+cbot904 = Bot(token, 904)
+cbot905 = Bot(token, 905)
+cbot906 = Bot(token, 906)
+cbot907 = Bot(token, 907)
+cbot908 = Bot(token, 908)
+cbot909 = Bot(token, 909)
+cbot910 = Bot(token, 910)
+cbot911 = Bot(token, 911)
+cbot912 = Bot(token, 912)
+cbot913 = Bot(token, 913)
+cbot914 = Bot(token, 914)
+cbot915 = Bot(token, 915)
+cbot916 = Bot(token, 916)
+cbot917 = Bot(token, 917)
+cbot918 = Bot(token, 918)
+cbot919 = Bot(token, 919)
+cbot920 = Bot(token, 920)
+cbot921 = Bot(token, 921)
+cbot922 = Bot(token, 922)
+cbot923 = Bot(token, 923)
+cbot924 = Bot(token, 924)
+cbot925 = Bot(token, 925)
+cbot926 = Bot(token, 926)
+cbot927 = Bot(token, 927)
+cbot928 = Bot(token, 928)
+cbot929 = Bot(token, 929)
+cbot930 = Bot(token, 930)
+cbot931 = Bot(token, 931)
+cbot932 = Bot(token, 932)
+cbot933 = Bot(token, 933)
+cbot934 = Bot(token, 934)
+cbot935 = Bot(token, 935)
+cbot936 = Bot(token, 936)
+cbot937 = Bot(token, 937)
+cbot938 = Bot(token, 938)
+cbot939 = Bot(token, 939)
+cbot940 = Bot(token, 940)
+cbot941 = Bot(token, 941)
+cbot942 = Bot(token, 942)
+cbot943 = Bot(token, 943)
+cbot944 = Bot(token, 944)
+cbot945 = Bot(token, 945)
+cbot946 = Bot(token, 946)
+cbot947 = Bot(token, 947)
+cbot948 = Bot(token, 948)
+cbot949 = Bot(token, 949)
+cbot950 = Bot(token, 950)
+cbot951 = Bot(token, 951)
+cbot952 = Bot(token, 952)
+cbot953 = Bot(token, 953)
+cbot954 = Bot(token, 954)
+cbot955 = Bot(token, 955)
+cbot956 = Bot(token, 956)
+cbot957 = Bot(token, 957)
+cbot958 = Bot(token, 958)
+cbot959 = Bot(token, 959)
+cbot960 = Bot(token, 960)
+cbot961 = Bot(token, 961)
+cbot962 = Bot(token, 962)
+cbot963 = Bot(token, 963)
+cbot964 = Bot(token, 964)
+cbot965 = Bot(token, 965)
+cbot966 = Bot(token, 966)
+cbot967 = Bot(token, 967)
+cbot968 = Bot(token, 968)
+cbot969 = Bot(token, 969)
+cbot970 = Bot(token, 970)
+cbot971 = Bot(token, 971)
+cbot972 = Bot(token, 972)
+cbot973 = Bot(token, 973)
+cbot974 = Bot(token, 974)
+cbot975 = Bot(token, 975)
+cbot976 = Bot(token, 976)
+cbot977 = Bot(token, 977)
+cbot978 = Bot(token, 978)
+cbot979 = Bot(token, 979)
+cbot980 = Bot(token, 980)
+cbot981 = Bot(token, 981)
+cbot982 = Bot(token, 982)
+cbot983 = Bot(token, 983)
+cbot984 = Bot(token, 984)
+cbot985 = Bot(token, 985)
+cbot986 = Bot(token, 986)
+cbot987 = Bot(token, 987)
+cbot988 = Bot(token, 988)
+cbot989 = Bot(token, 989)
+cbot990 = Bot(token, 990)
+cbot991 = Bot(token, 991)
+cbot992 = Bot(token, 992)
+cbot993 = Bot(token, 993)
+cbot994 = Bot(token, 994)
+cbot995 = Bot(token, 995)
+cbot996 = Bot(token, 996)
+cbot997 = Bot(token, 997)
+cbot998 = Bot(token, 998)
+cbot999 = Bot(token, 999)
 
 
 async def main():
     await asyncio.gather(
-        pbot0.start(),
-        pbot1.start(),
-        pbot2.start(),
-        pbot3.start(),
-        pbot4.start(),
-        pbot5.start(),
-        pbot6.start(),
-        pbot7.start(),
-        pbot8.start(),
-        pbot9.start(),
-        pbot10.start(),
-        pbot11.start(),
-        pbot12.start(),
-        pbot13.start(),
-        pbot14.start(),
-        pbot15.start(),
-        pbot16.start(),
-        pbot17.start(),
-        pbot18.start(),
-        pbot19.start(),
-        pbot20.start(),
-        pbot21.start(),
-        pbot22.start(),
-        pbot23.start(),
-        pbot24.start(),
-        pbot25.start(),
-        pbot26.start(),
-        pbot27.start(),
-        pbot28.start(),
-        pbot29.start(),
-        pbot30.start(),
-        pbot31.start(),
-        pbot32.start(),
-        pbot33.start(),
-        pbot34.start(),
-        pbot35.start(),
-        pbot36.start(),
-        pbot37.start(),
-        pbot38.start(),
-        pbot39.start(),
-        pbot40.start(),
-        pbot41.start(),
-        pbot42.start(),
-        pbot43.start(),
-        pbot44.start(),
-        pbot45.start(),
-        pbot46.start(),
-        pbot47.start(),
-        pbot48.start(),
-        pbot49.start(),
-        pbot50.start(),
-        pbot51.start(),
-        pbot52.start(),
-        pbot53.start(),
-        pbot54.start(),
-        pbot55.start(),
-        pbot56.start(),
-        pbot57.start(),
-        pbot58.start(),
-        pbot59.start(),
-        pbot60.start(),
-        pbot61.start(),
-        pbot62.start(),
-        pbot63.start(),
-        pbot64.start(),
-        pbot65.start(),
-        pbot66.start(),
-        pbot67.start(),
-        pbot68.start(),
-        pbot69.start(),
-        pbot70.start(),
-        pbot71.start(),
-        pbot72.start(),
-        pbot73.start(),
-        pbot74.start(),
-        pbot75.start(),
-        pbot76.start(),
-        pbot77.start(),
-        pbot78.start(),
-        pbot79.start(),
-        pbot80.start(),
-        pbot81.start(),
-        pbot82.start(),
-        pbot83.start(),
-        pbot84.start(),
-        pbot85.start(),
-        pbot86.start(),
-        pbot87.start(),
-        pbot88.start(),
-        pbot89.start(),
-        pbot90.start(),
-        pbot91.start(),
-        pbot92.start(),
-        pbot93.start(),
-        pbot94.start(),
-        pbot95.start(),
-        pbot96.start(),
-        pbot97.start(),
-        pbot98.start(),
-        pbot99.start(),
-        pbot100.start(),
-        pbot101.start(),
-        pbot102.start(),
-        pbot103.start(),
-        pbot104.start(),
-        pbot105.start(),
-        pbot106.start(),
-        pbot107.start(),
-        pbot108.start(),
-        pbot109.start(),
-        pbot110.start(),
-        pbot111.start(),
-        pbot112.start(),
-        pbot113.start(),
-        pbot114.start(),
-        pbot115.start(),
-        pbot116.start(),
-        pbot117.start(),
-        pbot118.start(),
-        pbot119.start(),
-        pbot120.start(),
-        pbot121.start(),
-        pbot122.start(),
-        pbot123.start(),
-        pbot124.start(),
-        pbot125.start(),
-        pbot126.start(),
-        pbot127.start(),
-        pbot128.start(),
-        pbot129.start(),
-        pbot130.start(),
-        pbot131.start(),
-        pbot132.start(),
-        pbot133.start(),
-        pbot134.start(),
-        pbot135.start(),
-        pbot136.start(),
-        pbot137.start(),
-        pbot138.start(),
-        pbot139.start(),
-        pbot140.start(),
-        pbot141.start(),
-        pbot142.start(),
-        pbot143.start(),
-        pbot144.start(),
-        pbot145.start(),
-        pbot146.start(),
-        pbot147.start(),
-        pbot148.start(),
-        pbot149.start(),
-        pbot150.start(),
-        pbot151.start(),
-        pbot152.start(),
-        pbot153.start(),
-        pbot154.start(),
-        pbot155.start(),
-        pbot156.start(),
-        pbot157.start(),
-        pbot158.start(),
-        pbot159.start(),
-        pbot160.start(),
-        pbot161.start(),
-        pbot162.start(),
-        pbot163.start(),
-        pbot164.start(),
-        pbot165.start(),
-        pbot166.start(),
-        pbot167.start(),
-        pbot168.start(),
-        pbot169.start(),
-        pbot170.start(),
-        pbot171.start(),
-        pbot172.start(),
-        pbot173.start(),
-        pbot174.start(),
-        pbot175.start(),
-        pbot176.start(),
-        pbot177.start(),
-        pbot178.start(),
-        pbot179.start(),
-        pbot180.start(),
-        pbot181.start(),
-        pbot182.start(),
-        pbot183.start(),
-        pbot184.start(),
-        pbot185.start(),
-        pbot186.start(),
-        pbot187.start(),
-        pbot188.start(),
-        pbot189.start(),
-        pbot190.start(),
-        pbot191.start(),
-        pbot192.start(),
-        pbot193.start(),
-        pbot194.start(),
-        pbot195.start(),
-        pbot196.start(),
-        pbot197.start(),
-        pbot198.start(),
-        pbot199.start(),
-        pbot200.start(),
-        pbot201.start(),
-        pbot202.start(),
-        pbot203.start(),
-        pbot204.start(),
-        pbot205.start(),
-        pbot206.start(),
-        pbot207.start(),
-        pbot208.start(),
-        pbot209.start(),
-        pbot210.start(),
-        pbot211.start(),
-        pbot212.start(),
-        pbot213.start(),
-        pbot214.start(),
-        pbot215.start(),
-        pbot216.start(),
-        pbot217.start(),
-        pbot218.start(),
-        pbot219.start(),
-        pbot220.start(),
-        pbot221.start(),
-        pbot222.start(),
-        pbot223.start(),
-        pbot224.start(),
-        pbot225.start(),
-        pbot226.start(),
-        pbot227.start(),
-        pbot228.start(),
-        pbot229.start(),
-        pbot230.start(),
-        pbot231.start(),
-        pbot232.start(),
-        pbot233.start(),
-        pbot234.start(),
-        pbot235.start(),
-        pbot236.start(),
-        pbot237.start(),
-        pbot238.start(),
-        pbot239.start(),
-        pbot240.start(),
-        pbot241.start(),
-        pbot242.start(),
-        pbot243.start(),
-        pbot244.start(),
-        pbot245.start(),
-        pbot246.start(),
-        pbot247.start(),
-        pbot248.start(),
-        pbot249.start(),
-        pbot250.start(),
-        pbot251.start(),
-        pbot252.start(),
-        pbot253.start(),
-        pbot254.start(),
-        pbot255.start(),
-        pbot256.start(),
-        pbot257.start(),
-        pbot258.start(),
-        pbot259.start(),
-        pbot260.start(),
-        pbot261.start(),
-        pbot262.start(),
-        pbot263.start(),
-        pbot264.start(),
-        pbot265.start(),
-        pbot266.start(),
-        pbot267.start(),
-        pbot268.start(),
-        pbot269.start(),
-        pbot270.start(),
-        pbot271.start(),
-        pbot272.start(),
-        pbot273.start(),
-        pbot274.start(),
-        pbot275.start(),
-        pbot276.start(),
-        pbot277.start(),
-        pbot278.start(),
-        pbot279.start(),
-        pbot280.start(),
-        pbot281.start(),
-        pbot282.start(),
-        pbot283.start(),
-        pbot284.start(),
-        pbot285.start(),
-        pbot286.start(),
-        pbot287.start(),
-        pbot288.start(),
-        pbot289.start(),
-        pbot290.start(),
-        pbot291.start(),
-        pbot292.start(),
-        pbot293.start(),
-        pbot294.start(),
-        pbot295.start(),
-        pbot296.start(),
-        pbot297.start(),
-        pbot298.start(),
-        pbot299.start(),
-        pbot300.start(),
-        pbot301.start(),
-        pbot302.start(),
-        pbot303.start(),
-        pbot304.start(),
-        pbot305.start(),
-        pbot306.start(),
-        pbot307.start(),
-        pbot308.start(),
-        pbot309.start(),
-        pbot310.start(),
-        pbot311.start(),
-        pbot312.start(),
-        pbot313.start(),
-        pbot314.start(),
-        pbot315.start(),
-        pbot316.start(),
-        pbot317.start(),
-        pbot318.start(),
-        pbot319.start(),
-        pbot320.start(),
-        pbot321.start(),
-        pbot322.start(),
-        pbot323.start(),
-        pbot324.start(),
-        pbot325.start(),
-        pbot326.start(),
-        pbot327.start(),
-        pbot328.start(),
-        pbot329.start(),
-        pbot330.start(),
-        pbot331.start(),
-        pbot332.start(),
-        pbot333.start(),
-        pbot334.start(),
-        pbot335.start(),
-        pbot336.start(),
-        pbot337.start(),
-        pbot338.start(),
-        pbot339.start(),
-        pbot340.start(),
-        pbot341.start(),
-        pbot342.start(),
-        pbot343.start(),
-        pbot344.start(),
-        pbot345.start(),
-        pbot346.start(),
-        pbot347.start(),
-        pbot348.start(),
-        pbot349.start(),
-        pbot350.start(),
-        pbot351.start(),
-        pbot352.start(),
-        pbot353.start(),
-        pbot354.start(),
-        pbot355.start(),
-        pbot356.start(),
-        pbot357.start(),
-        pbot358.start(),
-        pbot359.start(),
-        pbot360.start(),
-        pbot361.start(),
-        pbot362.start(),
-        pbot363.start(),
-        pbot364.start(),
-        pbot365.start(),
-        pbot366.start(),
-        pbot367.start(),
-        pbot368.start(),
-        pbot369.start(),
-        pbot370.start(),
-        pbot371.start(),
-        pbot372.start(),
-        pbot373.start(),
-        pbot374.start(),
-        pbot375.start(),
-        pbot376.start(),
-        pbot377.start(),
-        pbot378.start(),
-        pbot379.start(),
-        pbot380.start(),
-        pbot381.start(),
-        pbot382.start(),
-        pbot383.start(),
-        pbot384.start(),
-        pbot385.start(),
-        pbot386.start(),
-        pbot387.start(),
-        pbot388.start(),
-        pbot389.start(),
-        pbot390.start(),
-        pbot391.start(),
-        pbot392.start(),
-        pbot393.start(),
-        pbot394.start(),
-        pbot395.start(),
-        pbot396.start(),
-        pbot397.start(),
-        pbot398.start(),
-        pbot399.start(),
-        pbot400.start(),
-        pbot401.start(),
-        pbot402.start(),
-        pbot403.start(),
-        pbot404.start(),
-        pbot405.start(),
-        pbot406.start(),
-        pbot407.start(),
-        pbot408.start(),
-        pbot409.start(),
-        pbot410.start(),
-        pbot411.start(),
-        pbot412.start(),
-        pbot413.start(),
-        pbot414.start(),
-        pbot415.start(),
-        pbot416.start(),
-        pbot417.start(),
-        pbot418.start(),
-        pbot419.start(),
-        pbot420.start(),
-        pbot421.start(),
-        pbot422.start(),
-        pbot423.start(),
-        pbot424.start(),
-        pbot425.start(),
-        pbot426.start(),
-        pbot427.start(),
-        pbot428.start(),
-        pbot429.start(),
-        pbot430.start(),
-        pbot431.start(),
-        pbot432.start(),
-        pbot433.start(),
-        pbot434.start(),
-        pbot435.start(),
-        pbot436.start(),
-        pbot437.start(),
-        pbot438.start(),
-        pbot439.start(),
-        pbot440.start(),
-        pbot441.start(),
-        pbot442.start(),
-        pbot443.start(),
-        pbot444.start(),
-        pbot445.start(),
-        pbot446.start(),
-        pbot447.start(),
-        pbot448.start(),
-        pbot449.start(),
-        pbot450.start(),
-        pbot451.start(),
-        pbot452.start(),
-        pbot453.start(),
-        pbot454.start(),
-        pbot455.start(),
-        pbot456.start(),
-        pbot457.start(),
-        pbot458.start(),
-        pbot459.start(),
-        pbot460.start(),
-        pbot461.start(),
-        pbot462.start(),
-        pbot463.start(),
-        pbot464.start(),
-        pbot465.start(),
-        pbot466.start(),
-        pbot467.start(),
-        pbot468.start(),
-        pbot469.start(),
-        pbot470.start(),
-        pbot471.start(),
-        pbot472.start(),
-        pbot473.start(),
-        pbot474.start(),
-        pbot475.start(),
-        pbot476.start(),
-        pbot477.start(),
-        pbot478.start(),
-        pbot479.start(),
-        pbot480.start(),
-        pbot481.start(),
-        pbot482.start(),
-        pbot483.start(),
-        pbot484.start(),
-        pbot485.start(),
-        pbot486.start(),
-        pbot487.start(),
-        pbot488.start(),
-        pbot489.start(),
-        pbot490.start(),
-        pbot491.start(),
-        pbot492.start(),
-        pbot493.start(),
-        pbot494.start(),
-        pbot495.start(),
-        pbot496.start(),
-        pbot497.start(),
-        pbot498.start(),
-        pbot499.start(),
-        pbot500.start(),
-        pbot501.start(),
-        pbot502.start(),
-        pbot503.start(),
-        pbot504.start(),
-        pbot505.start(),
-        pbot506.start(),
-        pbot507.start(),
-        pbot508.start(),
-        pbot509.start(),
-        pbot510.start(),
-        pbot511.start(),
-        pbot512.start(),
-        pbot513.start(),
-        pbot514.start(),
-        pbot515.start(),
-        pbot516.start(),
-        pbot517.start(),
-        pbot518.start(),
-        pbot519.start(),
-        pbot520.start(),
-        pbot521.start(),
-        pbot522.start(),
-        pbot523.start(),
-        pbot524.start(),
-        pbot525.start(),
-        pbot526.start(),
-        pbot527.start(),
-        pbot528.start(),
-        pbot529.start(),
-        pbot530.start(),
-        pbot531.start(),
-        pbot532.start(),
-        pbot533.start(),
-        pbot534.start(),
-        pbot535.start(),
-        pbot536.start(),
-        pbot537.start(),
-        pbot538.start(),
-        pbot539.start(),
-        pbot540.start(),
-        pbot541.start(),
-        pbot542.start(),
-        pbot543.start(),
-        pbot544.start(),
-        pbot545.start(),
-        pbot546.start(),
-        pbot547.start(),
-        pbot548.start(),
-        pbot549.start(),
-        pbot550.start(),
-        pbot551.start(),
-        pbot552.start(),
-        pbot553.start(),
-        pbot554.start(),
-        pbot555.start(),
-        pbot556.start(),
-        pbot557.start(),
-        pbot558.start(),
-        pbot559.start(),
-        pbot560.start(),
-        pbot561.start(),
-        pbot562.start(),
-        pbot563.start(),
-        pbot564.start(),
-        pbot565.start(),
-        pbot566.start(),
-        pbot567.start(),
-        pbot568.start(),
-        pbot569.start(),
-        pbot570.start(),
-        pbot571.start(),
-        pbot572.start(),
-        pbot573.start(),
-        pbot574.start(),
-        pbot575.start(),
-        pbot576.start(),
-        pbot577.start(),
-        pbot578.start(),
-        pbot579.start(),
-        pbot580.start(),
-        pbot581.start(),
-        pbot582.start(),
-        pbot583.start(),
-        pbot584.start(),
-        pbot585.start(),
-        pbot586.start(),
-        pbot587.start(),
-        pbot588.start(),
-        pbot589.start(),
-        pbot590.start(),
-        pbot591.start(),
-        pbot592.start(),
-        pbot593.start(),
-        pbot594.start(),
-        pbot595.start(),
-        pbot596.start(),
-        pbot597.start(),
-        pbot598.start(),
-        pbot599.start(),
-        pbot600.start(),
-        pbot601.start(),
-        pbot602.start(),
-        pbot603.start(),
-        pbot604.start(),
-        pbot605.start(),
-        pbot606.start(),
-        pbot607.start(),
-        pbot608.start(),
-        pbot609.start(),
-        pbot710.start(),
-        pbot711.start(),
-        pbot712.start(),
-        pbot713.start(),
-        pbot714.start(),
-        pbot715.start(),
-        pbot716.start(),
-        pbot717.start(),
-        pbot718.start(),
-        pbot719.start(),
-        pbot720.start(),
-        pbot721.start(),
-        pbot722.start(),
-        pbot723.start(),
-        pbot724.start(),
-        pbot725.start(),
-        pbot726.start(),
-        pbot727.start(),
-        pbot728.start(),
-        pbot729.start(),
-        pbot730.start(),
-        pbot731.start(),
-        pbot732.start(),
-        pbot733.start(),
-        pbot734.start(),
-        pbot735.start(),
-        pbot736.start(),
-        pbot737.start(),
-        pbot738.start(),
-        pbot739.start(),
-        pbot740.start(),
-        pbot741.start(),
-        pbot742.start(),
-        pbot743.start(),
-        pbot744.start(),
-        pbot745.start(),
-        pbot746.start(),
-        pbot747.start(),
-        pbot748.start(),
-        pbot749.start(),
-        pbot750.start(),
-        pbot751.start(),
-        pbot752.start(),
-        pbot753.start(),
-        pbot754.start(),
-        pbot755.start(),
-        pbot756.start(),
-        pbot757.start(),
-        pbot758.start(),
-        pbot759.start(),
-        pbot760.start(),
-        pbot761.start(),
-        pbot762.start(),
-        pbot763.start(),
-        pbot764.start(),
-        pbot765.start(),
-        pbot766.start(),
-        pbot767.start(),
-        pbot768.start(),
-        pbot769.start(),
-        pbot770.start(),
-        pbot771.start(),
-        pbot772.start(),
-        pbot773.start(),
-        pbot774.start(),
-        pbot775.start(),
-        pbot776.start(),
-        pbot777.start(),
-        pbot778.start(),
-        pbot779.start(),
-        pbot780.start(),
-        pbot781.start(),
-        pbot782.start(),
-        pbot783.start(),
-        pbot784.start(),
-        pbot785.start(),
-        pbot786.start(),
-        pbot787.start(),
-        pbot788.start(),
-        pbot789.start(),
-        pbot790.start(),
-        pbot791.start(),
-        pbot792.start(),
-        pbot793.start(),
-        pbot794.start(),
-        pbot795.start(),
-        pbot796.start(),
-        pbot797.start(),
-        pbot798.start(),
-        pbot799.start(),
-        pbot790.start(),
-        pbot791.start(),
-        pbot792.start(),
-        pbot793.start(),
-        pbot794.start(),
-        pbot795.start(),
-        pbot796.start(),
-        pbot797.start(),
-        pbot798.start(),
-        pbot799.start(),
-        pbot800.start(),
-        pbot801.start(),
-        pbot802.start(),
-        pbot803.start(),
-        pbot804.start(),
-        pbot805.start(),
-        pbot806.start(),
-        pbot807.start(),
-        pbot808.start(),
-        pbot809.start(),
-        pbot810.start(),
-        pbot811.start(),
-        pbot812.start(),
-        pbot813.start(),
-        pbot814.start(),
-        pbot815.start(),
-        pbot816.start(),
-        pbot817.start(),
-        pbot818.start(),
-        pbot819.start(),
-        pbot820.start(),
-        pbot821.start(),
-        pbot822.start(),
-        pbot823.start(),
-        pbot824.start(),
-        pbot825.start(),
-        pbot826.start(),
-        pbot827.start(),
-        pbot828.start(),
-        pbot829.start(),
-        pbot930.start(),
-        pbot931.start(),
-        pbot932.start(),
-        pbot933.start(),
-        pbot934.start(),
-        pbot935.start(),
-        pbot936.start(),
-        pbot937.start(),
-        pbot938.start(),
-        pbot939.start(),
-        pbot930.start(),
-        pbot941.start(),
-        pbot942.start(),
-        pbot943.start(),
-        pbot944.start(),
-        pbot945.start(),
-        pbot946.start(),
-        pbot947.start(),
-        pbot948.start(),
-        pbot949.start(),
-        pbot950.start(),
-        pbot951.start(),
-        pbot952.start(),
-        pbot953.start(),
-        pbot954.start(),
-        pbot955.start(),
-        pbot956.start(),
-        pbot957.start(),
-        pbot958.start(),
-        pbot959.start(),
-        pbot960.start(),
-        pbot961.start(),
-        pbot962.start(),
-        pbot963.start(),
-        pbot964.start(),
-        pbot965.start(),
-        pbot966.start(),
-        pbot967.start(),
-        pbot968.start(),
-        pbot969.start(),
-        pbot960.start(),
-        pbot971.start(),
-        pbot972.start(),
-        pbot973.start(),
-        pbot974.start(),
-        pbot975.start(),
-        pbot976.start(),
-        pbot977.start(),
-        pbot978.start(),
-        pbot979.start(),
-        pbot970.start(),
-        pbot981.start(),
-        pbot982.start(),
-        pbot983.start(),
-        pbot984.start(),
-        pbot985.start(),
-        pbot986.start(),
-        pbot987.start(),
-        pbot988.start(),
-        pbot989.start(),
-        pbot990.start(),
-        pbot991.start(),
-        pbot992.start(),
-        pbot993.start(),
-        pbot994.start(),
-        pbot995.start(),
-        pbot996.start(),
-        pbot997.start(),
-        pbot998.start(),
-        pbot999.start()
+        cbot0.start(),
+        cbot1.start(),
+        cbot2.start(),
+        cbot3.start(),
+        cbot4.start(),
+        cbot5.start(),
+        cbot6.start(),
+        cbot7.start(),
+        cbot8.start(),
+        cbot9.start(),
+        cbot10.start(),
+        cbot11.start(),
+        cbot12.start(),
+        cbot13.start(),
+        cbot14.start(),
+        cbot15.start(),
+        cbot16.start(),
+        cbot17.start(),
+        cbot18.start(),
+        cbot19.start(),
+        cbot20.start(),
+        cbot21.start(),
+        cbot22.start(),
+        cbot23.start(),
+        cbot24.start(),
+        cbot25.start(),
+        cbot26.start(),
+        cbot27.start(),
+        cbot28.start(),
+        cbot29.start(),
+        cbot30.start(),
+        cbot31.start(),
+        cbot32.start(),
+        cbot33.start(),
+        cbot34.start(),
+        cbot35.start(),
+        cbot36.start(),
+        cbot37.start(),
+        cbot38.start(),
+        cbot39.start(),
+        cbot40.start(),
+        cbot41.start(),
+        cbot42.start(),
+        cbot43.start(),
+        cbot44.start(),
+        cbot45.start(),
+        cbot46.start(),
+        cbot47.start(),
+        cbot48.start(),
+        cbot49.start(),
+        cbot50.start(),
+        cbot51.start(),
+        cbot52.start(),
+        cbot53.start(),
+        cbot54.start(),
+        cbot55.start(),
+        cbot56.start(),
+        cbot57.start(),
+        cbot58.start(),
+        cbot59.start(),
+        cbot60.start(),
+        cbot61.start(),
+        cbot62.start(),
+        cbot63.start(),
+        cbot64.start(),
+        cbot65.start(),
+        cbot66.start(),
+        cbot67.start(),
+        cbot68.start(),
+        cbot69.start(),
+        cbot70.start(),
+        cbot71.start(),
+        cbot72.start(),
+        cbot73.start(),
+        cbot74.start(),
+        cbot75.start(),
+        cbot76.start(),
+        cbot77.start(),
+        cbot78.start(),
+        cbot79.start(),
+        cbot80.start(),
+        cbot81.start(),
+        cbot82.start(),
+        cbot83.start(),
+        cbot84.start(),
+        cbot85.start(),
+        cbot86.start(),
+        cbot87.start(),
+        cbot88.start(),
+        cbot89.start(),
+        cbot90.start(),
+        cbot91.start(),
+        cbot92.start(),
+        cbot93.start(),
+        cbot94.start(),
+        cbot95.start(),
+        cbot96.start(),
+        cbot97.start(),
+        cbot98.start(),
+        cbot99.start(),
+        cbot100.start(),
+        cbot101.start(),
+        cbot102.start(),
+        cbot103.start(),
+        cbot104.start(),
+        cbot105.start(),
+        cbot106.start(),
+        cbot107.start(),
+        cbot108.start(),
+        cbot109.start(),
+        cbot110.start(),
+        cbot111.start(),
+        cbot112.start(),
+        cbot113.start(),
+        cbot114.start(),
+        cbot115.start(),
+        cbot116.start(),
+        cbot117.start(),
+        cbot118.start(),
+        cbot119.start(),
+        cbot120.start(),
+        cbot121.start(),
+        cbot122.start(),
+        cbot123.start(),
+        cbot124.start(),
+        cbot125.start(),
+        cbot126.start(),
+        cbot127.start(),
+        cbot128.start(),
+        cbot129.start(),
+        cbot130.start(),
+        cbot131.start(),
+        cbot132.start(),
+        cbot133.start(),
+        cbot134.start(),
+        cbot135.start(),
+        cbot136.start(),
+        cbot137.start(),
+        cbot138.start(),
+        cbot139.start(),
+        cbot140.start(),
+        cbot141.start(),
+        cbot142.start(),
+        cbot143.start(),
+        cbot144.start(),
+        cbot145.start(),
+        cbot146.start(),
+        cbot147.start(),
+        cbot148.start(),
+        cbot149.start(),
+        cbot150.start(),
+        cbot151.start(),
+        cbot152.start(),
+        cbot153.start(),
+        cbot154.start(),
+        cbot155.start(),
+        cbot156.start(),
+        cbot157.start(),
+        cbot158.start(),
+        cbot159.start(),
+        cbot160.start(),
+        cbot161.start(),
+        cbot162.start(),
+        cbot163.start(),
+        cbot164.start(),
+        cbot165.start(),
+        cbot166.start(),
+        cbot167.start(),
+        cbot168.start(),
+        cbot169.start(),
+        cbot170.start(),
+        cbot171.start(),
+        cbot172.start(),
+        cbot173.start(),
+        cbot174.start(),
+        cbot175.start(),
+        cbot176.start(),
+        cbot177.start(),
+        cbot178.start(),
+        cbot179.start(),
+        cbot180.start(),
+        cbot181.start(),
+        cbot182.start(),
+        cbot183.start(),
+        cbot184.start(),
+        cbot185.start(),
+        cbot186.start(),
+        cbot187.start(),
+        cbot188.start(),
+        cbot189.start(),
+        cbot190.start(),
+        cbot191.start(),
+        cbot192.start(),
+        cbot193.start(),
+        cbot194.start(),
+        cbot195.start(),
+        cbot196.start(),
+        cbot197.start(),
+        cbot198.start(),
+        cbot199.start(),
+        cbot200.start(),
+        cbot201.start(),
+        cbot202.start(),
+        cbot203.start(),
+        cbot204.start(),
+        cbot205.start(),
+        cbot206.start(),
+        cbot207.start(),
+        cbot208.start(),
+        cbot209.start(),
+        cbot210.start(),
+        cbot211.start(),
+        cbot212.start(),
+        cbot213.start(),
+        cbot214.start(),
+        cbot215.start(),
+        cbot216.start(),
+        cbot217.start(),
+        cbot218.start(),
+        cbot219.start(),
+        cbot220.start(),
+        cbot221.start(),
+        cbot222.start(),
+        cbot223.start(),
+        cbot224.start(),
+        cbot225.start(),
+        cbot226.start(),
+        cbot227.start(),
+        cbot228.start(),
+        cbot229.start(),
+        cbot230.start(),
+        cbot231.start(),
+        cbot232.start(),
+        cbot233.start(),
+        cbot234.start(),
+        cbot235.start(),
+        cbot236.start(),
+        cbot237.start(),
+        cbot238.start(),
+        cbot239.start(),
+        cbot240.start(),
+        cbot241.start(),
+        cbot242.start(),
+        cbot243.start(),
+        cbot244.start(),
+        cbot245.start(),
+        cbot246.start(),
+        cbot247.start(),
+        cbot248.start(),
+        cbot249.start(),
+        cbot250.start(),
+        cbot251.start(),
+        cbot252.start(),
+        cbot253.start(),
+        cbot254.start(),
+        cbot255.start(),
+        cbot256.start(),
+        cbot257.start(),
+        cbot258.start(),
+        cbot259.start(),
+        cbot260.start(),
+        cbot261.start(),
+        cbot262.start(),
+        cbot263.start(),
+        cbot264.start(),
+        cbot265.start(),
+        cbot266.start(),
+        cbot267.start(),
+        cbot268.start(),
+        cbot269.start(),
+        cbot270.start(),
+        cbot271.start(),
+        cbot272.start(),
+        cbot273.start(),
+        cbot274.start(),
+        cbot275.start(),
+        cbot276.start(),
+        cbot277.start(),
+        cbot278.start(),
+        cbot279.start(),
+        cbot280.start(),
+        cbot281.start(),
+        cbot282.start(),
+        cbot283.start(),
+        cbot284.start(),
+        cbot285.start(),
+        cbot286.start(),
+        cbot287.start(),
+        cbot288.start(),
+        cbot289.start(),
+        cbot290.start(),
+        cbot291.start(),
+        cbot292.start(),
+        cbot293.start(),
+        cbot294.start(),
+        cbot295.start(),
+        cbot296.start(),
+        cbot297.start(),
+        cbot298.start(),
+        cbot299.start(),
+        cbot300.start(),
+        cbot301.start(),
+        cbot302.start(),
+        cbot303.start(),
+        cbot304.start(),
+        cbot305.start(),
+        cbot306.start(),
+        cbot307.start(),
+        cbot308.start(),
+        cbot309.start(),
+        cbot310.start(),
+        cbot311.start(),
+        cbot312.start(),
+        cbot313.start(),
+        cbot314.start(),
+        cbot315.start(),
+        cbot316.start(),
+        cbot317.start(),
+        cbot318.start(),
+        cbot319.start(),
+        cbot320.start(),
+        cbot321.start(),
+        cbot322.start(),
+        cbot323.start(),
+        cbot324.start(),
+        cbot325.start(),
+        cbot326.start(),
+        cbot327.start(),
+        cbot328.start(),
+        cbot329.start(),
+        cbot330.start(),
+        cbot331.start(),
+        cbot332.start(),
+        cbot333.start(),
+        cbot334.start(),
+        cbot335.start(),
+        cbot336.start(),
+        cbot337.start(),
+        cbot338.start(),
+        cbot339.start(),
+        cbot340.start(),
+        cbot341.start(),
+        cbot342.start(),
+        cbot343.start(),
+        cbot344.start(),
+        cbot345.start(),
+        cbot346.start(),
+        cbot347.start(),
+        cbot348.start(),
+        cbot349.start(),
+        cbot350.start(),
+        cbot351.start(),
+        cbot352.start(),
+        cbot353.start(),
+        cbot354.start(),
+        cbot355.start(),
+        cbot356.start(),
+        cbot357.start(),
+        cbot358.start(),
+        cbot359.start(),
+        cbot360.start(),
+        cbot361.start(),
+        cbot362.start(),
+        cbot363.start(),
+        cbot364.start(),
+        cbot365.start(),
+        cbot366.start(),
+        cbot367.start(),
+        cbot368.start(),
+        cbot369.start(),
+        cbot370.start(),
+        cbot371.start(),
+        cbot372.start(),
+        cbot373.start(),
+        cbot374.start(),
+        cbot375.start(),
+        cbot376.start(),
+        cbot377.start(),
+        cbot378.start(),
+        cbot379.start(),
+        cbot380.start(),
+        cbot381.start(),
+        cbot382.start(),
+        cbot383.start(),
+        cbot384.start(),
+        cbot385.start(),
+        cbot386.start(),
+        cbot387.start(),
+        cbot388.start(),
+        cbot389.start(),
+        cbot390.start(),
+        cbot391.start(),
+        cbot392.start(),
+        cbot393.start(),
+        cbot394.start(),
+        cbot395.start(),
+        cbot396.start(),
+        cbot397.start(),
+        cbot398.start(),
+        cbot399.start(),
+        cbot400.start(),
+        cbot401.start(),
+        cbot402.start(),
+        cbot403.start(),
+        cbot404.start(),
+        cbot405.start(),
+        cbot406.start(),
+        cbot407.start(),
+        cbot408.start(),
+        cbot409.start(),
+        cbot410.start(),
+        cbot411.start(),
+        cbot412.start(),
+        cbot413.start(),
+        cbot414.start(),
+        cbot415.start(),
+        cbot416.start(),
+        cbot417.start(),
+        cbot418.start(),
+        cbot419.start(),
+        cbot420.start(),
+        cbot421.start(),
+        cbot422.start(),
+        cbot423.start(),
+        cbot424.start(),
+        cbot425.start(),
+        cbot426.start(),
+        cbot427.start(),
+        cbot428.start(),
+        cbot429.start(),
+        cbot430.start(),
+        cbot431.start(),
+        cbot432.start(),
+        cbot433.start(),
+        cbot434.start(),
+        cbot435.start(),
+        cbot436.start(),
+        cbot437.start(),
+        cbot438.start(),
+        cbot439.start(),
+        cbot440.start(),
+        cbot441.start(),
+        cbot442.start(),
+        cbot443.start(),
+        cbot444.start(),
+        cbot445.start(),
+        cbot446.start(),
+        cbot447.start(),
+        cbot448.start(),
+        cbot449.start(),
+        cbot450.start(),
+        cbot451.start(),
+        cbot452.start(),
+        cbot453.start(),
+        cbot454.start(),
+        cbot455.start(),
+        cbot456.start(),
+        cbot457.start(),
+        cbot458.start(),
+        cbot459.start(),
+        cbot460.start(),
+        cbot461.start(),
+        cbot462.start(),
+        cbot463.start(),
+        cbot464.start(),
+        cbot465.start(),
+        cbot466.start(),
+        cbot467.start(),
+        cbot468.start(),
+        cbot469.start(),
+        cbot470.start(),
+        cbot471.start(),
+        cbot472.start(),
+        cbot473.start(),
+        cbot474.start(),
+        cbot475.start(),
+        cbot476.start(),
+        cbot477.start(),
+        cbot478.start(),
+        cbot479.start(),
+        cbot480.start(),
+        cbot481.start(),
+        cbot482.start(),
+        cbot483.start(),
+        cbot484.start(),
+        cbot485.start(),
+        cbot486.start(),
+        cbot487.start(),
+        cbot488.start(),
+        cbot489.start(),
+        cbot490.start(),
+        cbot491.start(),
+        cbot492.start(),
+        cbot493.start(),
+        cbot494.start(),
+        cbot495.start(),
+        cbot496.start(),
+        cbot497.start(),
+        cbot498.start(),
+        cbot499.start(),
+        cbot500.start(),
+        cbot501.start(),
+        cbot502.start(),
+        cbot503.start(),
+        cbot504.start(),
+        cbot505.start(),
+        cbot506.start(),
+        cbot507.start(),
+        cbot508.start(),
+        cbot509.start(),
+        cbot510.start(),
+        cbot511.start(),
+        cbot512.start(),
+        cbot513.start(),
+        cbot514.start(),
+        cbot515.start(),
+        cbot516.start(),
+        cbot517.start(),
+        cbot518.start(),
+        cbot519.start(),
+        cbot520.start(),
+        cbot521.start(),
+        cbot522.start(),
+        cbot523.start(),
+        cbot524.start(),
+        cbot525.start(),
+        cbot526.start(),
+        cbot527.start(),
+        cbot528.start(),
+        cbot529.start(),
+        cbot530.start(),
+        cbot531.start(),
+        cbot532.start(),
+        cbot533.start(),
+        cbot534.start(),
+        cbot535.start(),
+        cbot536.start(),
+        cbot537.start(),
+        cbot538.start(),
+        cbot539.start(),
+        cbot540.start(),
+        cbot541.start(),
+        cbot542.start(),
+        cbot543.start(),
+        cbot544.start(),
+        cbot545.start(),
+        cbot546.start(),
+        cbot547.start(),
+        cbot548.start(),
+        cbot549.start(),
+        cbot550.start(),
+        cbot551.start(),
+        cbot552.start(),
+        cbot553.start(),
+        cbot554.start(),
+        cbot555.start(),
+        cbot556.start(),
+        cbot557.start(),
+        cbot558.start(),
+        cbot559.start(),
+        cbot560.start(),
+        cbot561.start(),
+        cbot562.start(),
+        cbot563.start(),
+        cbot564.start(),
+        cbot565.start(),
+        cbot566.start(),
+        cbot567.start(),
+        cbot568.start(),
+        cbot569.start(),
+        cbot570.start(),
+        cbot571.start(),
+        cbot572.start(),
+        cbot573.start(),
+        cbot574.start(),
+        cbot575.start(),
+        cbot576.start(),
+        cbot577.start(),
+        cbot578.start(),
+        cbot579.start(),
+        cbot580.start(),
+        cbot581.start(),
+        cbot582.start(),
+        cbot583.start(),
+        cbot584.start(),
+        cbot585.start(),
+        cbot586.start(),
+        cbot587.start(),
+        cbot588.start(),
+        cbot589.start(),
+        cbot590.start(),
+        cbot591.start(),
+        cbot592.start(),
+        cbot593.start(),
+        cbot594.start(),
+        cbot595.start(),
+        cbot596.start(),
+        cbot597.start(),
+        cbot598.start(),
+        cbot599.start(),
+        cbot600.start(),
+        cbot601.start(),
+        cbot602.start(),
+        cbot603.start(),
+        cbot604.start(),
+        cbot605.start(),
+        cbot606.start(),
+        cbot607.start(),
+        cbot608.start(),
+        cbot609.start(),
+        cbot710.start(),
+        cbot711.start(),
+        cbot712.start(),
+        cbot713.start(),
+        cbot714.start(),
+        cbot715.start(),
+        cbot716.start(),
+        cbot717.start(),
+        cbot718.start(),
+        cbot719.start(),
+        cbot720.start(),
+        cbot721.start(),
+        cbot722.start(),
+        cbot723.start(),
+        cbot724.start(),
+        cbot725.start(),
+        cbot726.start(),
+        cbot727.start(),
+        cbot728.start(),
+        cbot729.start(),
+        cbot730.start(),
+        cbot731.start(),
+        cbot732.start(),
+        cbot733.start(),
+        cbot734.start(),
+        cbot735.start(),
+        cbot736.start(),
+        cbot737.start(),
+        cbot738.start(),
+        cbot739.start(),
+        cbot740.start(),
+        cbot741.start(),
+        cbot742.start(),
+        cbot743.start(),
+        cbot744.start(),
+        cbot745.start(),
+        cbot746.start(),
+        cbot747.start(),
+        cbot748.start(),
+        cbot749.start(),
+        cbot750.start(),
+        cbot751.start(),
+        cbot752.start(),
+        cbot753.start(),
+        cbot754.start(),
+        cbot755.start(),
+        cbot756.start(),
+        cbot757.start(),
+        cbot758.start(),
+        cbot759.start(),
+        cbot760.start(),
+        cbot761.start(),
+        cbot762.start(),
+        cbot763.start(),
+        cbot764.start(),
+        cbot765.start(),
+        cbot766.start(),
+        cbot767.start(),
+        cbot768.start(),
+        cbot769.start(),
+        cbot770.start(),
+        cbot771.start(),
+        cbot772.start(),
+        cbot773.start(),
+        cbot774.start(),
+        cbot775.start(),
+        cbot776.start(),
+        cbot777.start(),
+        cbot778.start(),
+        cbot779.start(),
+        cbot780.start(),
+        cbot781.start(),
+        cbot782.start(),
+        cbot783.start(),
+        cbot784.start(),
+        cbot785.start(),
+        cbot786.start(),
+        cbot787.start(),
+        cbot788.start(),
+        cbot789.start(),
+        cbot790.start(),
+        cbot791.start(),
+        cbot792.start(),
+        cbot793.start(),
+        cbot794.start(),
+        cbot795.start(),
+        cbot796.start(),
+        cbot797.start(),
+        cbot798.start(),
+        cbot799.start(),
+        cbot790.start(),
+        cbot791.start(),
+        cbot792.start(),
+        cbot793.start(),
+        cbot794.start(),
+        cbot795.start(),
+        cbot796.start(),
+        cbot797.start(),
+        cbot798.start(),
+        cbot799.start(),
+        cbot800.start(),
+        cbot801.start(),
+        cbot802.start(),
+        cbot803.start(),
+        cbot804.start(),
+        cbot805.start(),
+        cbot806.start(),
+        cbot807.start(),
+        cbot808.start(),
+        cbot809.start(),
+        cbot810.start(),
+        cbot811.start(),
+        cbot812.start(),
+        cbot813.start(),
+        cbot814.start(),
+        cbot815.start(),
+        cbot816.start(),
+        cbot817.start(),
+        cbot818.start(),
+        cbot819.start(),
+        cbot820.start(),
+        cbot821.start(),
+        cbot822.start(),
+        cbot823.start(),
+        cbot824.start(),
+        cbot825.start(),
+        cbot826.start(),
+        cbot827.start(),
+        cbot828.start(),
+        cbot829.start(),
+        cbot930.start(),
+        cbot931.start(),
+        cbot932.start(),
+        cbot933.start(),
+        cbot934.start(),
+        cbot935.start(),
+        cbot936.start(),
+        cbot937.start(),
+        cbot938.start(),
+        cbot939.start(),
+        cbot930.start(),
+        cbot941.start(),
+        cbot942.start(),
+        cbot943.start(),
+        cbot944.start(),
+        cbot945.start(),
+        cbot946.start(),
+        cbot947.start(),
+        cbot948.start(),
+        cbot949.start(),
+        cbot950.start(),
+        cbot951.start(),
+        cbot952.start(),
+        cbot953.start(),
+        cbot954.start(),
+        cbot955.start(),
+        cbot956.start(),
+        cbot957.start(),
+        cbot958.start(),
+        cbot959.start(),
+        cbot960.start(),
+        cbot961.start(),
+        cbot962.start(),
+        cbot963.start(),
+        cbot964.start(),
+        cbot965.start(),
+        cbot966.start(),
+        cbot967.start(),
+        cbot968.start(),
+        cbot969.start(),
+        cbot960.start(),
+        cbot971.start(),
+        cbot972.start(),
+        cbot973.start(),
+        cbot974.start(),
+        cbot975.start(),
+        cbot976.start(),
+        cbot977.start(),
+        cbot978.start(),
+        cbot979.start(),
+        cbot970.start(),
+        cbot981.start(),
+        cbot982.start(),
+        cbot983.start(),
+        cbot984.start(),
+        cbot985.start(),
+        cbot986.start(),
+        cbot987.start(),
+        cbot988.start(),
+        cbot989.start(),
+        cbot990.start(),
+        cbot991.start(),
+        cbot992.start(),
+        cbot993.start(),
+        cbot994.start(),
+        cbot995.start(),
+        cbot996.start(),
+        cbot997.start(),
+        cbot998.start(),
+        cbot999.start()
         )
 
 
