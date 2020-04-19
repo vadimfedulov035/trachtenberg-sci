@@ -23,6 +23,8 @@ async def ml(object o):
         x2 *= 10
     for i in range(o.n2):
         y2 *= 10
+    if x2 == 1:
+        x2 = 3
     while True:
         a = np.random.randint(x1, y1)
         b = np.random.randint(x2, y2)
@@ -667,7 +669,7 @@ cdef class Bot():
     cdef public int NUMBER
     cdef public int CID
     cdef public list cids
-    cdef public double TIMEOUT
+    cdef public float TIMEOUT
     """define message urls and message variables"""
     cdef public str URL, URLR, ERROR_EN, ERROR_RU, MISTYPE_EN, MISTYPE_RU
     """define right answers and user-supplied ones"""
@@ -807,7 +809,7 @@ cdef class Bot():
                 self.pdate = self.ldate
                 self.m1 = "Started setting up! Type /start at any moment if "
                 self.m2 = "you want to restart! Bot restarts everyday at "
-                self.m3 = "21:00 MSK, be careful not to lose calculations! "
+                self.m3 = "00:00 MSK, be careful not to lose calculations! "
                 self.m4 = "Please, choose language! (/en, /ru)"
                 self.m = self.m1 + self.m2 + self.m3 + self.m4
                 try:
@@ -1082,12 +1084,11 @@ cdef class Bot():
             self.st = (self.s * self.d) - (self.s - 1)
         else:
             self.st = 1
-        i = self.st
+        cdef int i = self.st
         while True:
             if self.mode == "mul":  # check for counting mode option
                 if self.cmul:  # convert initial numbers to usable for loop
                     self.n1, self.n2 = self.mnum[0], self.mnum[1]
-                    print(self.n1, self.n2)
                     self.cmul = False
                 if self.diffch:  # put bot through default loop
                     self.diffch = False

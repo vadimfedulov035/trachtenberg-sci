@@ -3,13 +3,15 @@
 
 ![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.jpg)
 
+### Python 3.8.2 + Cython 0.29.16 + GCC 9.3.0
+
 If you have read the original book you will be able to test your knowledge easily by just chatting with TrachtenbergBot in Telegram.
 
 If you want to, you can explore the source code of TrachtenbergBot in Telegram, it is written in Cython using its own micro-framework for work with Telegram API. It is heavily statically typed for fast work, almost every object is statically defined for speed. 
 
-## Compile bot yourself, if you want to (at least 6GB of RAM is required)
+## Compile bot yourself, if you want to (at least 16GB of RAM is required for GCC 9.3.0)
 
-Just run these commands. Shell-script setup.sh installs Python3.8.2 and needed shared libraries and GNU make cythonizes source code and compiles executables from C files following Makefile scenario.
+Just run these commands. Shell-script setup.sh installs recent Python 3.8.2 and needed shared libraries and GNU make cythonizes source code and compiles executables from C files following Makefile scenario. (Remember that this shell-script does not install GCC 9.3.0. You can install it by yourself, using ATOIC script at https://github.com/vadimfedulov395/install)
 
 `sudo ./setup.sh` to install all dependencies
 
@@ -21,19 +23,18 @@ Just run these commands. Shell-script setup.sh installs Python3.8.2 and needed s
 
 ## Start bot on your own computer or VPS/VDS
 
-To start bot you will need pre-compiled or compiled by yourself executables and token written in tok.conf file. You can get token from BotFather in Telegram.
+To start bot you will need pre-compiled with recent GCC or compiled by yourself executables and token written in tok.conf file. You can get token from BotFather in Telegram.
 
-`./init.sh` to enable scheduled work of bot (with restarts at 21:00)
+`./init.sh` to enable scheduled work of bot (with restarts at 00:00 MSK every Friday)
 
-- [x] Add Arithmetics operations
-- [x] Add Linear Algebra operations
+- [x] Add Arithmetics operations, Linear Algebra operations
 - [x] Add asyncio functionality and make code asynchronous
-- [x] Optimize code for PEP-8 standards and make readable comments
-- [x] Make bot able to have instant messaging with newcomers
+- [x] Make bot able to have instant messaging with newcomers on Python handling up to 25 conversations at once
 - [x] Translate to Russian via unicode support
+- [x] Optimize code for PEP-8 standards and make readable comments
 - [x] Port code from Python to Cython and learn how to compile executable using GCC and GNU Make 
-- [x] Cythonize code as much as possible for speeding up and decreasing load on CPU
+- [x] Make bot able to have instant messaging with newcomers on Cython handling up to 1000 conversations at once
 - [x] Make bot more user-friendly and stable
-- [x] Write scripts for installing dependencies and scheduled execution of executables handling up to 1000 conversations at once
-- [x] Write GNU Makefile scenario
-- [x] Release Cython version :tada: :tada: :tada:
+- [x] Write scripts for installing dependencies and scheduled execution of executables 
+- [x] Write GNU Makefile scenario and port to GCC 9.3.0
+- [x] Release Cython version 3.1 :tada: :tada: :tada:

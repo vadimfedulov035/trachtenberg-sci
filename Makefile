@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -static-libgcc -pthread -fPIC
+CFLAGS = -static-libgcc -O2 -fPIC
 INCLUDES = -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include
 LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lpython3.8d
 TARGET0 = cidc
@@ -20,7 +20,7 @@ $(TARGET1).c:
 	python3.8 -m cython -3 --embed $(TARGET1).pyx
 
 clean:
-	$(RM) *.c *.exe
+	$(RM) *.c $(TARGET0) $(TARGET1)
 
 clear:
 	$(RM) *.c
