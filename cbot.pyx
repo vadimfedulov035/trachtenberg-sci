@@ -808,10 +808,9 @@ cdef class Bot():
             if self.rdlm == "/start" and self.pdate != self.ldate or self.resch:
                 self.pdate = self.ldate
                 self.m1 = "Started setting up! Type /start at any moment if "
-                self.m2 = "you want to restart! Bot restarts everyday at "
-                self.m3 = "00:00 MSK, be careful not to lose calculations! "
-                self.m4 = "Please, choose language! (/en, /ru)"
-                self.m = self.m1 + self.m2 + self.m3 + self.m4
+                self.m2 = "you want to restart! "
+                self.m3 = "Please, choose language! (/en, /ru)"
+                self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
                 except ConnectionError:

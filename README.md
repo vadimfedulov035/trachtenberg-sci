@@ -25,7 +25,7 @@ Just run these commands. Shell-script setup.sh installs recent Python 3.8.2 and 
 
 To start bot you will need pre-compiled with recent GCC or compiled by yourself executables and token written in tok.conf file. You can get token from BotFather in Telegram.
 
-`./init.sh` to enable scheduled work of bot (with restarts at 00:00 MSK every Friday)
+`./init.sh` to enable stable work of bot
 
 - [x] Add Arithmetics operations, Linear Algebra operations
 - [x] Add asyncio functionality and make code asynchronous
