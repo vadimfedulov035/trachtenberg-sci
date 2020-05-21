@@ -13,7 +13,11 @@ with open("tok.conf", "r") as f:
 
 async def ml(object o):
     """Arithmetics operation: Multiplication"""
-    cdef int x1, x2, y1, y2, a, b, c, u
+    cdef:
+        unsigned long x1, x2, y1, y2
+        unsigned long a, b
+        unsigned long long r
+        unsigned long long u
     x1, x2, y1, y2 = 1, 1, 1, 1
     for i in range(o.n1 - 1):
         x1 *= 10
@@ -26,12 +30,12 @@ async def ml(object o):
     if x2 == 1:
         x2 = 3
     while True:
-        a = np.random.randint(x1, y1)
-        b = np.random.randint(x2, y2)
-        c = a * b
-        if c == o.c:  # if got the same answer restart
+        a = np.random.randint(x1, y1, dtype=np.uint64)
+        b = np.random.randint(x2, y2, dtype=np.uint64)
+        r = a * b
+        if r == o.r:  # if got the same answer restart
             continue
-        o.c = c  # record answer
+        o.r = r  # record answer
         o.m = f"{a} * {b} = ?"
         try:
             await o.sndm(o.m)
@@ -50,8 +54,8 @@ async def ml(object o):
             continue
         else:
             try:  # try to extract number from latest message
-                o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                u = int(o.r[0])
+                o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                u = int(o.rem[0])
             except IndexError:
                 try:
                     if o.lang == "en":
@@ -66,16 +70,16 @@ async def ml(object o):
             continue  # if got old message restart loop
         o.u = u  # record user answer
         """compare user answer against right one"""
-        if u == c:
+        if u == r:
             if o.lang == "en":
                 o.m = "You're God Damn right!"
             elif o.lang == "ru":
                 o.m = "Вы чертовски правы!"
         else:
             if o.lang == "en":
-                o.m = f"No, right answer is {c}!"
+                o.m = f"No, right answer is {r}!"
             elif o.lang == "ru":
-                o.m = f"Нет, правильный ответ {c}!"
+                o.m = f"Нет, правильный ответ {r}!"
         try:
             await o.sndm(o.m)
         except ConnectionError:
@@ -85,7 +89,11 @@ async def ml(object o):
 
 async def dl(object o):
     """Arithmetics operation: Division"""
-    cdef int x1, x2, y1, y2, a, b, c1, c2, u
+    cdef:
+        unsigned long x1, x2, y1, y2
+        unsigned long a, b
+        unsigned long r1, r2
+        unsigned long u1, u2
     x1, x2, y1, y2 = 1, 1, 1, 1
     for i in range(o.n1 - 1):
         x1 *= 10
@@ -96,13 +104,13 @@ async def dl(object o):
     for i in range(o.n2):
         y2 *= 10
     while True:
-        a = np.random.randint(x1, y1)
-        b = np.random.randint(x2, y2)
-        c1 = a // b
-        c2 = a % b
-        if c1 == o.c1 or c2 == o.c2:  # if got the same answer restart
+        a = np.random.randint(x1, y1, dtype=np.uint64)
+        b = np.random.randint(x2, y2, dtype=np.uint64)
+        r1 = a // b
+        r2 = a % b
+        if r1 == o.r1 or r2 == o.r2:  # if got the same answer restart
             continue
-        o.c1, o.c2 = c1, c2  # record answers
+        o.r1, o.r2 = r1, r2  # record answers
         o.m = f"{a} // | % {b} = ?"
         try:
             await o.sndm(o.m)
@@ -121,8 +129,8 @@ async def dl(object o):
             continue
         else:
             try:  # try to extract numbers from latest message
-                o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                u1, u2 = int(o.r[0]), int(o.r[1])
+                o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                u1, u2 = int(o.rem[0]), int(o.rem[1])
             except IndexError:
                 try:
                     if o.lang == "en":
@@ -137,18 +145,18 @@ async def dl(object o):
             continue  # if got old message restart loop
         o.u1, o.u2 = u1, u2  # record user answers
         """compare user answer against right one"""
-        if u1 == c1 and u2 == c2:
+        if u1 == r1 and u2 == r2:
             if o.lang == "en":
                 o.m = "You're God Damn right!"
             elif o.lang == "ru":
                 o.m = "Вы чертовски правы!"
         else:
             if o.lang == "en":
-                o.m1 = f"No, right answer is {c1} "
-                o.m2 = f"with residual of {c2}!"
+                o.m1 = f"No, right answer is {r1} "
+                o.m2 = f"with residual of {r2}!"
             elif o.lang == "ru":
-                o.m1 = f"Нет, правильный ответ это {c1} "
-                o.m2 = f"с остатком {c2}!"
+                o.m1 = f"Нет, правильный ответ это {r1} "
+                o.m2 = f"с остатком {r2}!"
             o.m = o.m1 + o.m2
         try:
             await o.sndm(o.m)
@@ -159,18 +167,22 @@ async def dl(object o):
 
 async def sqr(object o):
     """Arithmetics operation: Squaring"""
-    cdef int x1, y1, a, c, u
+    cdef:
+        unsigned long x1, y1
+        unsigned long a
+        unsigned long r
+        unsigned long u
     x1, y1 = 1, 1
     for i in range(o.n1 - 1):
         x1 *= 10
     for i in range(o.n1):
         y1 *= 10
     while True:
-        a = np.random.randint(x1, y1)
-        c = a ** 2
-        if c == o.c:
+        a = np.random.randint(x1, y1, dtype=np.uint64)
+        r = a ** 2
+        if r == o.r:
             continue
-        o.c = c
+        o.r = r
         o.m = f"{a} ** 2 = ?"
         try:
             await o.sndm(o.m)
@@ -189,8 +201,8 @@ async def sqr(object o):
             continue
         else:
             try:  # try to extract number from latest message
-                o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                u = int(o.r[0])
+                o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                u = int(o.rem[0])
             except IndexError:
                 try:
                     if o.lang == "en":
@@ -205,16 +217,16 @@ async def sqr(object o):
             continue  # if got old message restart loop
         o.u = u  # record user answer
         """compare user answer against right one"""
-        if u == c:
+        if u == r:
             if o.lang == "en":
                 o.m = "You're God Damn right!"
             elif o.lang == "ru":
                 o.m = "Вы чертовски правы!"
         else:
             if o.lang == "en":
-                o.m = f"No, right answer is {c}!"
+                o.m = f"No, right answer is {r}!"
             elif o.lang == "ru":
-                o.m = f"Нет, правильный ответ {c}!"
+                o.m = f"Нет, правильный ответ {r}!"
         try:
             await o.sndm(o.m)
         except ConnectionError:
@@ -224,19 +236,23 @@ async def sqr(object o):
 
 async def root(object o):
     """Arithmetics operation: Square Root taking"""
-    cdef int x1, y1, a, b, c, u
+    cdef:
+        unsigned long x1, y1
+        unsigned long a, b
+        unsigned long r
+        unsigned long u
     x1, y1 = 1, 1
     for i in range(o.n1 - 1):
         x1 *= 10
     for i in range(o.n1):
         y1 *= 10
     while True:
-        a = np.random.randint(x1, y1)
+        a = np.random.randint(x1, y1, dtype=np.uint64)
         b = a ** 2
-        c = int(np.sqrt(b))
-        if c == o.c:
+        r = int(b ** 0.5)
+        if r == o.r:
             continue
-        o.c = c
+        o.r = r
         o.m = f"{b} ** 0.5 = ?"
         try:
             await o.sndm(o.m)
@@ -255,8 +271,8 @@ async def root(object o):
             continue
         else:
             try:  # try to extract numbers from latest message
-                o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                u = int(o.r[0])
+                o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                u = int(o.rem[0])
             except IndexError:
                 try:
                     if o.lang == "en":
@@ -271,16 +287,16 @@ async def root(object o):
             continue  # if got old message restart loop
         o.u = u  # record user answer
         """compare user answer against right one"""
-        if u == c:
+        if u == r:
             if o.lang == "en":
                 o.m = "You're God Damn right!"
             elif o.lang == "ru":
                 o.m = "Вы чертовски правы!"
         else:
             if o.lang == "en":
-                o.m = f"No, right answer is {int(c)}!"
+                o.m = f"No, right answer is {int(r)}!"
             elif o.lang == "ru":
-                o.m = f"Нет, правильный ответ {int(c)}!"
+                o.m = f"Нет, правильный ответ {int(r)}!"
         try:
             await o.sndm(o.m)
         except ConnectionError:
@@ -290,8 +306,12 @@ async def root(object o):
 
 async def vml(object o):
     """Linear Algebra operation: vector-matrix multiplication"""
-    cdef int a1, a2, a3, b1, b2, b3, c1, c2, c3, l1, l2, l3, u
-    cdef str fch
+    cdef:
+        unsigned long x1, x2, y1, y2
+        unsigned long a1, a2, a3, b1, b2, b3, c1, c2, c3, l1, l2, l3
+        unsigned long r1, r2, r3
+        unsigned long u1, u2, u3
+        str fch
     x1, x2, y1, y2 = 1, 1, 1, 1
     for i in range(o.n1 - 1):
         x1 *= 10
@@ -304,57 +324,57 @@ async def vml(object o):
     while True:
         """SPECIFICATION BLOCK"""
         """non-static vars for basic matricies specification"""
-        a1 = np.random.randint(x1, y1)
-        a2 = np.random.randint(x1, y1)
-        b1 = np.random.randint(x1, y1)
-        b2 = np.random.randint(x1, y1)
-        l1 = np.random.randint(x2, y2)
-        l2 = np.random.randint(x2, y2)
+        a1 = np.random.randint(x1, y1, dtype=np.uint64)
+        a2 = np.random.randint(x1, y1, dtype=np.uint64)
+        b1 = np.random.randint(x1, y1, dtype=np.uint64)
+        b2 = np.random.randint(x1, y1, dtype=np.uint64)
+        l1 = np.random.randint(x2, y2, dtype=np.uint64)
+        l2 = np.random.randint(x2, y2, dtype=np.uint64)
         if o.ms == 2:  # here we don't need to specify more vars
             a = np.array([[a1, b1],
-                          [a2, b2]])
+                          [a2, b2]], dtype=np.uint64)
             b = np.array([[l1],
-                          [l2]])
+                          [l2]], dtype=np.uint64)
         elif o.ms == 3:  # here we need to specify more vars
-            c1 = np.random.randint(x1, y1)
-            c2 = np.random.randint(x1, y1)
-            a3 = np.random.randint(x1, y1)
-            b3 = np.random.randint(x1, y1)
-            c3 = np.random.randint(x1, y1)
-            l3 = np.random.randint(x2, y2)
+            c1 = np.random.randint(x1, y1, dtype=np.uint64)
+            c2 = np.random.randint(x1, y1, dtype=np.uint64)
+            a3 = np.random.randint(x1, y1, dtype=np.uint64)
+            b3 = np.random.randint(x1, y1, dtype=np.uint64)
+            c3 = np.random.randint(x1, y1, dtype=np.uint64)
+            l3 = np.random.randint(x2, y2, dtype=np.uint64)
             a = np.array([[a1, b1, c1],
                           [a2, b2, c2],
-                          [a3, b3, c3]])
+                          [a3, b3, c3]], dtype=np.uint64)
             b = np.array([[l1],
                           [l2],
-                          [l3]])
+                          [l3]], dtype=np.uint64)
         elif o.ms == 4:  # here we specify more vars depending on choice
             ch = np.random.choice(("2x3", "3x2"), 1, p=[0.5, 0.5])
             fch = str(ch[0])
             if fch == "2x3":
-                c1 = np.random.randint(x1, y1)
-                c2 = np.random.randint(x1, y1)
-                l3 = np.random.randint(x2, y2)
+                c1 = np.random.randint(x1, y1, dtype=np.uint64)
+                c2 = np.random.randint(x1, y1, dtype=np.uint64)
+                l3 = np.random.randint(x2, y2, dtype=np.uint64)
                 a = np.array([[a1, b1, c1],
-                              [a2, b2, c2]])
+                              [a2, b2, c2]], dtype=np.uint64)
                 b = np.array([[l1],
                               [l2],
-                              [l3]])
+                              [l3]], dtype=np.uint64)
             elif fch == "3x2":
-                a3 = np.random.randint(x1, y1)
-                b3 = np.random.randint(x1, y1)
+                a3 = np.random.randint(x1, y1, dtype=np.uint64)
+                b3 = np.random.randint(x1, y1, dtype=np.uint64)
                 a = np.array([[a1, b1],
                               [a2, b2],
-                              [a3, b3]])
+                              [a3, b3]], dtype=np.uint64)
                 b = np.array([[l1],
-                              [l2]])
-        c = np.matmul(a, b)
+                              [l2]], dtype=np.uint64)
+        r = np.matmul(a, b, dtype=np.uint64)
         """COUNTING BLOCK"""
         if o.ms == 2 or o.ms == 4 and fch == "2x3":
-            c1, c2 = c[0], c[1]
-            if c1 == o.c1 or c2 == o.c2:
+            r1, r2 = r[0], r[1]
+            if r1 == o.r1 or r2 == o.r2:
                 continue
-            o.c1, o.c2 = c1, c2
+            o.r1, o.r2 = r1, r2
             o.m = f"{a}\n*****\n{b}\n=====\n?????"
             try:
                 await o.sndm(o.m)
@@ -362,16 +382,16 @@ async def vml(object o):
                 continue
             o.prevm = o.rdlm  # record latest message for check
         elif o.ms == 3 or o.ms == 4 and fch == "3x2":
-            c1, c2, c3 = c[0], c[1], c[2]
-            if c1 == o.c1 or c2 == o.c2 or c3 == o.c3:
+            r1, r2, r3 = r[0], r[1], r[2]
+            if r1 == o.r1 or r2 == o.r2 or r3 == o.r3:
                 continue
-            o.c1, o.c2, o.c3 = c1, c2, c3  # record answers
+            o.r1, o.r2, o.r3 = r1, r2, r3  # record answers
             o.m = f"{a}\n*****\n{b}\n=====\n?????"
             try:
                 await o.sndm(o.m)
             except ConnectionError:
                 continue
-            o.c1, o.c2 = c1, c2
+            o.r1, o.r2 = r1, r2
             o.prevm = o.rdlm  # record latest message for check
         break
     while True:
@@ -386,8 +406,8 @@ async def vml(object o):
                 continue
             else:
                 try:  # try to extract nums from latest m
-                    o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                    u1, u2 = int(o.r[0]), int(o.r[1])
+                    o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                    u1, u2 = int(o.rem[0]), int(o.rem[1])
                 except IndexError:
                     try:
                         if o.lang == "en":
@@ -402,16 +422,16 @@ async def vml(object o):
                 continue  # if got old message restart loop
             o.u1, o.u2 = u1, u2  # record user answer
             """compare user answer against right one"""
-            if u1 == c1 and u2 == c2:
+            if u1 == r1 and u2 == r2:
                 if o.lang == "en":
                     o.m = "You're God Damn right!"
                 elif o.lang == "ru":
                     o.m = "Вы чертовски правы!"
             else:
                 if o.lang == "en":
-                    o.m = f"No, right answer is\n{c}!"
+                    o.m = f"No, right answer is\n{r}!"
                 elif o.lang == "ru":
-                    o.m = f"Нет, правильный ответ\n{c}!"
+                    o.m = f"Нет, правильный ответ\n{r}!"
             try:
                 await o.sndm(o.m)
             except ConnectionError:
@@ -427,8 +447,8 @@ async def vml(object o):
                 continue
             else:
                 try:  # try to extract nums from latest m
-                    o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                    u1, u2, u3 = int(o.r[0]), int(o.r[1]), int(o.r[2])
+                    o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                    u1, u2, u3 = int(o.rem[0]), int(o.rem[1]), int(o.rem[2])
                 except IndexError:
                     try:
                         if o.lang == "en":
@@ -443,16 +463,16 @@ async def vml(object o):
                 continue  # if got old message restart loop
             o.u1, o.u2, o.u3 = u1, u2, u3  # record user answer
             """compare user answer against right one"""
-            if u1 == c1 and u2 == c2 and u3 == c3:
+            if u1 == r1 and u2 == r2 and u3 == r3:
                 if o.lang == "en":
                     o.m = "You're God Damn right!"
                 elif o.lang == "ru":
                     o.m = "Вы чертовски правы!"
             else:
                 if o.lang == "en":
-                    o.m = f"No, right answer is\n{c}!"
+                    o.m = f"No, right answer is\n{r}!"
                 elif o.lang == "ru":
-                    o.m = f"Нет, правильный ответ\n{c}!"
+                    o.m = f"Нет, правильный ответ\n{r}!"
             try:
                 await o.sndm(o.m)
             except ConnectionError:
@@ -462,10 +482,13 @@ async def vml(object o):
 
 async def mml(object o):
     """Linear Algebra operation: matrix-matrix multiplication"""
-    cdef int x1, x2, y1, y2, u
-    cdef int a1, a2, a3, b1, b2, b3, c1, c2, c3
-    cdef int l1, l2, l3, q1, q2, q3, s1, s2, s3
-    cdef str fch
+    cdef:
+        unsigned long x1, x2, y1, y2
+        unsigned long a1, a2, a3, b1, b2, b3, c1, c2, c3
+        unsigned long l1, l2, l3, q1, q2, q3, s1, s2, s3
+        unsigned long r1, r2, r3, r4, r5, r6, r7, r8, r9
+        unsigned long u1, u2, u3, u4, u5, u6, u7, u8, u9
+        str fch
     x1, x2, y1, y2 = 1, 1, 1, 1
     for i in range(o.n1 - 1):
         x1 *= 10
@@ -478,69 +501,69 @@ async def mml(object o):
     while True:
         """SPECIFICATION BLOCK"""
         """non-static vars for basic matricies specification"""
-        a1 = np.random.randint(x1, y1)
-        a2 = np.random.randint(x1, y1)
-        b1 = np.random.randint(x1, y1)
-        b2 = np.random.randint(x1, y1)
-        l1 = np.random.randint(x2, y2)
-        l2 = np.random.randint(x2, y2)
-        q1 = np.random.randint(x2, y2)
-        q2 = np.random.randint(x2, y2)
+        a1 = np.random.randint(x1, y1, dtype=np.uint64)
+        a2 = np.random.randint(x1, y1, dtype=np.uint64)
+        b1 = np.random.randint(x1, y1, dtype=np.uint64)
+        b2 = np.random.randint(x1, y1, dtype=np.uint64)
+        l1 = np.random.randint(x2, y2, dtype=np.uint64)
+        l2 = np.random.randint(x2, y2, dtype=np.uint64)
+        q1 = np.random.randint(x2, y2, dtype=np.uint64)
+        q2 = np.random.randint(x2, y2, dtype=np.uint64)
         if o.ms == 2:  # here we don't need to specify more vars
             a = np.array([[a1, b1],
-                          [a2, b2]])
+                          [a2, b2]], dtype=np.uint64)
             b = np.array([[l1, q1],
-                          [l2, q2]])
+                          [l2, q2]], dtype=np.uint64)
         elif o.ms == 3:  # here we need to specify more vars
-            c1 = np.random.randint(x1, y1)
-            c2 = np.random.randint(x1, y1)
-            s1 = np.random.randint(x2, y2)
-            s2 = np.random.randint(x2, y2)
-            a3 = np.random.randint(x1, y1)
-            b3 = np.random.randint(x1, y1)
-            c3 = np.random.randint(x1, y1)
-            l3 = np.random.randint(x2, y2)
-            q3 = np.random.randint(x2, y2)
-            s3 = np.random.randint(x2, y2)
+            c1 = np.random.randint(x1, y1, dtype=np.uint64)
+            c2 = np.random.randint(x1, y1, dtype=np.uint64)
+            s1 = np.random.randint(x2, y2, dtype=np.uint64)
+            s2 = np.random.randint(x2, y2, dtype=np.uint64)
+            a3 = np.random.randint(x1, y1, dtype=np.uint64)
+            b3 = np.random.randint(x1, y1, dtype=np.uint64)
+            c3 = np.random.randint(x1, y1, dtype=np.uint64)
+            l3 = np.random.randint(x2, y2, dtype=np.uint64)
+            q3 = np.random.randint(x2, y2, dtype=np.uint64)
+            s3 = np.random.randint(x2, y2, dtype=np.uint64)
             a = np.array([[a1, b1, c1],
                           [a2, b2, c2],
-                          [a3, b3, c3]])
+                          [a3, b3, c3]], dtype=np.uint64)
             b = np.array([[l1, q1, s1],
                           [l2, q2, s2],
-                          [l3, q3, s3]])
+                          [l3, q3, s3]], dtype=np.uint64)
         elif o.ms == 4:  # here we specify more vars depending on choice
             ch = np.random.choice(("2x3", "3x2"), 1, p=[0.5, 0.5])
             fch = str(ch[0])
             if fch == "2x3":
-                c1 = np.random.randint(x2, y2)
-                c2 = np.random.randint(x2, y2)
-                l3 = np.random.randint(x2, y2)
-                q3 = np.random.randint(x2, y2)
+                c1 = np.random.randint(x2, y2, dtype=np.uint64)
+                c2 = np.random.randint(x2, y2, dtype=np.uint64)
+                l3 = np.random.randint(x2, y2, dtype=np.uint64)
+                q3 = np.random.randint(x2, y2, dtype=np.uint64)
                 a = np.array([[a1, b1, c1],
-                              [a2, b2, c2]])
+                              [a2, b2, c2]], dtype=np.uint64)
                 b = np.array([[l1, q1],
                               [l2, q2],
-                              [l3, q3]])
+                              [l3, q3]], dtype=np.uint64)
             elif fch == "3x2":
-                a3 = np.random.randint(x1, y1)
-                b3 = np.random.randint(x1, y1)
-                s1 = np.random.randint(x2, y2)
-                s2 = np.random.randint(x2, y2)
+                a3 = np.random.randint(x1, y1, dtype=np.uint64)
+                b3 = np.random.randint(x1, y1, dtype=np.uint64)
+                s1 = np.random.randint(x2, y2, dtype=np.uint64)
+                s2 = np.random.randint(x2, y2, dtype=np.uint64)
                 a = np.array([[a1, b1],
                               [a2, b2],
-                              [a3, b3]])
+                              [a3, b3]], dtype=np.uint64)
                 b = np.array([[l1, q1, s1],
-                              [l2, q2, s2]])
-        c = np.matmul(a, b)
+                              [l2, q2, s2]], dtype=np.uint64)
+        r = np.matmul(a, b, dtype=np.uint64)
         """COUNTING BLOCK"""
         if o.ms == 2 or o.ms == 4 and fch == "2x3":
-            c1, c2, c3, c4 = c[0, 0], c[0, 1], c[1, 0], c[1, 1]
-            if c1 == o.c1 or c2 == o.c2:
+            r1, r2, r3, r4 = r[0, 0], r[0, 1], r[1, 0], r[1, 1]
+            if r1 == o.r1 or r2 == o.r2:
                 continue
-            elif c3 == o.c3 or c4 == o.c4:
+            elif r3 == o.r3 or r4 == o.r4:
                 continue
-            o.c1, o.c2 = c1, c2
-            o.c3, o.c4 = c3, c4
+            o.r1, o.r2 = r1, r2
+            o.r3, o.r4 = r3, r4
             o.m = f"{a}\n*****\n{b}\n=====\n?????"
             try:
                 await o.sndm(o.m)
@@ -548,16 +571,16 @@ async def mml(object o):
                 continue
             o.prevm = o.rdlm  # record latest message for check
         elif o.ms == 3 or o.ms == 4 and fch == "3x2":
-            c1, c2, c3 = c[0, 0], c[0, 1], c[0, 2]
-            c4, c5, c6 = c[1, 0], c[1, 1], c[1, 2]
-            c7, c8, c9 = c[2, 1], c[2, 1], c[2, 2]
-            if c1 == o.c1 or c2 == o.c2 or c3 == o.c3:
+            r1, r2, r3 = r[0, 0], r[0, 1], r[0, 2]
+            r4, r5, r6 = r[1, 0], r[1, 1], r[1, 2]
+            r7, r8, r9 = r[2, 1], r[2, 1], r[2, 2]
+            if r1 == o.r1 or r2 == o.r2 or r3 == o.r3:
                 continue
-            elif c4 == o.c4 or c5 == o.c5 or c6 == o.c6:
+            elif r4 == o.r4 or r5 == o.r5 or r6 == o.r6:
                 continue
-            o.c1, o.c2, o.c3 = c1, c2, c3  # record answers
-            o.c4, o.c5, o.c6 = c4, c5, c6  # record answers
-            o.c7, o.c8, o.c9 = c7, c8, c9  # record answers
+            o.r1, o.r2, o.r3 = r1, r2, r3  # record answers
+            o.r4, o.r5, o.r6 = r4, r5, r6  # record answers
+            o.r7, o.r8, o.r9 = r7, r8, r9  # record answers
             o.m = f"{a}\n*****\n{b}\n=====\n?????"
             try:
                 await o.sndm(o.m)
@@ -577,9 +600,9 @@ async def mml(object o):
                 continue
             else:
                 try:  # try to extract nums from latest m
-                    o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                    u1, u2 = int(o.r[0]), int(o.r[1])
-                    u3, u4 = int(o.r[2]), int(o.r[3])
+                    o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                    u1, u2 = int(o.rem[0]), int(o.rem[1])
+                    u3, u4 = int(o.rem[2]), int(o.rem[3])
                 except IndexError:
                     try:
                         if o.lang == "en":
@@ -597,16 +620,16 @@ async def mml(object o):
             o.u1, o.u2 = u1, u2  # record user answer
             o.u3, o.u4 = u3, u4  # record user answer
             """compare user answer against right one"""
-            if u1 == c1 and u2 == c2 and u3 == c3 and u4 == c4:
+            if u1 == r1 and u2 == r2 and u3 == r3 and u4 == r4:
                 if o.lang == "en":
                     o.m = "You're God Damn right!"
                 elif o.lang == "ru":
                     o.m = "Вы чертовски правы!"
             else:
                 if o.lang == "en":
-                    o.m = f"No, right answer is\n{c}!"
+                    o.m = f"No, right answer is\n{r}!"
                 elif o.lang == "ru":
-                    o.m = f"Нет, правильный ответ\n{c}!"
+                    o.m = f"Нет, правильный ответ\n{r}!"
             try:
                 await o.sndm(o.m)
             except ConnectionError:
@@ -622,10 +645,10 @@ async def mml(object o):
                 continue
             else:
                 try:  # try to extract numbers from latest message
-                    o.r = re.findall(r"([0-9]{1,10})", o.rdlm)
-                    u1, u2, u3 = int(o.r[0]), int(o.r[1]), int(o.r[2])
-                    u4, u5, u6 = int(o.r[3]), int(o.r[4]), int(o.r[5])
-                    u7, u8, u9 = int(o.r[6]), int(o.r[7]), int(o.r[8])
+                    o.rem = re.findall(r"([0-9]{1,10})", o.rdlm)
+                    u1, u2, u3 = int(o.rem[0]), int(o.rem[1]), int(o.rem[2])
+                    u4, u5, u6 = int(o.rem[3]), int(o.rem[4]), int(o.rem[5])
+                    u7, u8, u9 = int(o.rem[6]), int(o.rem[7]), int(o.rem[8])
                 except IndexError:
                     try:
                         if o.lang == "en":
@@ -646,16 +669,16 @@ async def mml(object o):
             o.u4, o.u5, o.u5 = u4, u5, u6  # record user answer
             o.u7, o.u8, o.u9 = u7, u8, u9  # record user answer
             """compare user answer against right one"""
-            if u1 == c1 and u2 == c2 and u3 == c3:
+            if u1 == r1 and u2 == r2 and u3 == r3:
                 if o.lang == "en":
                     o.m = "You're God Damn right!"
                 elif o.lang == "ru":
                     o.m = "Вы чертовски правы!"
             else:
                 if o.lang == "en":
-                    o.m = f"No, right answer is\n{c}!"
+                    o.m = f"No, right answer is\n{r}!"
                 elif o.lang == "ru":
-                    o.m = f"Нет, правильный ответ\n{c}!"
+                    o.m = f"Нет, правильный ответ\n{r}!"
             try:
                 await o.sndm(o.m)
             except ConnectionError:
@@ -665,30 +688,32 @@ async def mml(object o):
 
 cdef class Bot():
     """define main variables"""
-    cdef public str TOKEN
-    cdef public int NUMBER
-    cdef public int CID
-    cdef public list cids
-    cdef public float TIMEOUT
-    """define message urls and message variables"""
-    cdef public str URL, URLR, ERROR_EN, ERROR_RU, MISTYPE_EN, MISTYPE_RU
-    """define right answers and user-supplied ones"""
-    cdef public int c, c1, c2, c3, c4, c5, c6, c7, c8, c9
-    cdef public int u, u1, u2, u3, u4, u5, u6, u7, u8, u9
-    """define all messages and message related variables"""
-    cdef public str m, m1, m2, m3, m4, m5, prevm, rdlm
-    cdef public int mc2, mc3, mc4, mc5
-    """define all mode and mode of count related variables"""
-    cdef public tuple mnum, dnum, sqnum, ronum, vmnum, mmnum
-    cdef public int st, n1, n2
-    """define restart variable and convertion ones for different modes"""
-    cdef public int resch, cmul, cdiv, csqr, croot, cvmul, cmmul
-    """define all time related variables"""
-    cdef public int date, ldate, pdate
-    """define all choice related variables"""
-    cdef public str lang, mode
-    cdef public int s, d, ms, diffch
-    cdef public list r
+    cdef:
+        public str TOKEN
+        public unsigned short NUMBER
+        public unsigned int CID
+        public list cids
+        public float TIMEOUT
+        """define message urls and message variables"""
+        public str URL, URLR, ERROR_EN, ERROR_RU, MISTYPE_EN, MISTYPE_RU
+        """define right answers and user-supplied ones"""
+        public unsigned long r, r1, r2, r3, r4, r5, r6, r7, r8, r9
+        public unsigned long u, u1, u2, u3, u4, u5, u6, u7, u8, u9
+        """define all messages and message related variables"""
+        public str m, m1, m2, m3, m4, m5, prevm, rdlm
+        public bint mc2, mc3, mc4, mc5
+        """define all mode and mode of count related variables"""
+        public (unsigned short, unsigned short) mnum, dnum, sqnum, ronum, vmnum, mmnum
+        public unsigned short st, n1, n2
+        """define restart variable and convertion ones for different modes"""
+        public bint resch, cmul, cdiv, csqr, croot, cvmul, cmmul
+        """define all time related variables"""
+        public unsigned int date, ldate, pdate
+        """define all choice related variables"""
+        public str lang, mode
+        public unsigned short s, d, ms
+        public bint diffch
+        public list rem
 
     def __init__(object self, str tok, int num):
         """static variables are defined here for correct start up"""
@@ -705,10 +730,10 @@ cdef class Bot():
         self.date = 0  # date set to zero will serve in expression as start var
         self.prevm = ""  # set to such value because of Cython specifics
         self.cids = []
-        self.c, self.u = 0, 0
-        self.c1, self.c2, self.c3 = 0, 0, 0
-        self.c4, self.c5, self.c6 = 0, 0, 0
-        self.c7, self.c8, self.c9 = 0, 0, 0
+        self.r, self.u = 0, 0
+        self.r1, self.r2, self.r3 = 0, 0, 0
+        self.r4, self.r5, self.r6 = 0, 0, 0
+        self.r7, self.r8, self.r9 = 0, 0, 0
         self.u1, self.u2, self.u3 = 0, 0, 0
         self.u4, self.u5, self.u6 = 0, 0, 0
         self.u7, self.u8, self.u9 = 0, 0, 0
@@ -716,8 +741,8 @@ cdef class Bot():
         self.dnum = (4, 2)
         self.vmnum = (1, 1)
         self.mmnum = (1, 1)
-        self.sqnum = (2, )
-        self.ronum = (2, )
+        self.sqnum = (2, 0)
+        self.ronum = (2, 0)
         self.mc2 = False
         self.mc3 = False
         self.mc4 = False
@@ -876,7 +901,7 @@ cdef class Bot():
                 break
             elif self.rdlm == "/div":
                 if self.lang == "en":
-                    self.m = "Division is chosen!"
+                    self.m = "Division is chosen"
                 elif self.lang == "ru":
                     self.m = "Выбрано деление"
                 try:
@@ -958,8 +983,8 @@ cdef class Bot():
                     continue
                 self.mc3 = True  # change state; not to resend message
             try:
-                self.r = re.findall(r"^\/s([0-9]{1,6})", self.rdlm)
-                self.s = int(self.r[0])  # num is extracted here
+                self.rem = re.findall(r"^\/s([0-9]{1,6})", self.rdlm)
+                self.s = int(self.rem[0])  # num is extracted here
             except IndexError:
                 if self.rdlm != self.prevm:
                     await self.error()
@@ -1003,8 +1028,8 @@ cdef class Bot():
             try:  # try to extract number from latest message
                 if self.rdlm == self.prevm:
                     raise IndexError("Got no new messages!")
-                self.r = re.findall(r"([0-9]{1,6})", self.rdlm)
-                self.d = int(self.r[0])
+                self.rem = re.findall(r"([0-9]{1,6})", self.rdlm)
+                self.d = int(self.rem[0])
             except IndexError:
                 if self.rdlm != self.prevm and self.rdlm != "/start":
                     await self.error()
@@ -1053,8 +1078,8 @@ cdef class Bot():
             try:  # try to extract number from latest message
                 if self.rdlm == self.prevm:
                     raise IndexError("Got no new messages!")
-                self.r = re.findall(r"^\/m([2-4])", self.rdlm)
-                self.ms = int(self.r[0])
+                self.rem = re.findall(r"^\/m([2-4])", self.rdlm)
+                self.ms = int(self.rem[0])
             except IndexError:
                 if self.rdlm != self.prevm and self.rdlm != "/start":
                     await self.error()
@@ -1083,7 +1108,7 @@ cdef class Bot():
             self.st = (self.s * self.d) - (self.s - 1)
         else:
             self.st = 1
-        cdef int i = self.st
+        cdef unsigned short i = self.st
         while True:
             if self.mode == "mul":  # check for counting mode option
                 if self.cmul:  # convert initial numbers to usable for loop
