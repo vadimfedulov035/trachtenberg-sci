@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -static-libgcc -O2 -fPIC
 INCLUDES = -I/usr/include/python3.8d -I/usr/lib/python3.8/site-packages/numpy/core/include
-LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lpython3.8d
+LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lpython3.8d -lm
 TARGET0 = cidc
 TARGET1 = cbot
 
