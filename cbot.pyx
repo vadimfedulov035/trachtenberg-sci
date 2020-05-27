@@ -858,6 +858,8 @@ cdef class Bot():
                     continue
                 self.lang = "ru"
                 break
+        """record previous m and go to the next method"""
+        self.prevm = self.rdlm
         await self.cmode()
 
     async def cmode(object self):
