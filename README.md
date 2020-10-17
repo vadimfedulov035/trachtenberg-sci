@@ -3,7 +3,7 @@
 
 ![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.jpg)
 
-### Python 3.9.0 + Cython 0.29.19 + GCC 10.2.0
+### Python 3.9.0 + Cython 0.29.21 + GCC 10.2.0
 
 If you have read the original book you will be able to test your knowledge easily by just chatting with TrachtenbergBot in Telegram.
 
@@ -38,4 +38,4 @@ To start bot you will need pre-compiled with recent GCC or compiled by yourself 
 - [x] Write scripts for installing dependencies and execution of executables 
 - [x] Write GNU Makefile scenario and port to GCC 10.2.0
 - [x] Optimize by right typization choices and ctuples usage
-- [x] Release Cython version 3.2 :tada: :tada: :tada:
+- [x] Release stable Cython version 3.3 :tada: :tada: :tada:

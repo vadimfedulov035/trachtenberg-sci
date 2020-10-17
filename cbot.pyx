@@ -59,9 +59,9 @@ async def ml(object o):
             except IndexError:
                 try:
                     if o.lang == "en":
-                        await o.sndm(o.MISTYPE_EN)
+                        await o.sndm(o.ERROR_EN)
                     elif o.lang == "ru":
-                        await o.sndm(o.MISTYPE_RU)
+                        await o.sndm(o.ERROR_RU)
                 except ConnectionError:
                     continue
                 o.prevm = o.rdlm  # record latest message for check
@@ -134,9 +134,9 @@ async def dl(object o):
             except IndexError:
                 try:
                     if o.lang == "en":
-                        await o.sndm(o.MISTYPE_EN)
+                        await o.sndm(o.ERROR_EN)
                     elif o.lang == "ru":
-                        await o.sndm(o.MISTYPE_RU)
+                        await o.sndm(o.ERROR_RU)
                 except ConnectionError:
                     continue
                 o.prevm = o.rdlm  # record latest message for check
@@ -206,9 +206,9 @@ async def sqr(object o):
             except IndexError:
                 try:
                     if o.lang == "en":
-                        await o.sndm(o.MISTYPE_EN)
+                        await o.sndm(o.ERROR_EN)
                     elif o.lang == "ru":
-                        await o.sndm(o.MISTYPE_RU)
+                        await o.sndm(o.ERROR_RU)
                 except ConnectionError:
                     continue
                 o.prevm = o.rdlm  # record latest message for check
@@ -276,9 +276,9 @@ async def root(object o):
             except IndexError:
                 try:
                     if o.lang == "en":
-                        await o.sndm(o.MISTYPE_EN)
+                        await o.sndm(o.ERROR_EN)
                     elif o.lang == "ru":
-                        await o.sndm(o.MISTYPE_RU)
+                        await o.sndm(o.ERROR_RU)
                 except ConnectionError:
                     continue
                 o.prevm = o.rdlm  # record latest message for check
@@ -411,9 +411,9 @@ async def vml(object o):
                 except IndexError:
                     try:
                         if o.lang == "en":
-                            await o.sndm(o.MISTYPE_EN)
+                            await o.sndm(o.ERROR_EN)
                         elif o.lang == "ru":
-                            await o.sndm(o.MISTYPE_RU)
+                            await o.sndm(o.ERROR_RU)
                     except ConnectionError:
                         continue
                     o.prevm = o.rdlm  # record latest message for check
@@ -452,9 +452,9 @@ async def vml(object o):
                 except IndexError:
                     try:
                         if o.lang == "en":
-                            await o.sndm(o.MISTYPE_EN)
+                            await o.sndm(o.ERROR_EN)
                         elif o.lang == "ru":
-                            await o.sndm(o.MISTYPE_RU)
+                            await o.sndm(o.ERROR_RU)
                     except ConnectionError:
                         continue
                     o.prevm = o.rdlm  # record latest message for check
@@ -606,9 +606,9 @@ async def mml(object o):
                 except IndexError:
                     try:
                         if o.lang == "en":
-                            await o.sndm(o.MISTYPE_EN)
+                            await o.sndm(o.ERROR_EN)
                         elif o.lang == "ru":
-                            await o.sndm(o.MISTYPE_RU)
+                            await o.sndm(o.ERROR_RU)
                     except ConnectionError:
                         continue
                     o.prevm = o.rdlm  # record latest message for check
@@ -652,9 +652,9 @@ async def mml(object o):
                 except IndexError:
                     try:
                         if o.lang == "en":
-                            await o.sndm(o.MISTYPE_EN)
+                            await o.sndm(o.ERROR_EN)
                         elif o.lang == "ru":
-                            await o.sndm(o.MISTYPE_RU)
+                            await o.sndm(o.ERROR_RU)
                     except ConnectionError:
                         continue
                     o.prevm = o.rdlm  # record latest message for check
@@ -695,7 +695,7 @@ cdef class Bot():
         public list cids
         public float TIMEOUT
         """define message urls and message variables"""
-        public str URL, URLR, ERROR_EN, ERROR_RU, MISTYPE_EN, MISTYPE_RU
+        public str URL, URLR, ERROR_EN, ERROR_RU
         """define right answers and user-supplied ones"""
         public unsigned long r, r1, r2, r3, r4, r5, r6, r7, r8, r9
         public unsigned long u, u1, u2, u3, u4, u5, u6, u7, u8, u9
@@ -722,10 +722,8 @@ cdef class Bot():
         self.TIMEOUT = 0.001  # serves as placeholder for switching
         self.URL = f"https://api.telegram.org/bot{self.TOKEN}"
         self.URLR = self.URL + "/getupdates"
-        self.ERROR_EN = "Sorry, I don't understand you, I will restart dialog!"
-        self.ERROR_RU = "Извините, я не понимаю вас, я начну диалог с начала!"
-        self.MISTYPE_EN = "Sorry, I didn't understand you, type more clearly!"
-        self.MISTYPE_RU = "Извините, я не понимаю вас, печатайте чётче!"
+        self.ERROR_EN = "Sorry, I didn't understand you! Type appropriate answers!" 
+        self.ERROR_RU = "Извините, я не понял вас! Пишите допустимые ответы!"
         """non-static variables are defined here for further work"""
         self.date = 0  # date set to zero will serve in expression as start var
         self.prevm = ""  # set to such value because of Cython specifics
@@ -834,7 +832,7 @@ cdef class Bot():
                 self.pdate = self.ldate
                 self.m1 = "Started setting up! Type /start at any moment if "
                 self.m2 = "you want to restart! "
-                self.m3 = "Please, choose language! (/en, /ru)"
+                self.m3 = "Please, choose the language! (/en, /ru)"
                 self.m = self.m1 + self.m2 + self.m3
                 try:
                     await self.sndm(self.m)
@@ -874,12 +872,12 @@ cdef class Bot():
             if not self.mc2:
                 if self.lang == "en":
                     self.m1 = "Do you want linear algebra operations: "
-                    self.m2 = "matrix, vector-matrix multiplication; "
+                    self.m2 = "matrix-matrix, vector-matrix multiplication; "
                     self.m3 = "arithmetics operations: multiplication, "
                     self.m4 = "division, squaring, taking square root?"
                 elif self.lang == "ru":
                     self.m1 = "Вы хотите операции линейной алгебры: "
-                    self.m2 = "матричное, векторно-матричное умножение; "
+                    self.m2 = "матрично-матричное, векторно-матричное умножение; "
                     self.m3 = "арифметические операциии: умножение, деление, "
                     self.m4 = "возведение в квадрат, взятие квадратного корня?"
                 self.m5 = " (/mmul, /vmul, /mul, /div, /sqr, /root)"

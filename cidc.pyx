@@ -29,7 +29,7 @@ while True:
     except json.decoder.JSONDecodeError:
         continue
     """parsing loop through all cids"""
-    for n in range(100):
+    for n in range(99):
         try:
             cid = js["result"][n]["message"]["chat"]["id"]
             cids = []
