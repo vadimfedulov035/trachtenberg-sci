@@ -3,7 +3,7 @@
 
 ![cover](https://github.com/vadimfedulov395/trachtenberg-sci/raw/master/cover.jpg)
 
-### Python 3.8.2 + Cython 0.29.19 + GCC 9.3.0
+### Python 3.9.0 + Cython 0.29.19 + GCC 10.2.0
 
 If you have read the original book you will be able to test your knowledge easily by just chatting with TrachtenbergBot in Telegram.
 
@@ -11,7 +11,7 @@ If you want to, you can explore the source code of TrachtenbergBot in Telegram, 
 
 ## Compile bot yourself, if you want to
 
-Just run these commands. Shell-script setup.sh installs recent Python 3.8.2 and needed shared libraries and GNU make cythonizes source code and compiles executables from C files following Makefile scenario. (Remember that this shell-script does not install GCC 9.3.0. You can install it by yourself, using ATOIC script at https://github.com/vadimfedulov395/install)
+Just run these commands. Shell-script setup.sh installs recent Python 3.9.0 and needed shared libraries and GNU make cythonizes source code and compiles executables from C files following Makefile scenario. (Remember that this shell-script does not install GCC 10.2.0. You can install it by yourself, using ATOIC script at https://github.com/vadimfedulov035/install)
 
 `sudo ./setup.sh` to install all dependencies
 
@@ -36,6 +36,6 @@ To start bot you will need pre-compiled with recent GCC or compiled by yourself 
 - [x] Make bot able to have instant messaging with newcomers on Cython handling up to 1000 conversations at once
 - [x] Make bot more user-friendly and stable
 - [x] Write scripts for installing dependencies and execution of executables 
-- [x] Write GNU Makefile scenario and port to GCC 9.3.0
+- [x] Write GNU Makefile scenario and port to GCC 10.2.0
 - [x] Optimize by right typization choices and ctuples usage
 - [x] Release Cython version 3.2 :tada: :tada: :tada:
